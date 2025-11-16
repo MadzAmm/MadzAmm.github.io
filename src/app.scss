@@ -35,6 +35,12 @@ body {
   margin: 0;
   box-sizing: border-box;
   font-family: 'DM Sans', sans-serif;
+
+  -webkit-scrollbar-track {
+    scrollbar-width: none;
+  }
+
+  scrollbar-width: none; /* Untuk Firefox */
 }
 
 a {

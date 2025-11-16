@@ -1,0 +1,356 @@
+/* ... Variabel dan style .user-input-bubble (awal) ... */
+$chat-background: #929292;
+$bubble-background: #2a2b2e;
+$text-primary: #e8eaed;
+$text-secondary: #999;
+$accent-blue: #002f45;
+$border-color: #3c4043;
+$bubble-radius: 28px;
+$component-radius: 12px;
+
+.user-input-bubble {
+  position: fixed;
+  bottom: 20px;
+  left: 25%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 700px;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.3px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: $bubble-radius;
+  // Z-INDEX DITETAPKAN DI SINI
+  z-index: 800;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 12px 12px 20px;
+
+  /* === TAMBAHKAN STYLE HANDLE BARU DI SINI === */
+  .drag-handle-bar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: grab;
+    color: $text-secondary;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    // Atur ikon
+    svg {
+      font-size: 1.5rem;
+    }
+
+    :hover {
+      color: #ffffff;
+    }
+  }
+  /* === AKHIR STYLE HANDLE === */
+
+  /* ... (sisa .expand-textarea-button, .input-area, .upload-button) ... */
+  .expand-textarea-button {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    background: transparent;
+    border: none;
+    color: $text-secondary;
+    cursor: pointer;
+    font-size: 1.3rem;
+    padding: 4px;
+    z-index: 10;
+    &:hover {
+      color: #ffffff;
+    }
+  }
+  .input-area {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  .upload-button {
+    color: $text-secondary;
+    border: 1.3px solid rgba(255, 255, 255, 0.2);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-left: -10px;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: color 0.4s ease-in-out;
+    &:hover {
+      color: #ffffff;
+    }
+    .background-fill {
+      position: absolute;
+      inset: 0;
+      background-color: #002f45;
+      z-index: 1;
+    }
+  }
+}
+
+/* ... (style textarea, .send-button) ... */
+textarea {
+  flex-grow: 1;
+  background: transparent;
+  border: none;
+  color: $text-primary;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  outline: none;
+  box-shadow: none;
+  resize: none;
+  overflow-y: auto;
+  padding-top: 10px;
+  -webkit-scrollbar-track {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f100;
+  }
+  scrollbar-width: thin;
+  scrollbar-color: #8888887e #f1f1f100;
+}
+.send-button {
+  background: transparent;
+  color: $text-secondary;
+  border: none;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  margin-right: -10px;
+  align-items: center;
+  justify-content: center;
+  border: 1.3px solid rgba(255, 255, 255, 0.2);
+  font-size: 1.2rem;
+  cursor: not-allowed;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: color 0.4s ease-in-out;
+  &:hover {
+    color: #ffffff;
+  }
+  .background-fill {
+    position: absolute;
+    inset: 0;
+    background-color: #989898;
+    z-index: 1;
+  }
+  &.active {
+    background: $accent-blue;
+    color: $chat-background;
+    cursor: pointer;
+    &:hover {
+      color: $accent-blue;
+    }
+  }
+}
+
+// ==========================================================
+// --- STYLING BARU UNTUK DUA TOGGLE ---
+// ==========================================================
+
+.task-toggles {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: -10px;
+  width: 100%;
+  padding: 5px;
+  gap: 6px;
+}
+
+.upload-div,
+.submit-div {
+  flex-shrink: 0;
+}
+.task-buttons-group {
+  display: flex;
+  flex-grow: 1; // <-- PENTING: Ambil semua sisa ruang
+  flex-shrink: 1; // <-- PENTING: Izinkan grup ini menyusut
+  min-width: 0; // <-- PENTING: Agar flex-shrink berfungsi
+  gap: 6px; // <-- Jarak antar dua tombol toggle
+}
+
+// Style dasar untuk SEMUA toggle
+.task-toggle {
+  background: transparent;
+  border: 1.3px solid rgba(255, 255, 255, 0.2);
+  color: $text-secondary;
+  border-radius: 40px;
+  //padding: 13px 70px; // Padding standar
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+  transition: color 0.4s ease-in-out;
+
+  // === GANTI INI ===
+  // padding: 13px 70px; // <-- HAPUS INI
+  padding: 13px 0px; // <-- Ganti ke padding horizontal yg kecil
+
+  // === TAMBAHKAN INI ===
+  flex-grow: 1; // <-- Buat tombol membagi ruang
+  flex-shrink: 1; // <-- Izinkan tombol menyusut
+  flex-basis: 0; // <-- Distribusikan ruang secara merata
+  justify-content: center; // <-- Tengahkan teks di dalam tombol
+  min-width: 0; // <-- Izinkan tombol menyusut lebih kecil dari teksnya
+
+  // (PENTING) Atasi teks yang terlalu panjang
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  // === AKHIR TAMBAHAN ===
+
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    color: #616161;
+  }
+
+  .background-fill {
+    position: absolute;
+    inset: 0;
+    background-color: #ccc;
+    z-index: 1;
+  }
+
+  // --- Style untuk Tombol Aktif ---
+  &.active {
+    background: $accent-blue;
+    color: $chat-background;
+    border: 1.3px solid rgba(255, 255, 255, 0.2);
+    &:hover {
+      color: #616161;
+    }
+    .background-fill {
+      background-color: #ccc;
+    }
+  }
+
+  // --- Area Pemicu Dropdown (di dalam Toggle 2) ---
+  .dropdown-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%); // Biar selalu sejajar tengah
+    padding: 8px;
+    border-radius: 50%;
+    // background-color: #002f45;
+    // border: 1.3px solid rgba(255, 255, 255, 0.2);
+
+    // Ikon Chevron
+    .chevron {
+      transition: transform 0.2s ease-in-out;
+      &.open {
+        transform: rotate(180deg);
+      }
+      :hover {
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+// Kontainer untuk Dropdown
+.task-dropdown-container {
+  position: relative;
+  z-index: 1001;
+
+  // === TAMBAHKAN INI ===
+  display: flex; // <-- Buat container ini jadi flex
+  flex-grow: 1; // <-- Bagiannya sama besar
+  flex-shrink: 1;
+  flex-basis: 0;
+  min-width: 0;
+  // === AKHIR TAMBAHAN ===
+}
+
+// Menu Dropdown
+.task-dropdown-menu {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-grow: 1; // <-- PENTING: Ambil semua sisa ruang
+  flex-shrink: 1; // <-- PENTING: Izinkan grup ini menyusut
+  min-width: 0; // <-- PENTING: Agar flex-shrink berfungsi
+  gap: 6px; // <-- Jarak antar dua tombol toggle
+
+  // Z-INDEX NAIK!
+  z-index: 1003; // Harus lebih tinggi dari .user-input-bubble (1002)
+
+  // border: 1.3px solid rgba(255, 255, 255, 0.2);
+  background-color: transparent;
+  border-radius: $component-radius;
+  padding: 6px;
+  // box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 180px;
+
+  // --- PERUBAHAN STYLE UNTUK ITEM DROPDOWN ---
+  // Kita bungkus .task-toggle di dalam motion.div, jadi kita target motion.div
+  // > motion.div {
+  // Tombol di dalam dropdown
+  .task-toggle {
+    width: 100%; // Buat agar mengisi kontainer
+    justify-content: center; // Teks rata kiri
+    font-weight: 400; // Teks normal
+
+    // Anda bisa pilih:
+    // 1. Tetap bulat (seperti sekarang)
+    border-radius: 40px;
+    background: #004667;
+
+    // 2. Atau kotak (jika lebih suka)
+    // border-radius: 6px;
+
+    // Non-aktifkan state 'active' di dalam dropdown
+    &.active {
+      background: #444444 !important;
+      color: $text-secondary;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    &:hover {
+      color: #616161; // Hover tetap
+    }
+  }
+}

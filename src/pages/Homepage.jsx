@@ -15,6 +15,7 @@ import './pages.scss';
 import useResponsiveBubble from '../components/DateBubble/UseResponsiveBubble';
 import ContactSection from '.././components/ContactSection/ContactSection';
 import Activity from '../components/aboutSection/Activity';
+// import UserInputBar from '../components/UserInputBar/UserInputBar';
 
 export default function Homepage() {
   const ref = useRef(null);
@@ -34,9 +35,11 @@ export default function Homepage() {
           <Hero />
         </div>
         <div>
-          {' '}
           <Activity />
         </div>
+        {/* <div>
+          <UserInputBar />
+        </div> */}
 
         <div className='dateBubbleLayer'>
           <DateBubble

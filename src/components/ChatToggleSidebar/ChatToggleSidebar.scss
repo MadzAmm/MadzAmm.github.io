@@ -1,0 +1,59 @@
+// File: src/styles/_variables.scss
+// (Nama dengan '_' berarti ini adalah file 'partial' atau 'impor')
+
+// Variabel untuk konsistensi
+$chat-background: #1e1f20;
+$bubble-background: #2a2b2e;
+$text-primary: #969595;
+$text-secondary: #999;
+$accent-blue: #8ab4f8;
+$border-color: #3c4043;
+$bubble-radius: 28px;
+$component-radius: 25px;
+
+// 1. Toggle Sidebar (GENIUS BUBBLE Tab)
+.chat-toggle-sidebar {
+  position: fixed;
+  top: 40%;
+  right: 0; // Mulai dari kanan
+  transform: translateY(50%);
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  span {
+    color: $text-secondary;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-right: 10px;
+  }
+
+  .tab {
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.3px solid rgba(255, 255, 255, 0.2);
+    color: $text-primary;
+    font-weight: normal;
+    font-size: 15px;
+    padding: 18px 10px;
+    border-radius: $component-radius 0 0 $component-radius;
+    writing-mode: vertical-rl; // Teks vertikal
+    text-orientation: mixed;
+    box-shadow: -5px 0px 15px rgba(0, 0, 0, 0.2);
+
+    border-right: none;
+  }
+}
+
+// Animasi "mantul" sesuai permintaan Anda
+@keyframes bounce-right {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-8px);
+  }
+}

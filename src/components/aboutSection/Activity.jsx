@@ -45,45 +45,6 @@ const wrap = (min, max, v) => {
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 };
 
-// --- DATA & KONFIGURASI ---
-// const activityData = [
-//   {
-//     id: 1,
-//     title: 'Published "Modern State Management"',
-//     category: ['publication', 'react'],
-//     year: 2025,
-//     imageUrl: 'library.jpg',
-//   },
-//   {
-//     id: 2,
-//     title: 'Keynote at React Summit',
-//     category: ['talk', 'community'],
-//     year: 2025,
-//     imageUrl: 'kkn.jpg',
-//   },
-//   {
-//     id: 3,
-//     title: 'Contributed to Framer Motion',
-//     category: ['open source', 'contribution'],
-//     year: 2024,
-//     imageUrl: 'm.png',
-//   },
-//   {
-//     id: 4,
-//     title: 'Launched Interactive Portfolio',
-//     category: ['personal project', 'development'],
-//     year: 2024,
-//     imageUrl: 'hand.jpg',
-//   },
-//   {
-//     id: 5,
-//     title: 'Mentored Junior Developers',
-//     category: ['mentorship', 'community'],
-//     year: 2023,
-//     imageUrl: 'child.png',
-//   },
-// ];
-
 const activityItems = MasterData.filter((project) => project.isActivity).slice(
   0,
   5
