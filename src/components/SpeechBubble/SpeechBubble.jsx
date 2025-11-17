@@ -392,28 +392,37 @@ export default function SpeechBubble() {
 
   const messagesEndRef = useRef(null);
   const dragControls = useDragControls();
-
-  // Fungsi ini akan "mengunci" scroll halaman saat drag dimulai
-  const startDrag = (event) => {
-    // 1. Cegah perilaku default browser (seperti scroll halaman)
-    // 'passive: false' diperlukan di beberapa browser agar preventDefault() berfungsi
-    // event.preventDefault(); // (Opsional, coba aktifkan jika masih bermasalah)
-
-    // 2. Kunci scroll halaman secara eksplisit
-    // Ini memberi tahu browser bahwa body tidak boleh di-scroll
-    document.body.style.overflow = 'hidden';
-    document.body.style.touchAction = 'none';
-
-    // 3. Mulai drag Framer Motion
-    dragControls.start(event);
-  };
-
-  // Fungsi ini akan "membuka kunci" scroll halaman saat drag selesai
-  const stopDrag = () => {
-    // Kembalikan kemampuan scroll ke halaman
+  //  1. Buat fungsi "Unlock" yang bisa dipakai ulang
+  const unlockScroll = () => {
     document.body.style.overflow = '';
     document.body.style.touchAction = '';
   };
+
+  // 2. Modifikasi startDrag dan stopDrag
+  const startDrag = (event) => {
+    document.body.style.overflow = 'hidden';
+    document.body.style.touchAction = 'none';
+    dragControls.start(event);
+  };
+
+  // 'stopDrag' sekarang hanya memanggil 'unlockScroll'
+  const stopDrag = () => {
+    unlockScroll();
+  };
+
+  //  3. INI ADALAH KUNCI PERBAIKANNYA
+  useEffect(() => {
+    // Fungsi ini akan dijalankan saat komponen 'mount' (muncul)
+
+    // 'return' di dalam useEffect adalah FUNGSI CLEANUP
+    // Ini akan otomatis dijalankan saat komponen 'unmount' (ditutup)
+    return () => {
+      // Pastikan untuk membuka kunci scroll saat komponen ditutup,
+      // untuk jaga-jaga jika 'onDragEnd' tidak terpicu.
+      unlockScroll();
+    };
+  }, []); // [] = jalankan hanya saat mount dan unmount
+  // AKHIR PERBAIKAN
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -425,7 +434,7 @@ export default function SpeechBubble() {
     if (isLoading) {
       return (
         <DotLottieReact
-          src='/starGlobe.json' // GANTI DENGAN NAMA FILE LOTTIE LOADING ANDA
+          src='/starGlobe.json'
           loop
           autoplay
         />
@@ -456,7 +465,8 @@ export default function SpeechBubble() {
       drag
       dragControls={dragControls}
       dragListener={false}
-      dragMomentum={false}>
+      dragMomentum={false}
+      onDragEnd={stopDrag}>
       <div
         className='window-header'
         onPointerDown={startDrag}>

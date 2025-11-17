@@ -93,22 +93,33 @@ export default function UserInputBar() {
   // 'General' aktif saat pertama kali load
   const [activeTaskID, setActiveTaskID] = useState(ALL_TASKS[0].id);
 
-  // Fungsi ini akan "mengunci" scroll halaman saat drag dimulai
-  const startDrag = (event) => {
-    // Kunci scroll halaman secara eksplisit
-    document.body.style.overflow = 'hidden';
-    document.body.style.touchAction = 'none';
-
-    // Mulai drag Framer Motion
-    dragControls.start(event);
-  };
-
-  // Fungsi ini akan "membuka kunci" scroll halaman saat drag selesai
-  const stopDrag = () => {
-    // Kembalikan kemampuan scroll ke halaman
+  //  1. Buat fungsi "Unlock" yang bisa dipakai ulang
+  const unlockScroll = () => {
     document.body.style.overflow = '';
     document.body.style.touchAction = '';
   };
+
+  // 2. Modifikasi startDrag dan stopDrag
+  const startDrag = (event) => {
+    document.body.style.overflow = 'hidden';
+    document.body.style.touchAction = 'none';
+    dragControls.start(event);
+  };
+
+  // 'stopDrag' sekarang hanya memanggil 'unlockScroll'
+  const stopDrag = () => {
+    unlockScroll();
+  };
+
+  // 3. INI ADALAH KUNCI PERBAIKANNYA
+  useEffect(() => {
+    // Fungsi 'return' ini akan dijalankan saat komponen 'unmount'
+    return () => {
+      // Pastikan untuk membuka kunci scroll saat komponen ditutup
+      unlockScroll();
+    };
+  }, []); // [] = jalankan hanya saat mount dan unmount
+  //  AKHIR PERBAIKAN
 
   const dropdownRef = useRef(null);
   useOnClickOutside(dropdownRef, () => setIsDropdownOpen(false));
