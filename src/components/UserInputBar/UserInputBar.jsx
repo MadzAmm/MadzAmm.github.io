@@ -93,6 +93,23 @@ export default function UserInputBar() {
   // 'General' aktif saat pertama kali load
   const [activeTaskID, setActiveTaskID] = useState(ALL_TASKS[0].id);
 
+  // Fungsi ini akan "mengunci" scroll halaman saat drag dimulai
+  const startDrag = (event) => {
+    // Kunci scroll halaman secara eksplisit
+    document.body.style.overflow = 'hidden';
+    document.body.style.touchAction = 'none';
+
+    // Mulai drag Framer Motion
+    dragControls.start(event);
+  };
+
+  // Fungsi ini akan "membuka kunci" scroll halaman saat drag selesai
+  const stopDrag = () => {
+    // Kembalikan kemampuan scroll ke halaman
+    document.body.style.overflow = '';
+    document.body.style.touchAction = '';
+  };
+
   const dropdownRef = useRef(null);
   useOnClickOutside(dropdownRef, () => setIsDropdownOpen(false));
 
@@ -139,17 +156,15 @@ export default function UserInputBar() {
       animate={{ y: 0 }}
       exit={{ y: 200 }}
       transition={{ ease: 'easeInOut', duration: 0.3 }}
-      // === 3. MODIFIKASI DRAG PROPS ===
       drag
       dragControls={dragControls}
       dragListener={false}
       dragMomentum={false}
-      // === AKHIR MODIFIKASI ===
-    >
+      onDragEnd={stopDrag}>
       {/* === 4. TAMBAHKAN HANDLE DI SINI (di bagian paling atas) === */}
       <div
         className='drag-handle-bar'
-        onPointerDown={(event) => dragControls.start(event)}>
+        onPointerDown={startDrag}>
         <FiMoreHorizontal />
       </div>
       {/* === AKHIR HANDLE === */}
@@ -260,6 +275,9 @@ export default function UserInputBar() {
                         className='task-toggle' // <-- Style disamakan
                         onClick={() => handleTaskSelect(task)}>
                         {task.name}
+                        {task.name !== 'Coding' && task.name !== 'General' && (
+                          <sup className='soon-superscript'>soon !</sup>
+                        )}
                       </ButtonReveal>
                     </motion.div>
                   ))}

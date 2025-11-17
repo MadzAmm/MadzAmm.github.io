@@ -1494,7 +1494,7 @@ const Portfolio = () => {
                 className='list-view-wrapper'>
                 {' '}
                 <div
-                  className='list-view'
+                  className='list-view-portfolio'
                   style={{ zIndex: '9999' }}>
                   {' '}
                   {filteredProjects.map((project, index) => (

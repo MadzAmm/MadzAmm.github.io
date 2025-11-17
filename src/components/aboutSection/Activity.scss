@@ -17,6 +17,7 @@ $anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
   min-height: 100vh;
   margin-top: -32px;
   display: flex;
+  width: 100%;
   flex-direction: column;
 }
 
@@ -145,39 +146,103 @@ $anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
   box-sizing: border-box;
 }
 
+.block-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+  border-top: 5px solid#fff7ed;
+
+  // Terapkan pointer-events agar item bisa di-klik/hover
+  pointer-events: all;
+}
+
+// SALIN DARI HERO.SCSS
+.block-content {
+  width: 100%;
+  height: 100%;
+  padding: 1rem; // Sesuaikan padding
+  position: relative;
+
+  // PENTING:
+  // 'ListItemContent' Anda sekarang ada di sini.
+  // Atur display: flex agar kontennya (angka, judul, tahun)
+  // tertata rapi seperti 'list-item-activity' Anda sebelumnya.
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  // (Warna dan backdrop-filter diatur oleh inline style dari React)
+}
+
+// Untuk blok kosong
+.list-item-empty {
+  width: 100%;
+  height: 100%;
+  // Biarkan kosong
+}
+
 /* --- List View Styles --- */
 .list-view-wrapper-activity {
   width: 100%;
   position: relative;
   z-index: 5;
-  margin-top: -30px;
+  margin-top: 30px;
 }
 
-.list-view {
+.list-view-activity {
+  @keyframes moveBackground {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  background: linear-gradient(
+    -45deg,
+    #002f45,
+    // Warna asli Anda
+    #004564,
+    // Warna baru 1
+    #240135,
+    // Warna baru 2
+    #01362d // Warna baru 3
+  );
+  animation: moveBackground 15s ease infinite;
+  background-size: 400% 400%;
   position: relative;
-  max-width: 1150px;
-  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   margin: 0 auto;
+  // background-color: #002f45;
+  border-top: 5px solid#fff7ed;
 }
 .list-item-activity {
-  position: sticky;
-  top: 15vh;
-  padding: 2rem 1.5rem;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid $border-color;
-  display: grid;
-  grid-template-columns: 1fr 5fr 1fr;
-  align-items: center;
-  margin-top: -5px;
-  cursor: pointer;
-  will-change: transform, opacity;
-  position: relative;
-  overflow: hidden;
+  border-top: 5px solid#fff7ed;
+  // position: sticky;
+  // top: 15vh;
+  // padding: 2rem 1.5rem;
+  // backdrop-filter: blur(12px);
+  // -webkit-backdrop-filter: blur(12px);
+  // border-top: 1px solid $border-color;
+  // display: grid;
+  // grid-template-columns: 1fr 5fr 1fr;
+  // align-items: center;
+  // margin-top: -5px;
+  // cursor: pointer;
+  // will-change: transform, opacity;
+  // position: relative;
+  // overflow: hidden;
 
   .list-item-number,
   .list-item-year {
-    font-size: 1rem;
+    font-size: 0.8rem;
     color: $secondary-text;
     z-index: 2;
   }
@@ -193,16 +258,18 @@ $anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
     z-index: 2;
   }
   .list-item-title {
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-size: clamp(2.5rem, 5vw, 2.8rem);
     font-weight: 500;
     line-height: 1.1;
+    font-family: 'Champion-HTF-Bantamweight';
+    text-transform: uppercase;
     margin: 0;
     color: $primary-text;
   }
   .list-item-category {
     font-size: 1rem;
     color: $secondary-text;
-    margin-top: 0.5rem;
+    margin-top: -0.5rem;
     text-transform: capitalize;
   }
   .list-item-year {
@@ -272,9 +339,9 @@ $anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
 }
 .more-activity-btn {
   border-radius: 40px;
-  border: 1px solid $border-color;
-  background-color: $primary-bg;
-  color: $primary-text;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: #044968;
+  color: #ccc;
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: 400;
@@ -358,10 +425,12 @@ $anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
 
   span {
     display: block;
-    font-size: clamp(2rem, 8vw, 4rem);
+    font-size: clamp(1rem, 5vw, 2rem);
     font-weight: 500;
     line-height: 1;
     color: $primary-text;
     flex-shrink: 0;
+    font-family: 'Champion-HTF-Bantamweight';
+    text-transform: uppercase;
   }
 }

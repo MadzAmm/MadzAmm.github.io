@@ -284,7 +284,7 @@ const Hero = ({ navState }) => {
   const blockConfigs = [
     // format: { startX, endX }
     {
-      initialX: '-100%',
+      initialX: '-50%',
       startX: 35,
       endX: 50,
       color: '#fff7ed',

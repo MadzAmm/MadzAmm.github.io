@@ -480,6 +480,9 @@ $component-radius: 30px;
   position: fixed;
   top: 60px; // Jarak dari atas
   left: 25%;
+  @media (max-width: 768px) {
+    left: 5%;
+  }
   transform: translateX(-50%);
   width: 90%;
   max-width: 700px;
@@ -521,7 +524,7 @@ $component-radius: 30px;
     top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
-
+    touch-action: none;
     cursor: grab;
     color: $text-secondary;
     padding: 0; // Beri area klik yang cukup
@@ -613,6 +616,7 @@ $component-radius: 30px;
     align-items: center;
     justify-content: center;
     text-decoration: none;
+    touch-action: auto;
     transition: color 0.4s ease-in-out;
     &:hover {
       color: #ffffff;
@@ -637,6 +641,8 @@ $component-radius: 30px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    overflow-y: auto;
+    touch-action: pan-y;
   }
 
   // Item Pesan Individual
@@ -657,7 +663,14 @@ $component-radius: 30px;
 
       .message-controls {
         display: flex;
+        align-items: center;
         gap: 8px;
+
+        .message-timestamp {
+          font-size: 0.75rem;
+          color: #888; // Warna abu-abu
+          margin-right: 4px; // Jarak dari tombol
+        }
         button {
           background: transparent;
           border: none;
@@ -680,6 +693,48 @@ $component-radius: 30px;
       font-size: 0.95rem;
       line-height: 1.6;
 
+      .edit-area {
+        width: 100%;
+
+        textarea {
+          width: 100%;
+          padding: 10px;
+          border-radius: 20px;
+          border: 1px solid #555;
+          background-color: #3a3a3a5e; // Sesuaikan dengan tema Anda
+          color: #eee;
+          font-family: inherit;
+          font-size: 0.9rem;
+          min-height: 80px;
+          resize: vertical;
+        }
+        .edit-controls {
+          display: flex;
+          justify-content: flex-end;
+          gap: 10px;
+          margin-top: 8px;
+
+          // (Anda mungkin punya style global untuk ButtonReveal,
+          //  tapi ini untuk kustomisasi)
+          .edit-cancel,
+          .edit-resubmit {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            border-radius: 30px;
+            border: 1px solid #9999998f;
+          }
+          .edit-resubmit {
+            // Buat tombol 'Simpan' lebih menonjol
+            background-color: #002f45; // Contoh warna
+            color: white;
+          }
+
+          .edit-cancel {
+            background-color: #002f454e; // Contoh warna
+            color: white;
+          }
+        }
+      }
       // Rendering Markdown
       p,
       ol,

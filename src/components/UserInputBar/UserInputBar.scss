@@ -12,6 +12,9 @@ $component-radius: 12px;
   position: fixed;
   bottom: 20px;
   left: 25%;
+  @media (max-width: 768px) {
+    left: 5%;
+  }
   transform: translateX(-50%);
   width: 90%;
   max-width: 700px;
@@ -26,6 +29,7 @@ $component-radius: 12px;
   display: flex;
   flex-direction: column;
   padding: 5px 12px 12px 20px;
+  touch-action: none;
 
   /* === TAMBAHKAN STYLE HANDLE BARU DI SINI === */
   .drag-handle-bar {
@@ -33,7 +37,7 @@ $component-radius: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
-
+    touch-action: none;
     cursor: grab;
     color: $text-secondary;
 
@@ -50,7 +54,16 @@ $component-radius: 12px;
       color: #ffffff;
     }
   }
-  /* === AKHIR STYLE HANDLE === */
+
+  .expand-textarea-button,
+  .upload-button,
+  .task-toggle,
+  .send-button,
+  .dropdown-trigger {
+    // ▼▼▼ TAMBAHKAN INI ▼▼▼
+    // Izinkan 'tap' (sentuhan) pada semua tombol.
+    touch-action: auto;
+  }
 
   /* ... (sisa .expand-textarea-button, .input-area, .upload-button) ... */
   .expand-textarea-button {
@@ -72,6 +85,7 @@ $component-radius: 12px;
     display: flex;
     align-items: flex-end;
     gap: 10px;
+    touch-action: pan-y;
   }
   .upload-button {
     color: $text-secondary;
@@ -180,6 +194,26 @@ textarea {
   width: 100%;
   padding: 5px;
   gap: 6px;
+  @keyframes pulse {
+    0% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.5;
+    }
+  }
+  .soon-superscript {
+    font-size: 0.6em; // Buat ukurannya lebih kecil
+    opacity: 0.7; // Buat sedikit transparan
+    margin-left: 4px; // Beri sedikit jarak
+    font-weight: 500; // Jangan setebal teks utama
+    vertical-align: top; // Pastikan posisinya benar di atas
+    color: #cbbe57; // (Opsional: beri warna)
+    animation: pulse 1.5s infinite ease-in-out;
+  }
 }
 
 .upload-div,
