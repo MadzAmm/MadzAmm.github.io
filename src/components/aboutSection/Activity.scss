@@ -18,6 +18,7 @@ $anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
   margin-top: -32px;
   display: flex;
   width: 100%;
+  overflow-x: hidden;
   flex-direction: column;
 }
 
@@ -164,6 +165,7 @@ $anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
   height: 100%;
   padding: 1rem; // Sesuaikan padding
   position: relative;
+  will-change: transform;
 
   // PENTING:
   // 'ListItemContent' Anda sekarang ada di sini.
@@ -209,7 +211,7 @@ $anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
     // Warna asli Anda
     #004564,
     // Warna baru 1
-    #240135,
+    #11001f,
     // Warna baru 2
     #01362d // Warna baru 3
   );
