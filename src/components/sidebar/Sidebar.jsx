@@ -15,16 +15,48 @@ const variants = {
   },
 };
 
+const visibilityVariants = {
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1, // Muncul ke ukuran penuh
+    transition: {
+      type: 'spring', // Ini akan memberikan efek 'kenyal'
+      stiffness: 400, // Seberapa kaku pegasnya
+      damping: 25, // Seberapa cepat berhenti memantul
+    },
+  },
+  hidden: {
+    opacity: 0,
+    y: 0,
+    scale: 0.4, // Mengecil sedikit saat tersembunyi
+    transition: {
+      ease: 'easeOut',
+      duration: 0.2,
+    },
+  },
+};
+
 // MODIFIKASI: Terima props `itemsForLinks` dari Navbar
-const Sidebar = ({ itemsForLinks, onLinkClick, onNavigateRequest }) => {
+const Sidebar = ({
+  itemsForLinks,
+  onLinkClick,
+  onNavigateRequest,
+  isVisible,
+}) => {
   const [open, setOpen] = useState(false);
 
   return (
     <motion.div
       className='sidebar'
-      animate={open ? 'open' : 'closed'}>
+      // animate={open ? 'open' : 'closed'}
+      variants={visibilityVariants} // <-- Terapkan varian visibilitas
+      animate={isVisible ? 'visible' : 'hidden'} // <-- Kontrol dengan prop 'isVisible'
+      initial='hidden'>
+      {/* Mulai dalam keadaan tersembunyi */}
       <motion.div
         className='bg'
+        animate={open ? 'open' : 'closed'}
         variants={variants}
         whileTap={{
           scale: [1, 0.99, 1],
@@ -39,7 +71,6 @@ const Sidebar = ({ itemsForLinks, onLinkClick, onNavigateRequest }) => {
           open={open}
         />
       </motion.div>
-
       <ToogleButton
         setOpen={setOpen}
         open={open}

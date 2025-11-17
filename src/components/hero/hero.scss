@@ -1,14 +1,334 @@
+// @mixin slot-flipper-effect {
+//   .slot-viewport {
+//     position: relative;
+//     display: inline-block;
+//     overflow: hidden;
+//   }
+
+//   .slot-text {
+//     display: block;
+//     transform: translateY(0%) rotate(0deg);
+//     transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+//   }
+
+//   .slot-viewport::after {
+//     content: attr(data-text);
+//     position: absolute;
+//     top: 0%;
+//     left: 0;
+//     width: 100%;
+//     transform: translate(0%, 100%) rotate(-10deg);
+//     transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+//   }
+
+//   // Trigger hover
+//   &:hover {
+//     .slot-text {
+//       transform: translateY(-120%) rotate(-10deg);
+//     }
+//     .slot-viewport::after {
+//       transform: translateY(-0%) rotate(0deg);
+//     }
+//   }
+// }
+
 .hero {
-  height: 100vh;
+  height: 120vh;
   width: 100%;
   overflow: hidden;
   position: relative;
   background-color: #002f45;
   color: #bcd4cc;
+  // mask-image: linear-gradient(
+  //   to right,
+  //   transparent 0%,
+  //   #002f45 30%,
+  //   #002f45 50%,
+  //   transparent 120%
+  // );
 
+  .imageContainer {
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    left: 30px;
+    @media (max-width: 768px) {
+      left: 0;
+    }
+    margin: 0 auto;
+    bottom: 5%;
+    display: flex;
+    justify-content: center;
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #002f45 30%,
+      #002f45 50%,
+      transparent 120%
+    );
+
+    img {
+      position: relative;
+      z-index: 1;
+      width: 87%;
+      height: 115%;
+      @media (max-width: 768px) {
+        width: 100%;
+        height: 85%;
+        bottom: 10px;
+      }
+      object-fit: cover;
+      position: absolute;
+      filter: drop-shadow(0 -10px 10px rgba(0, 0, 0, 0.3));
+    }
+  }
+
+  .slidingTextContainer {
+    position: absolute;
+    font-size: 15vw;
+    bottom: 13vh;
+    white-space: nowrap;
+    width: 100%;
+    font-weight: bolder;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+    z-index: 2;
+    color: #bcd4cc;
+    text-align: center;
+  }
+  .textContainer {
+    margin-top: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: 20vh;
+    gap: 2vh;
+    background-image: none;
+
+    h3 {
+      font-weight: lighter;
+      font-size: 3rem;
+    }
+  }
+}
+
+// ===================================
+// GAYA BARU UNTUK KONTAINER BALOK
+// ===================================
+.blocksContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; // Menutupi setengah sisi kiri
+  height: 100%;
+
+  // Gunakan flexbox untuk menyusun balok secara vertikal
+  display: flex;
+  flex-direction: column;
+
+  // Pastikan balok ada di atas gambar (img)
+  // tapi di bawah slidingText
+  z-index: 10;
+  pointer-events: none;
+}
+
+// ===================================
+// GAYA BARU UNTUK SATU BALOK
+// ===================================
+.block-wrapper {
+  // 'flex-grow: 1' akan membuat 10 balok
+  // membagi tinggi kontainer (100%) secara merata
+  // flex-grow: 1;
+  width: 100%;
+
+  // Efek visual (opsional, ganti sesuai selera)
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+  border-top: 5px solid#fff7ed;
+  overflow: hidden;
+  position: relative;
+}
+.block-content {
+  // Pindahkan style ini dari '.block' lama:
+  width: 100%;
+  height: 100%; // <-- Buat jadi 100% dari wrapper
+  // backdrop-filter: blur(5px);
+  padding: 1rem;
+  pointer-events: all;
+  position: relative;
+
+  @mixin slot-flipper-effect {
+    .slot-viewport {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      // HATI-HATI: 'height' dan 'line-height' TIDAK diatur di sini,
+      // karena akan berbeda untuk nav dan sosial.
+    }
+
+    .slot-text {
+      display: block;
+      transform: translateY(0%) rotate(0deg);
+      transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .slot-viewport::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0%; // Mulai dari bawah
+      left: 0;
+      width: 100%;
+      transform: translate(0%, 100%) rotate(-10deg); //translateY(0%)
+      transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    // Trigger hover/active
+    &:hover,
+    &.active {
+      .slot-text {
+        transform: translateY(-120%) rotate(-10deg);
+      }
+      .slot-viewport::after {
+        transform: translateY(-0%) rotate(0deg);
+      }
+    }
+  }
+
+  .nav-links {
+    // Gunakan flexbox agar link rapi
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center; // Rata kiri
+    justify-content: center;
+    @media (max-width: 768px) {
+      padding: 5px;
+      justify-content: start;
+    }
+  }
+  .social-links {
+    // Gunakan flexbox agar link rapi
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center; // Rata kiri
+    justify-content: end;
+    gap: 8px; // Jarak antar link
+
+    // Ganti style 'a' dan 'button'
+  }
+  // a,
+  // button {
+  //   background: none;
+  //   border: none;
+  //   padding: 0;
+  //   margin: 0;
+  //   font-family: inherit;
+  //   font-size: 1.2rem; // Sesuaikan ukuran
+  //   color: #002f45;
+  //   text-decoration: none;
+  //   cursor: pointer;
+  //   transition: all 0.2s ease;
+
+  // &:hover {
+  //   color: white;
+  //   text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  //   transform: translateX(5px); // Efek hover
+  // }
+  // }
+
+  // --- Target Link Navigasi ---
+  .nav-links button {
+    // 1. Panggil "resep" efek gulir
+    @include slot-flipper-effect;
+
+    // 2. Hapus style default button & atur GAYA UNIK
+    background: none;
+    border: none;
+    padding: 20px;
+    @media (max-width: 768px) {
+      padding: 5px;
+    }
+    margin: 0;
+    font-family: inherit;
+    cursor: pointer;
+    font-size: 1.5rem; // UKURAN FONT DISESUAIKAN (tidak 140px)
+    font-weight: 500;
+
+    // 3. Atur METRIK UNIK untuk viewport-nya
+    .slot-viewport {
+      height: 2.8em;
+      line-height: 3.4em;
+    }
+
+    // 4. Atur WARNA UNIK (sesuai tema Hero)
+    .slot-text {
+      color: #002f45;
+      font-size: 70px;
+      @media (max-width: 768px) {
+        font-size: 40px;
+      }
+      text-transform: uppercase;
+      font-family: 'Champion-HTF-Bantamweight';
+    }
+    .slot-viewport::after {
+      font-size: 70px;
+      @media (max-width: 768px) {
+        font-size: 40px;
+      }
+      text-transform: uppercase;
+      font-family: 'Champion-HTF-Bantamweight';
+      color: #ff4d4d;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  // --- Target Link Sosial ---
+  .social-links a {
+    // 1. Panggil "resep" efek gulir
+    @include slot-flipper-effect;
+
+    // 2. Atur GAYA UNIK
+    text-decoration: none;
+
+    padding: 10px;
+    @media (max-width: 768px) {
+      padding: 0px;
+    }
+
+    // 3. Atur METRIK UNIK untuk viewport-nya
+    .slot-viewport {
+      height: 2.1em;
+      line-height: 2.5em;
+    }
+
+    // 4. Atur WARNA UNIK (sesuai tema Hero)
+    .slot-text {
+      color: #002f45;
+      font-size: 40px;
+      @media (max-width: 768px) {
+        font-size: 20px;
+      }
+      text-transform: uppercase;
+      font-family: 'Champion-HTF-Bantamweight';
+    }
+    .slot-viewport::after {
+      font-size: 40px;
+      @media (max-width: 768px) {
+        font-size: 20px;
+      }
+      text-transform: uppercase;
+      font-family: 'Champion-HTF-Bantamweight';
+      color: #ff4d4d;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    }
+  }
   .wrapper {
     width: 100%;
     height: 100%;
+    z-index: 1;
     position: relative;
     display: grid;
     mask-image: linear-gradient(
@@ -19,151 +339,99 @@
       transparent 100%
     );
 
-    .textContainer {
-      margin-top: 40vh;
-      display: flex;
-      flex-direction: column;
-      align-items: start;
-      margin-left: 20vh;
-      gap: 2vh;
-      background-image: none;
-
+    @media (max-width: 760px) {
+      margin-left: 3vh;
+      margin-top: 25vh;
       h3 {
-        font-weight: lighter;
-        font-size: 3rem;
+        font-size: 2.5rem;
       }
+    }
 
-      img {
-        width: 40px;
-      }
-
-      @media (max-width: 760px) {
-        margin-left: 3vh;
-        margin-top: 25vh;
-        h3 {
-          font-size: 2.5rem;
-        }
-      }
-
-      @media (max-width: 480px) {
-        margin-left: 4vh;
-        h3 {
-          font-size: 2.7rem;
-          margin-top: 24rem;
-        }
+    @media (max-width: 480px) {
+      margin-left: 4vh;
+      h3 {
+        font-size: 2.7rem;
+        margin-top: 24rem;
       }
     }
   }
+}
 
+// Media Queries
+@media (max-width: 1024px) {
+  .textContainer {
+    margin-left: 5vw;
+    margin-top: 0;
+    z-index: 10;
+    h3 {
+      font-size: 2rem;
+      margin-top: 30vh;
+    }
+  }
   .imageContainer {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-
+    z-index: 2;
     img {
-      width: 87%;
-      height: 115%;
-      object-fit: cover;
-      position: absolute;
-      filter: drop-shadow(0 -10px 10px rgba(0, 0, 0, 0.3));
+      width: 100%;
+      height: 100%;
     }
   }
 
   .slidingTextContainer {
-    position: absolute;
-    font-size: 15vw;
-    bottom: 3vh;
+    font-size: 16vw;
+    bottom: 15vh;
     white-space: nowrap;
-    width: 100%;
-    font-weight: bolder;
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
-    z-index: 1;
-    color: #bcd4cc;
-    text-align: center;
   }
+}
 
-  // Media Queries
-  @media (max-width: 1024px) {
-    .textContainer {
-      margin-left: 5vw;
-      margin-top: 0;
-      z-index: 10;
-      h3 {
-        font-size: 2rem;
-        margin-top: 30vh;
-      }
+@media (max-width: 768px) {
+  .textContainer {
+    z-index: 10;
+    h3 {
+      font-size: 1rem;
+      margin-top: 15rem;
     }
-    .imageContainer {
-      z-index: 2;
-      img {
-        width: 100%;
-        height: 120%;
-      }
-    }
-
-    .slidingTextContainer {
-      font-size: 16vw;
-      bottom: 15vh;
-      white-space: nowrap;
+  }
+  .imageContainer {
+    z-index: 2;
+    top: 2%;
+    width: 80%;
+    height: 80%;
+    img {
+      width: 80%;
+      height: 80%;
     }
   }
 
-  @media (max-width: 768px) {
-    .textContainer {
-      z-index: 10;
-      h3 {
-        font-size: 1rem;
-        margin-top: 15rem;
-      }
+  .slidingTextContainer {
+    font-size: 25vw;
+    bottom: 16vw;
+    white-space: nowrap;
+  }
+}
 
-      img {
-        width: 30px;
-      }
-    }
-    .imageContainer {
-      z-index: 2;
-      top: 3%;
-      img {
-        width: 100%;
-        height: 120%;
-      }
-    }
-
-    .slidingTextContainer {
-      font-size: 25vw;
-      bottom: 16vw;
-      white-space: nowrap;
+@media (max-width: 480px) {
+  .textContainer {
+    margin-left: 5vw;
+    gap: 1vh;
+    z-index: 10;
+    img {
+      width: 20px;
     }
   }
 
-  @media (max-width: 480px) {
-    .textContainer {
-      margin-left: 5vw;
-      gap: 1vh;
-      z-index: 10;
-      img {
-        width: 20px;
-      }
+  .imageContainer {
+    z-index: 2;
+    width: 80%;
+    height: 80%;
+    img {
+      width: 80%;
+      height: 80%;
     }
+  }
 
-    .imageContainer {
-      z-index: 2;
-      img {
-        width: 100%;
-        height: 98%;
-      }
-    }
-
-    .slidingTextContainer {
-      font-size: 25vw;
-      bottom: 18vw;
-      white-space: nowrap;
-    }
+  .slidingTextContainer {
+    font-size: 25vw;
+    bottom: 18vw;
+    white-space: nowrap;
   }
 }

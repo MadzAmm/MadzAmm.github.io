@@ -17,7 +17,7 @@ import ContactSection from '.././components/ContactSection/ContactSection';
 import Activity from '../components/aboutSection/Activity';
 // import UserInputBar from '../components/UserInputBar/UserInputBar';
 
-export default function Homepage() {
+export default function Homepage({ navState }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -32,7 +32,7 @@ export default function Homepage() {
         className='pageWrapper'
         ref={ref}>
         <div className='contentLayer'>
-          <Hero />
+          <Hero navState={navState} />
         </div>
         <div>
           <Activity />
