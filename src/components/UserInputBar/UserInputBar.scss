@@ -34,6 +34,7 @@ $component-radius: 12px;
   /* === TAMBAHKAN STYLE HANDLE BARU DI SINI === */
   .drag-handle-bar {
     width: 100%;
+    margin-top: -10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,8 +69,8 @@ $component-radius: 12px;
   /* ... (sisa .expand-textarea-button, .input-area, .upload-button) ... */
   .expand-textarea-button {
     position: absolute;
-    top: 4px;
-    right: 6px;
+    top: -5px;
+    right: 15px;
     background: transparent;
     border: none;
     color: $text-secondary;
@@ -86,6 +87,11 @@ $component-radius: 12px;
     align-items: flex-end;
     gap: 10px;
     touch-action: pan-y;
+    background: #002f459d;
+    border-radius: 15px;
+    padding: 0px 12px 5px;
+    margin-top: -3px;
+    margin-left: -5px;
   }
   .upload-button {
     color: $text-secondary;
@@ -124,14 +130,15 @@ textarea {
   flex-grow: 1;
   background: transparent;
   border: none;
-  color: $text-primary;
-  font-size: 1.1rem;
-  line-height: 1.5;
+  color: #ccc;
+  font-size: 0.9rem;
+  line-height: 1;
   outline: none;
+  padding-top: 3px;
   box-shadow: none;
   resize: none;
   overflow-y: auto;
-  padding-top: 10px;
+  margin-top: 5px;
   -webkit-scrollbar-track {
     scrollbar-width: thin;
     scrollbar-color: #888 #f1f1f100;

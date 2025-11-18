@@ -26,7 +26,13 @@ $component-radius: 25px;
     color: $text-secondary;
     font-size: 0.9rem;
     font-weight: 500;
+    right: 100%; // Mulai dari tepi kiri induknya
     margin-right: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    pointer-events: none;
   }
 
   .tab {

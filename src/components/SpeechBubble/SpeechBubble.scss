@@ -468,15 +468,17 @@
 // Variabel untuk konsistensi
 $chat-background: #1e1f209b;
 $bubble-background: #002f45a4;
-$text-primary: #e8eaed;
-$text-secondary: #999;
-$accent-blue: #8ab4f8;
-$border-color: #3c4043;
+$text-primary: #ccc;
+$text-secondary: #ababab;
+$accent-blue: #8aa1c6;
+$border-color: #6f6f70;
 $bubble-radius: 28px;
 $component-radius: 30px;
 
 // 2. Speech Bubble (Jendela Chat Utama)
 .speech-bubble-window {
+  resize: both;
+  overflow: hidden;
   position: fixed;
   top: 60px; // Jarak dari atas
   left: 25%;
@@ -484,10 +486,23 @@ $component-radius: 30px;
     left: 5%;
   }
   transform: translateX(-50%);
-  width: 90%;
-  max-width: 700px;
-  height: calc(100vh - 300px); // Tinggi dinamis
-  min-height: 400px;
+  // width: 90%;
+  // max-width: 700px;
+  // height: calc(100vh - 300px); // Tinggi dinamis
+  // min-height: 400px;
+
+  // --- Lebar (Width) ---
+  width: 90%; // Lebar awal Anda
+  max-width: 700px; // Batas lebar maks Anda
+  min-width: 300px; // Batas lebar minimum (untuk resize)
+
+  // --- Tinggi (Height) ---
+  // Ide Anda: Mengatur tinggi awal secara dinamis
+  height: calc(100vh - 300px);
+
+  // Batasan untuk 'resize'
+  min-height: 200px; // Batas tinggi min Anda
+  max-height: 100vh; // Batas tinggi maksimum (85% dari layar)
   z-index: 800; // Di atas segalanya
 
   background-color: rgba(255, 255, 255, 0.15);
@@ -518,15 +533,15 @@ $component-radius: 30px;
     }
   }
 
-  /* === TAMBAHKAN STYLE HANDLE BARU DI SINI === */
+  /* ===  STYLE HANDLE == */
   .drag-handle {
     position: absolute;
-    top: 20%;
+    top: 10%;
     left: 50%;
     transform: translate(-50%, -50%);
     touch-action: none;
     cursor: grab;
-    color: $text-secondary;
+    color: #646464;
     padding: 0; // Beri area klik yang cukup
     border-radius: 6px;
 
@@ -555,10 +570,32 @@ $component-radius: 30px;
 
   // BARU: Style untuk ikon loading/sticker
   .loading-status-icon {
+    @keyframes moveBackground {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    background: linear-gradient(
+      -145deg,
+      #78d5bf,
+      // Warna asli Anda
+      #2c8973,
+      // Warna baru 1
+      #002f45,
+      // Warna baru 2
+      #01362d // Warna baru 3
+    );
+    animation: moveBackground 15s ease infinite;
+    background-size: 400% 400%;
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: $bubble-background;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -579,7 +616,7 @@ $component-radius: 30px;
     align-items: center;
     gap: 8px;
     font-size: 0.8rem;
-    font-weight: 600;
+    font-weight: 400;
     color: $text-secondary;
     background: $bubble-background;
     padding: 6px 10px;
@@ -593,8 +630,9 @@ $component-radius: 30px;
 
     // BARU: Teks "thinking"
     .thinking-text {
-      color: $text-primary; // Buat lebih terlihat
+      color: #ccc; // Buat lebih terlihat
       font-style: italic;
+      font-weight: 510;
       // Gunakan animasi 'pulse'
       animation: thinking-pulse 1.5s infinite ease-in-out;
     }
@@ -635,6 +673,8 @@ $component-radius: 30px;
 
   // Area Riwayat Chat
   .chat-history-area {
+    // Trik flexbox untuk memastikan overflow-y berfungsi
+    min-height: 0;
     flex-grow: 1;
     overflow-y: auto; // Scrollable
     padding: 20px;
@@ -651,23 +691,44 @@ $component-radius: 30px;
 
     .message-header {
       display: flex;
+      flex-direction: row-reverse;
       justify-content: space-between;
+      margin-inline: 15px;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
+      .profile {
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 10px;
+        @media (max-width: 768px) {
+          gap: 5px;
+        }
+        align-items: center;
+        color: #ccc;
+        .message-avatar-circle {
+          width: 23px;
+          height: 23px;
+          border-radius: 50%;
+          background-color: #5d727b;
+          animation: thinking-pulse 1.5s infinite ease-in-out;
+        }
+      }
 
       span {
-        font-weight: bold;
+        font-weight: normal;
         color: $text-primary;
-        font-size: 0.95rem;
+        font-size: 10px;
+        animation: thinking-pulse 1.5s infinite ease-in-out;
       }
 
       .message-controls {
         display: flex;
+        flex-direction: row-reverse;
         align-items: center;
         gap: 8px;
 
         .message-timestamp {
-          font-size: 0.75rem;
+          font-size: 0.6rem;
           color: #888; // Warna abu-abu
           margin-right: 4px; // Jarak dari tombol
         }
@@ -700,9 +761,9 @@ $component-radius: 30px;
           width: 100%;
           padding: 10px;
           border-radius: 20px;
-          border: 1px solid #555;
-          background-color: #3a3a3a5e; // Sesuaikan dengan tema Anda
-          color: #eee;
+          border: 1.3px solid rgba(255, 255, 255, 0.2);
+          background-color: #00131b56; // Sesuaikan dengan tema Anda
+          color: #ccc;
           font-family: inherit;
           font-size: 0.9rem;
           min-height: 80px;
@@ -719,19 +780,46 @@ $component-radius: 30px;
           .edit-cancel,
           .edit-resubmit {
             padding: 6px 12px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             border-radius: 30px;
             border: 1px solid #9999998f;
+
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            touch-action: auto;
+            transition: color 0.4s ease-in-out;
+            &:hover {
+              color: #ffffff;
+            }
+            .background-fill {
+              position: absolute;
+              inset: 0;
+              background-color: #618a9e;
+              z-index: 1;
+            }
+            cursor: pointer;
           }
           .edit-resubmit {
             // Buat tombol 'Simpan' lebih menonjol
-            background-color: #002f45; // Contoh warna
-            color: white;
+            background-color: #1a536d; // Contoh warna
+            color: #ccc;
+            &:hover {
+              background-color: #618a9e;
+            }
+            &:disabled {
+              opacity: 0.5;
+              cursor: not-allowed;
+              background-color: transparent; // (Contoh warna)
+            }
           }
 
           .edit-cancel {
-            background-color: #002f454e; // Contoh warna
-            color: white;
+            background-color: #1a536d; // Contoh warna
+            color: #ccc;
           }
         }
       }
@@ -759,8 +847,23 @@ $component-radius: 30px;
 
     // Style untuk pesan AI
     &.ai-message {
+      .message-header {
+        display: flex;
+        flex-direction: row;
+      }
       .message-header span {
-        color: $accent-blue;
+        color: #b5b5b5;
+        font-size: 10px;
+      }
+      .profile {
+        flex-direction: row;
+      }
+
+      .message-avatar-circle {
+        color: #b3b3b3;
+      }
+      .message-controls {
+        flex-direction: row;
       }
       .message-body {
         background: $chat-background;
@@ -772,10 +875,11 @@ $component-radius: 30px;
   .code-block-wrapper {
     position: relative;
     margin: 15px 0;
-    border-radius: 6px;
+
+    border-radius: 20px;
 
     pre {
-      border-radius: 8px !important;
+      border-radius: 20px !important;
       padding: 15px !important;
       font-size: 0.85rem;
       white-space: pre-wrap !important;
@@ -789,7 +893,7 @@ $component-radius: 30px;
       background: rgba(50, 50, 50, 0.7);
       color: $text-secondary;
       border: 1px solid $border-color;
-      border-radius: 6px;
+      border-radius: 10px;
       padding: 5px 8px;
       font-size: 0.8rem;
       cursor: pointer;

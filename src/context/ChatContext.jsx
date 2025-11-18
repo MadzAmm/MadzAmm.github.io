@@ -193,7 +193,7 @@ export const ChatProvider = ({ children }) => {
         timestamp: new Date(),
         // ▲▲▲
         sender: 'ai',
-        text: `Maaf, terjadi error: ${error.message}`,
+        text: `Maaf, terjadi error: ${error.message}`, ///Maaf, terjadi error:
         source: 'system-error',
       };
       setMessages((prevMessages) => [...prevMessages, errorMsg]);

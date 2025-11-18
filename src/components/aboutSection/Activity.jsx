@@ -673,7 +673,7 @@ const ActivityBlock = ({
   children,
   ...eventHandlers
 }) => {
-  const { initialX, startX, endX, color, height } = config;
+  const { startX, endX, color, height } = config;
 
   // Animasi scroll horizontal
   const xScroll = useTransform(
@@ -687,8 +687,6 @@ const ActivityBlock = ({
     <motion.div
       className='block-wrapper' // Kita akan pakai style .block-wrapper dari Hero
       style={{ height: height }}
-      initial={{ x: initialX }}
-      animate={{ x: 0 }}
       transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
       {...eventHandlers} // Terapkan onMouseEnter, onClick, dll. di sini
     >
@@ -779,7 +777,6 @@ const Activity = () => {
         project: activityItems[0],
         index: 0,
         height: '12%',
-        initialX: '-100%',
         startX: 15,
         endX: -20,
         color: '#fff7ed',
@@ -787,7 +784,6 @@ const Activity = () => {
       {
         type: 'empty',
         height: '8%',
-        initialX: '100%',
         startX: -90,
         endX: 0,
         color: '#fff7ed',
@@ -795,7 +791,6 @@ const Activity = () => {
       {
         type: 'empty',
         height: '8%',
-        initialX: '100%',
         startX: 80,
         endX: 0,
         color: '#fff7ed',
@@ -805,7 +800,6 @@ const Activity = () => {
         project: activityItems[1],
         index: 1,
         height: '12%',
-        initialX: '-100%',
         startX: 20,
         endX: -20,
         color: '#fff7ed',
@@ -813,7 +807,6 @@ const Activity = () => {
       {
         type: 'empty',
         height: '8%',
-        initialX: '100%',
         startX: 100,
         endX: 0,
         color: '#fff7ed',
@@ -823,7 +816,6 @@ const Activity = () => {
         project: activityItems[2],
         index: 2,
         height: '12%',
-        initialX: '-100%',
         startX: -20,
         endX: 15,
         color: '#fff7ed',
@@ -831,7 +823,6 @@ const Activity = () => {
       {
         type: 'empty',
         height: '8%',
-        initialX: '100%',
         startX: -90,
         endX: 30,
         color: '#fff7ed',
@@ -841,7 +832,6 @@ const Activity = () => {
         project: activityItems[3],
         index: 3,
         height: '12%',
-        initialX: '-100%',
         startX: 0,
         endX: -20,
         color: '#fff7ed',
@@ -849,7 +839,6 @@ const Activity = () => {
       {
         type: 'empty',
         height: '8%',
-        initialX: '100%',
         startX: 90,
         endX: 0,
         color: '#fff7ed',
@@ -859,7 +848,6 @@ const Activity = () => {
         project: activityItems[4],
         index: 4,
         height: '12%',
-        initialX: '-100%',
         startX: -20,
         endX: 5,
         color: '#fff7ed',

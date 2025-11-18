@@ -190,7 +190,7 @@
 //     </div>
 //   </div>
 
-//   {/* === 4. TAMBAHKAN HANDLE DI SINI === */}
+//   {/*  HANDLE DI SINI === */}
 //   <div
 //     className='drag-handle'
 //     // 'onPointerDown' bekerja untuk mouse (desktop) & touch (ponsel)
@@ -244,7 +244,8 @@ import {
   FiFrown,
   FiSmile,
   FiMoreHorizontal,
-  FiSend,
+  FiUser,
+  FiGitlab,
 } from 'react-icons/fi';
 
 import ReactMarkdown from 'react-markdown';
@@ -291,7 +292,25 @@ const MessageItem = ({ message, onSubmitEditedPrompt }) => {
   return (
     <div className={`message-item ${isUser ? 'user-message' : 'ai-message'}`}>
       <div className='message-header'>
-        <span>{isUser ? 'User' : 'Genius Bubble'}</span>
+        <div className='profile'>
+          <div className='message-avatar-circle'>
+            {isUser ? (
+              <FiUser style={{ marginLeft: '3.5px', marginTop: '2px' }} />
+            ) : (
+              <FiGitlab
+                style={{
+                  marginLeft: '3.5px',
+                  marginTop: '4px',
+                }}
+              />
+            )}
+          </div>
+          <span>
+            {isUser
+              ? 'Here your message and imagination unfold'
+              : 'Let it flow'}
+          </span>
+        </div>
         <div className='message-controls'>
           {/* --- 1. TIMESTAMP DITAMBAHKAN DI SINI --- */}
           <span className='message-timestamp'>{formattedTime}</span>
@@ -310,7 +329,11 @@ const MessageItem = ({ message, onSubmitEditedPrompt }) => {
           <button
             title='Salin'
             onClick={() => handleCopy(message.text)}>
-            {hasCopied ? <FiCheck style={{ color: 'green' }} /> : <FiCopy />}
+            {hasCopied ? (
+              <FiCheck style={{ color: '#76fbdaff' }} />
+            ) : (
+              <FiCopy />
+            )}
           </button>
         </div>
       </div>
@@ -326,13 +349,14 @@ const MessageItem = ({ message, onSubmitEditedPrompt }) => {
               autoFocus
             />
             <div className='edit-controls'>
-              <button
+              <ButtonReveal
                 className='edit-cancel'
                 onClick={() => setIsEditing(false)}>
                 Cancel
-              </button>
+              </ButtonReveal>
               <button
                 className='edit-resubmit'
+                disabled={!editedText.trim()}
                 onClick={handleResubmit}>
                 Resubmit
               </button>
@@ -489,7 +513,7 @@ export default function SpeechBubble() {
           </div>
         </div>
 
-        {/* === 4. TAMBAHKAN HANDLE DI SINI === */}
+        {/*  HANDLE DI SINI === */}
         <div
           className='drag-handle'
           // 'onPointerDown' bekerja untuk mouse (desktop) & touch (ponsel)

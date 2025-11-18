@@ -232,7 +232,12 @@ const AnimatedBlock = ({ scrollProgress, config }) => {
       style={{ height: height }} // Tinggi balok diatur di wrapper
       initial={{ x: initialX }} // Mulai dari 'initialX'
       animate={{ x: 0 }} // Animasikan ke '0'
-      transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}>
+      transition={{
+        type: 'spring', // Ini akan memberikan efek 'kenyal'
+        stiffness: 400, // Seberapa kaku pegasnya
+        damping: 25, // Seberapa cepat berhenti memantul
+        delay: 0.1,
+      }}>
       {/* 4. INI ADALAH KONTEN/BALOK LAMA ANDA */}
       {/* Bertugas untuk animasi "scroll" */}
       <motion.div
