@@ -318,6 +318,7 @@ const MessageItem = ({ message, onSubmitEditedPrompt }) => {
           {/* --- 2. TOMBOL EDIT DIAKTIFKAN --- */}
           {isUser && (
             <button
+              whileTap={{ scale: '0.85' }}
               title='Edit dan kirim ulang'
               onClick={() => setIsEditing(true)}
               disabled={isEditing} // Nonaktifkan jika sedang mengedit
@@ -328,6 +329,7 @@ const MessageItem = ({ message, onSubmitEditedPrompt }) => {
 
           <button
             title='Salin'
+            whileTap={{ scale: '0.85' }}
             onClick={() => handleCopy(message.text)}>
             {hasCopied ? (
               <FiCheck style={{ color: '#76fbdaff' }} />
@@ -351,11 +353,13 @@ const MessageItem = ({ message, onSubmitEditedPrompt }) => {
             <div className='edit-controls'>
               <ButtonReveal
                 className='edit-cancel'
+                whileTap={{ scale: '0.85' }}
                 onClick={() => setIsEditing(false)}>
                 Cancel
               </ButtonReveal>
               <button
                 className='edit-resubmit'
+                whileTap={{ scale: '0.85' }}
                 disabled={!editedText.trim()}
                 onClick={handleResubmit}>
                 Resubmit
@@ -384,6 +388,7 @@ const MessageItem = ({ message, onSubmitEditedPrompt }) => {
                     </SyntaxHighlighter>
                     <button
                       className='code-copy-button'
+                      whileTap={{ scale: '0.85' }}
                       title='Salin kode'
                       onClick={() => navigator.clipboard.writeText(codeText)}>
                       <FiCopy />
@@ -526,6 +531,7 @@ export default function SpeechBubble() {
         <ButtonReveal
           className='close-chat-button'
           title='Tutup Sesi Chat'
+          whileTap={{ scale: '0.85' }}
           onClick={() => setIsChatActive(false)}>
           <FiX style={{ marginTop: '5px' }} />
         </ButtonReveal>

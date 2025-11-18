@@ -183,6 +183,7 @@ export default function UserInputBar() {
       {/* Tombol Expand (Tetap) */}
       <button
         type='button'
+        whileTap={{ scale: '0.85' }}
         className='expand-textarea-button'
         title={isExpanded ? 'Perkecil' : 'Perluas'}
         onClick={() => setIsExpanded(!isExpanded)}>
@@ -212,6 +213,7 @@ export default function UserInputBar() {
         <div className='upload-div'>
           <ButtonReveal
             type='button'
+            whileTap={{ scale: '0.85' }}
             className='upload-button'
             title='Upload file'>
             <FiUpload />
@@ -228,6 +230,7 @@ export default function UserInputBar() {
           {/* Ini adalah tombol biasa yang bisa di-klik */}
           <ButtonReveal
             type='button'
+            whileTap={{ scale: '0.85' }}
             className={`task-toggle ${
               activeTaskID === task1.id ? 'active' : '' // Style 'active'
             }`}
@@ -244,6 +247,7 @@ export default function UserInputBar() {
             ref={dropdownRef}>
             <ButtonReveal
               type='button'
+              whileTap={{ scale: '0.85' }}
               className={`task-toggle ${
                 activeTaskID === task2.id ? 'active' : '' // Style 'active'
               }`}
@@ -283,6 +287,7 @@ export default function UserInputBar() {
                       {/* Tombol di dalam dropdown sekarang punya style 'task-toggle' */}
                       <ButtonReveal
                         type='button'
+                        whileTap={{ scale: '0.85' }}
                         className='task-toggle' // <-- Style disamakan
                         onClick={() => handleTaskSelect(task)}>
                         {task.name}
@@ -304,6 +309,7 @@ export default function UserInputBar() {
           <ButtonReveal
             as='button'
             type='submit'
+            whileTap={{ scale: '0.85' }}
             className={`send-button ${isSendActive ? 'active' : ''}`}
             title='Kirim'
             disabled={!isSendActive}>

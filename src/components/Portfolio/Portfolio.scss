@@ -487,12 +487,11 @@ $reduced-gap: 2px;
   pointer-events: auto;
 }
 .dropdown-item {
-  background: rgba(255, 247, 237, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(172, 171, 171, 0.3);
-  border-radius: 12px;
-
+  background: #004667;
+  border: 1.3px solid rgba(255, 255, 255, 0.2);
+  // backdrop-filter: blur(12px);
+  // -webkit-backdrop-filter: blur(12px);
+  border-radius: 40px;
   padding: 12px 20px;
   text-align: left;
   font-size: 1rem;
@@ -503,14 +502,15 @@ $reduced-gap: 2px;
   justify-content: space-between;
   align-items: center;
   transition: background-color 0.2s ease, transform 0.2s ease;
-  color: $primary-text;
+  color: #999;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   .slot-viewport {
     flex-grow: 1;
   }
   &:hover {
     transform: scale(1.03);
-    background-color: rgba(255, 247, 237, 1);
+    background-color: #002f45;
+    color: #616161;
   }
   &.active {
     background-color: active-bg$active-bg;

@@ -89,7 +89,7 @@ $component-radius: 12px;
     touch-action: pan-y;
     background: #002f459d;
     border-radius: 15px;
-    padding: 0px 12px 5px;
+    padding: 0px 12px 10px;
     margin-top: -3px;
     margin-left: -5px;
   }
@@ -134,7 +134,7 @@ textarea {
   font-size: 0.9rem;
   line-height: 1;
   outline: none;
-  padding-top: 3px;
+  padding-top: 7px;
   box-shadow: none;
   resize: none;
   overflow-y: auto;
@@ -175,7 +175,7 @@ textarea {
   .background-fill {
     position: absolute;
     inset: 0;
-    background-color: #989898;
+    background-color: #ccc;
     z-index: 1;
   }
   &.active {

@@ -683,6 +683,13 @@ $component-radius: 30px;
     gap: 20px;
     overflow-y: auto;
     touch-action: pan-y;
+
+    -webkit-scrollbar-track {
+      scrollbar-width: thin;
+      scrollbar-color: #888 #f1f1f100;
+    }
+    scrollbar-width: thin;
+    scrollbar-color: #8888887e #f1f1f100;
   }
 
   // Item Pesan Individual
@@ -693,9 +700,9 @@ $component-radius: 30px;
       display: flex;
       flex-direction: row-reverse;
       justify-content: space-between;
-      margin-inline: 15px;
+      margin-inline: 0px;
       align-items: center;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       .profile {
         display: flex;
         flex-direction: row-reverse;
@@ -709,7 +716,7 @@ $component-radius: 30px;
           width: 23px;
           height: 23px;
           border-radius: 50%;
-          background-color: #5d727b;
+          background-color: #002f45;
           animation: thinking-pulse 1.5s infinite ease-in-out;
         }
       }
@@ -726,6 +733,7 @@ $component-radius: 30px;
         flex-direction: row-reverse;
         align-items: center;
         gap: 8px;
+        margin-left: 15px;
 
         .message-timestamp {
           font-size: 0.6rem;
@@ -750,7 +758,7 @@ $component-radius: 30px;
       background: $bubble-background;
       color: $text-secondary;
       padding: 12px 18px;
-      border-radius: $component-radius;
+      border-radius: 30px 0px 30px 30px;
       font-size: 0.95rem;
       line-height: 1.6;
 
@@ -850,23 +858,27 @@ $component-radius: 30px;
       .message-header {
         display: flex;
         flex-direction: row;
-      }
-      .message-header span {
-        color: #b5b5b5;
-        font-size: 10px;
-      }
-      .profile {
-        flex-direction: row;
+        .profile {
+          flex-direction: row;
+          .message-header span {
+            color: #b5b5b5;
+            font-size: 10px;
+          }
+
+          .message-avatar-circle {
+            color: #818181;
+            background-color: $chat-background;
+          }
+        }
+        .message-controls {
+          flex-direction: row;
+          margin-right: 15px;
+        }
       }
 
-      .message-avatar-circle {
-        color: #b3b3b3;
-      }
-      .message-controls {
-        flex-direction: row;
-      }
       .message-body {
         background: $chat-background;
+        border-radius: 0 30px 30px 30px;
       }
     }
   }
