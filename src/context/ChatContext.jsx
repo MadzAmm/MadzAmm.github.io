@@ -181,7 +181,7 @@ export const ChatProvider = ({ children }) => {
       id: Date.now(),
       timestamp: new Date(),
       sender: 'user',
-      text: prompt,
+      text: '🔥 SAYA MENGEDIT FILE YANG BENAR 🔥 ' + prompt,
       task: task,
     };
     setMessages((prev) => [...prev, userMessage]);
@@ -231,7 +231,7 @@ export const ChatProvider = ({ children }) => {
         done = doneReading;
         const chunkValue = decoder.decode(value, { stream: true });
 
-        // Backend mengirim data dalam format SSE: "data: {...}\n\n"
+        // Backend mengirim data dalam format SSE: "data: {...}\n \n"
         // Kita perlu memecah chunk barangkali ada banyak data sekaligus
         const lines = chunkValue.split('\n');
 
