@@ -149,8 +149,7 @@
 //
 //
 //
-//
-import { createContext, useContext, useState, useRef } from 'react';
+//import { createContext, useContext, useState, useRef } from 'react';
 
 const ChatContext = createContext();
 
@@ -164,7 +163,7 @@ export const ChatProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [bubblePosition, setBubblePosition] = useState({ x: 0, y: 0 });
 
-  // Ref untuk menyimpan pesan yang sedang distreaming agar tidak re-render berlebihan
+  // Ref untuk menyimpan pesan sementara (opsional, tapi bagus untuk mencegah re-render berlebih jika dioptimasi nanti)
   const streamingMessageRef = useRef('');
 
   const VERCEL_API_ENDPOINT =
@@ -174,14 +173,14 @@ export const ChatProvider = ({ children }) => {
   const handleSubmitPrompt = async (task, prompt) => {
     if (isLoading) return;
     setIsLoading(true);
-    streamingMessageRef.current = ''; // Reset buffer
+    streamingMessageRef.current = ''; // Reset buffer ref
 
     // 1. Setup Pesan User
     const userMessage = {
       id: Date.now(),
       timestamp: new Date(),
       sender: 'user',
-      text: '🔥 SAYA MENGEDIT FILE YANG BENAR 🔥 ' + prompt,
+      text: '🔥 SAYA MENGEDIT FILE YANG BENAR 🔥 ' + prompt, // Debug marker, bisa dihapus nanti
       task: task,
     };
     setMessages((prev) => [...prev, userMessage]);
@@ -218,62 +217,69 @@ export const ChatProvider = ({ children }) => {
       if (!response.ok) throw new Error('Gagal menghubungi server AI');
 
       // ==========================================================
-      // ▼▼▼ LOGIKA STREAM READER (STREAMING) ▼▼▼
+      // ▼▼▼ LOGIKA STREAM READER (DIPERBAIKI DENGAN BUFFER) ▼▼▼
       // ==========================================================
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let done = false;
       let fullText = '';
       let currentSource = 'AI';
+      let buffer = ''; // <--- BUFFER PENYELAMAT
 
       while (!done) {
         const { value, done: doneReading } = await reader.read();
         done = doneReading;
-        const chunkValue = decoder.decode(value, { stream: true });
 
-        // Backend mengirim data dalam format SSE: "data: {...}\n \n"
-        // Kita perlu memecah chunk barangkali ada banyak data sekaligus
-        const lines = chunkValue.split('\n');
+        // Decode chunk dan tambahkan ke buffer
+        const chunkValue = decoder.decode(value, { stream: !done });
+        buffer += chunkValue;
+
+        // Pisah per baris baru (\n)
+        // "foo\nbar" -> ["foo", "bar"]
+        const lines = buffer.split('\n');
+
+        // Ambil elemen terakhir, simpan kembali ke buffer
+        // Elemen terakhir dianggap "belum selesai" sampai ada \n berikutnya
+        buffer = lines.pop();
 
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            try {
-              const jsonStr = line.replace('data: ', '').trim();
-              if (jsonStr === '[DONE]') continue; // Sinyal selesai
+          const trimmedLine = line.trim();
+          if (!trimmedLine.startsWith('data: ')) continue;
 
-              const data = JSON.parse(jsonStr);
+          try {
+            const jsonStr = trimmedLine.replace('data: ', '').trim();
+            if (jsonStr === '[DONE]') continue; // Sinyal selesai
 
-              if (data.type === 'meta') {
-                // A. Metadata (Info Source / Summary)
-                currentSource = data.source;
-                setLastSource(data.source);
+            const data = JSON.parse(jsonStr);
 
-                // Debug Log Summary
-                console.groupCollapsed('🔍 STREAM DIAGNOSIS');
-                console.log('Source:', data.source);
-                if (data.summary) console.log('✅ Summary Used:', data.summary);
-                else console.log('⚪ No Summary');
-                console.groupEnd();
-              } else if (data.type === 'chunk') {
-                // B. Chunk Teks (Isi Chat)
-                if (data.content) {
-                  fullText += data.content;
+            if (data.type === 'meta') {
+              // A. Metadata (Info Source / Summary)
+              currentSource = data.source;
+              setLastSource(data.source);
+              console.log('🔍 Source:', data.source);
+            } else if (data.type === 'chunk') {
+              // B. Chunk Teks (Isi Chat)
+              if (data.content) {
+                fullText += data.content;
 
-                  // Update UI secara real-time
-                  setMessages((prev) =>
-                    prev.map((msg) =>
-                      msg.id === aiMessageId
-                        ? { ...msg, text: fullText, source: currentSource }
-                        : msg
-                    )
-                  );
-                }
-              } else if (data.type === 'error') {
-                throw new Error(data.message);
+                // Update UI secara real-time
+                setMessages((prev) =>
+                  prev.map((msg) =>
+                    msg.id === aiMessageId
+                      ? { ...msg, text: fullText, source: currentSource }
+                      : msg
+                  )
+                );
               }
-            } catch (e) {
-              // Abaikan jika JSON parse error (biasanya potongan chunk tidak utuh)
+            } else if (data.type === 'error') {
+              throw new Error(data.message);
             }
+          } catch (e) {
+            console.warn(
+              '⚠️ JSON Parse skip (potongan tidak utuh):',
+              trimmedLine
+            );
+            // Kita skip error ini, karena potongan sisa akan diproses di putaran loop berikutnya
           }
         }
       }
@@ -298,7 +304,7 @@ export const ChatProvider = ({ children }) => {
       setLastSource('Error');
     } finally {
       setIsLoading(false);
-      // Tandai streaming selesai (hilangkan kursor kedip jika ada UI-nya)
+      // Tandai streaming selesai (hilangkan kursor kedip)
       setMessages((prev) =>
         prev.map((msg) =>
           msg.id === aiMessageId ? { ...msg, isStreaming: false } : msg
