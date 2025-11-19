@@ -1,5 +1,9 @@
-// // File: src/context/ChatContext.jsx
-// // Versi 3.0: Sekarang menjadi "Pusat Kontrol" penuh
+//
+//
+//
+//
+// File: src/context/ChatContext.jsx
+// Versi 3.1: Ditambahkan ID, Timestamp, dan Fungsi Edit
 
 // import { createContext, useContext, useState } from 'react';
 
@@ -13,18 +17,10 @@
 // export const ChatProvider = ({ children }) => {
 //   // === STATE PUSAT ===
 
-//   // BARU: State untuk mengontrol "Sesi Chat Aktif"
-//   // (Dikontrol oleh Toggle Sidebar & Tombol Close)
 //   const [isChatActive, setIsChatActive] = useState(false);
-
-//   // BARU: State untuk menyimpan SEMUA riwayat percakapan
 //   const [messages, setMessages] = useState([]);
-
-//   // (State lama yang masih kita butuhkan)
 //   const [lastSource, setLastSource] = useState('Siap');
 //   const [isLoading, setIsLoading] = useState(false);
-
-//   // (State ini akan diisi oleh DateBubble)
 //   const [bubblePosition, setBubblePosition] = useState({ x: 0, y: 0 });
 
 //   // === KONFIGURASI ===
@@ -38,15 +34,18 @@
 
 //     // 1. Tambahkan pesan PENGGUNA ke riwayat
 //     const userMessage = {
+//       // ▼▼▼ TAMBAHAN 1: ID dan Timestamp untuk User ▼▼▼
+//       id: Date.now(),
+//       timestamp: new Date(),
+//       // ▲▲▲
 //       sender: 'user',
 //       text: prompt,
 //       task: task,
 //     };
-//     // Kita tambahkan pesan pengguna ke 'messages'
 //     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
 //     try {
-//       // 2. Kirim ke backend (backend kita tidak berubah)
+//       // 2. Kirim ke backend
 //       const response = await fetch(VERCEL_API_ENDPOINT, {
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
@@ -64,21 +63,28 @@
 //       const data = await response.json();
 
 //       // 3. Buat pesan AI yang baru
-//       // PENTING: Kita ganti nama 'reply_text' menjadi 'text' agar konsisten
 //       const aiMessage = {
+//         // ▼▼▼ TAMBAHAN 1: ID dan Timestamp untuk AI ▼▼▼
+//         id: Date.now() + 1, // +1 agar ID tidak bentrok dengan userMessage
+//         timestamp: new Date(),
+//         // ▲▲▲
 //         sender: 'ai',
-//         text: data.reply_text, // 'text' sekarang
+//         text: data.reply_text,
 //         source: data.source,
 //       };
 
 //       // 4. Tambahkan pesan AI ke riwayat
 //       setMessages((prevMessages) => [...prevMessages, aiMessage]);
-//       setLastSource(data.source || 'Unknown'); // Perbarui source
+//       setLastSource(data.source || 'Unknown');
 //     } catch (error) {
 //       // 5. Tambahkan pesan ERROR ke riwayat
 //       const errorMsg = {
+//         // ▼▼▼ TAMBAHAN 1: ID dan Timestamp untuk Error ▼▼▼
+//         id: Date.now() + 1,
+//         timestamp: new Date(),
+//         // ▲▲▲
 //         sender: 'ai',
-//         text: `Maaf, terjadi error: ${error.message}`, // 'text' sekarang
+//         text: `Maaf, terjadi error: ${error.message}`, ///Maaf, terjadi error:
 //         source: 'system-error',
 //       };
 //       setMessages((prevMessages) => [...prevMessages, errorMsg]);
@@ -88,31 +94,47 @@
 //     }
 //   };
 
+//   // ==========================================================
+//   // ▼▼▼ TAMBAHAN 2: FUNGSI UNTUK MENG-EDIT PESAN ▼▼▼
+//   // ==========================================================
+//   // const handleEditMessage = (messageId, newText) => {
+//   //   setMessages(
+//   //     (
+//   //       currentMessages // Ambil daftar pesan saat ini
+//   //     ) =>
+//   //       currentMessages.map(
+//   //         (
+//   //           msg // Loop melalui setiap pesan
+//   //         ) => (msg.id === messageId ? { ...msg, text: newText } : msg)
+//   //         // Jika ID cocok, ganti 'text'-nya. Jika tidak, biarkan.
+//   //       )
+//   //   );
+//   // };
+//   // ==========================================================
+
 //   // 6. "Bagikan" semua state dan fungsi ini ke komponen "anak"
 //   const value = {
-//     isChatActive, // Apakah sesi chat aktif?
-//     setIsChatActive, // Fungsi untuk mengaktifkan/menonaktifkan chat
+//     isChatActive,
+//     setIsChatActive,
 
-//     messages, // SELURUH riwayat chat
-//     setMessages, // (Untuk mengedit, dll)
+//     messages,
+//     setMessages, // Anda sudah punya ini, bagus untuk fungsi hapus/edit
 
-//     lastSource, // Source terakhir (untuk UserInputBar)
-//     isLoading, // Apakah AI sedang berpikir?
-//     handleSubmitPrompt, // Fungsi untuk mengirim prompt
+//     lastSource,
+//     isLoading,
+//     handleSubmitPrompt,
 
 //     bubblePosition,
-//     setBubblePosition, // DateBubble akan melaporkan posisinya
+//     setBubblePosition,
+
+//     // ==========================================================
+//     // ▼▼▼ TAMBAHAN 3: BAGIKAN FUNGSI EDIT BARU ▼▼▼
+//     // ==========================================================
+//     // handleEditMessage,
 //   };
 
 //   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 // };
-//
-//
-//
-//
-//
-// File: src/context/ChatContext.jsx
-// Versi 3.1: Ditambahkan ID, Timestamp, dan Fungsi Edit
 
 import { createContext, useContext, useState } from 'react';
 
@@ -122,10 +144,9 @@ const ChatContext = createContext();
 // 2. Buat Hook (cara mudah untuk mengakses)
 export const useChat = () => useContext(ChatContext);
 
-// 3. Buat "Provider" (Penyedia) - Ini akan membungkus App.js
+// 3. Buat "Provider"
 export const ChatProvider = ({ children }) => {
   // === STATE PUSAT ===
-
   const [isChatActive, setIsChatActive] = useState(false);
   const [messages, setMessages] = useState([]);
   const [lastSource, setLastSource] = useState('Siap');
@@ -141,26 +162,51 @@ export const ChatProvider = ({ children }) => {
     if (isLoading) return;
     setIsLoading(true);
 
-    // 1. Tambahkan pesan PENGGUNA ke riwayat
+    // 1. Tambahkan pesan PENGGUNA ke UI (Tampilan)
     const userMessage = {
-      // ▼▼▼ TAMBAHAN 1: ID dan Timestamp untuk User ▼▼▼
       id: Date.now(),
       timestamp: new Date(),
-      // ▲▲▲
       sender: 'user',
       text: prompt,
       task: task,
     };
+
+    // Update State UI segera
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
     try {
-      // 2. Kirim ke backend
+      // ============================================================
+      // ▼▼▼ PERUBAHAN UTAMA: PERSIAPAN HISTORY CHAT ▼▼▼
+      // ============================================================
+
+      // Kita harus mengubah format data frontend menjadi format data backend.
+      // Frontend: { sender: 'user'/'ai', text: '...' }
+      // Backend butuh: { role: 'user'/'assistant', content: '...' }
+
+      const historyPayload = messages
+        // A. Filter: Jangan kirim pesan error sistem ke AI
+        .filter((msg) => msg.source !== 'system-error')
+        // B. Formatting
+        .map((msg) => ({
+          role: msg.sender === 'user' ? 'user' : 'assistant', // Mapping Role
+          content: msg.text,
+        }));
+
+      // C. Masukkan pesan TERBARU (userMessage) ke dalam payload
+      // (Kita push manual karena state 'messages' di atas mungkin belum selesai update secara asinkron)
+      historyPayload.push({ role: 'user', content: prompt });
+
+      // ============================================================
+      // ▲▲▲ AKHIR PERSIAPAN HISTORY ▲▲▲
+      // ============================================================
+
+      // 2. Kirim ke backend (Sekarang kirim 'messages', bukan 'prompt')
       const response = await fetch(VERCEL_API_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           task: task,
-          prompt: prompt,
+          messages: historyPayload, // <--- INI KUNCINYA
         }),
       });
 
@@ -173,28 +219,24 @@ export const ChatProvider = ({ children }) => {
 
       // 3. Buat pesan AI yang baru
       const aiMessage = {
-        // ▼▼▼ TAMBAHAN 1: ID dan Timestamp untuk AI ▼▼▼
-        id: Date.now() + 1, // +1 agar ID tidak bentrok dengan userMessage
+        id: Date.now() + 1,
         timestamp: new Date(),
-        // ▲▲▲
         sender: 'ai',
         text: data.reply_text,
         source: data.source,
       };
 
-      // 4. Tambahkan pesan AI ke riwayat
+      // 4. Tambahkan pesan AI ke riwayat UI
       setMessages((prevMessages) => [...prevMessages, aiMessage]);
       setLastSource(data.source || 'Unknown');
     } catch (error) {
       // 5. Tambahkan pesan ERROR ke riwayat
       const errorMsg = {
-        // ▼▼▼ TAMBAHAN 1: ID dan Timestamp untuk Error ▼▼▼
         id: Date.now() + 1,
         timestamp: new Date(),
-        // ▲▲▲
         sender: 'ai',
-        text: `Maaf, terjadi error: ${error.message}`, ///Maaf, terjadi error:
-        source: 'system-error',
+        text: `Maaf, terjadi error: ${error.message}`,
+        source: 'system-error', // Label khusus agar tidak ikut terkirim ke AI nanti
       };
       setMessages((prevMessages) => [...prevMessages, errorMsg]);
       setLastSource('Error');
@@ -203,43 +245,17 @@ export const ChatProvider = ({ children }) => {
     }
   };
 
-  // ==========================================================
-  // ▼▼▼ TAMBAHAN 2: FUNGSI UNTUK MENG-EDIT PESAN ▼▼▼
-  // ==========================================================
-  // const handleEditMessage = (messageId, newText) => {
-  //   setMessages(
-  //     (
-  //       currentMessages // Ambil daftar pesan saat ini
-  //     ) =>
-  //       currentMessages.map(
-  //         (
-  //           msg // Loop melalui setiap pesan
-  //         ) => (msg.id === messageId ? { ...msg, text: newText } : msg)
-  //         // Jika ID cocok, ganti 'text'-nya. Jika tidak, biarkan.
-  //       )
-  //   );
-  // };
-  // ==========================================================
-
-  // 6. "Bagikan" semua state dan fungsi ini ke komponen "anak"
+  // 6. Bagikan Value
   const value = {
     isChatActive,
     setIsChatActive,
-
     messages,
-    setMessages, // Anda sudah punya ini, bagus untuk fungsi hapus/edit
-
+    setMessages,
     lastSource,
     isLoading,
     handleSubmitPrompt,
-
     bubblePosition,
     setBubblePosition,
-
-    // ==========================================================
-    // ▼▼▼ TAMBAHAN 3: BAGIKAN FUNGSI EDIT BARU ▼▼▼
-    // ==========================================================
-    // handleEditMessage,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
