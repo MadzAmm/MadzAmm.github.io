@@ -216,7 +216,24 @@ export const ChatProvider = ({ children }) => {
       }
 
       const data = await response.json();
+      //DEBUG OTAK=====================================4 (LANJUTAN DARI BACKEND CODE)
+      // ▼▼▼ CEK BUKTI DISINI ▼▼▼
+      console.group('🔍 DIAGNOSA AI BACKEND');
+      console.log('Sumber Jawaban:', data.source);
 
+      if (data.used_summary) {
+        console.log(
+          '%c✅ SUMMARIZER AKTIF!',
+          'color: green; font-weight: bold;'
+        );
+        console.log('Isi Ringkasan:', data.used_summary);
+      } else {
+        console.log(
+          '%c⚪ Mode Chat Biasa (Belum ada ringkasan)',
+          'color: gray;'
+        );
+      }
+      console.groupEnd(); //================================
       // 3. Buat pesan AI yang baru
       const aiMessage = {
         id: Date.now() + 1,
