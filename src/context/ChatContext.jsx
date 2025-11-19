@@ -149,7 +149,8 @@
 //
 //
 //
-//import { createContext, useContext, useState, useRef } from 'react';
+//
+import { createContext, useContext, useState, useRef } from 'react';
 
 const ChatContext = createContext();
 
@@ -163,7 +164,7 @@ export const ChatProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [bubblePosition, setBubblePosition] = useState({ x: 0, y: 0 });
 
-  // Ref untuk menyimpan pesan sementara (opsional, tapi bagus untuk mencegah re-render berlebih jika dioptimasi nanti)
+  // Ref untuk menyimpan pesan yang sedang distreaming agar tidak re-render berlebihan
   const streamingMessageRef = useRef('');
 
   const VERCEL_API_ENDPOINT =
@@ -173,14 +174,14 @@ export const ChatProvider = ({ children }) => {
   const handleSubmitPrompt = async (task, prompt) => {
     if (isLoading) return;
     setIsLoading(true);
-    streamingMessageRef.current = ''; // Reset buffer ref
+    streamingMessageRef.current = ''; // Reset buffer
 
     // 1. Setup Pesan User
     const userMessage = {
       id: Date.now(),
       timestamp: new Date(),
       sender: 'user',
-      text: '🔥 SAYA MENGEDIT FILE YANG BENAR 🔥 ' + prompt, // Debug marker, bisa dihapus nanti
+      text: prompt,
       task: task,
     };
     setMessages((prev) => [...prev, userMessage]);
@@ -217,75 +218,85 @@ export const ChatProvider = ({ children }) => {
       if (!response.ok) throw new Error('Gagal menghubungi server AI');
 
       // ==========================================================
-      // ▼▼▼ LOGIKA STREAM READER (DIPERBAIKI DENGAN BUFFER) ▼▼▼
+      // ▼▼▼ LOGIKA STREAM READER (VERSI ANTI-PELURU / ROBUST) ▼▼▼
       // ==========================================================
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let done = false;
       let fullText = '';
       let currentSource = 'AI';
-      let buffer = ''; // <--- BUFFER PENYELAMAT
+      let buffer = '';
 
       while (!done) {
         const { value, done: doneReading } = await reader.read();
         done = doneReading;
 
-        // Decode chunk dan tambahkan ke buffer
+        // Decode & Tambah ke Buffer
         const chunkValue = decoder.decode(value, { stream: !done });
         buffer += chunkValue;
 
-        // Pisah per baris baru (\n)
-        // "foo\nbar" -> ["foo", "bar"]
-        const lines = buffer.split('\n');
+        // Split berdasarkan baris baru (menangani \n atau \r\n)
+        const lines = buffer.split(/\r?\n/);
 
-        // Ambil elemen terakhir, simpan kembali ke buffer
-        // Elemen terakhir dianggap "belum selesai" sampai ada \n berikutnya
+        // Simpan sisa potongan terakhir ke buffer
         buffer = lines.pop();
 
         for (const line of lines) {
+          // 1. Bersihkan spasi kiri/kanan
           const trimmedLine = line.trim();
-          if (!trimmedLine.startsWith('data: ')) continue;
 
-          try {
-            const jsonStr = trimmedLine.replace('data: ', '').trim();
-            if (jsonStr === '[DONE]') continue; // Sinyal selesai
+          // 2. Skip baris kosong atau comment
+          if (
+            !trimmedLine ||
+            trimmedLine === ':' ||
+            trimmedLine.startsWith(':')
+          )
+            continue;
 
-            const data = JSON.parse(jsonStr);
+          // 3. Cek apakah ini baris data SSE
+          if (trimmedLine.startsWith('data:')) {
+            // 4. PEMBERSIHAN SUPER: Hapus 'data:' (case insensitive) dan spasi apapun setelahnya
+            // Regex /^data:\s*/i artinya: Cari "data:", mau huruf besar/kecil, mau ada spasi atau tidak.
+            let jsonStr = trimmedLine.replace(/^data:\s*/i, '').trim();
 
-            if (data.type === 'meta') {
-              // A. Metadata (Info Source / Summary)
-              currentSource = data.source;
-              setLastSource(data.source);
-              console.log('🔍 Source:', data.source);
-            } else if (data.type === 'chunk') {
-              // B. Chunk Teks (Isi Chat)
-              if (data.content) {
-                fullText += data.content;
+            if (jsonStr === '[DONE]') continue; // Selesai
 
-                // Update UI secara real-time
-                setMessages((prev) =>
-                  prev.map((msg) =>
-                    msg.id === aiMessageId
-                      ? { ...msg, text: fullText, source: currentSource }
-                      : msg
-                  )
-                );
-              }
-            } else if (data.type === 'error') {
-              throw new Error(data.message);
+            // 5. VALIDASI JSON SEBELUM PARSE (PENTING!)
+            // Jika tidak diawali kurung kurawal { atau siku [, itu BUKAN JSON valid. Skip saja.
+            if (!jsonStr.startsWith('{') && !jsonStr.startsWith('[')) {
+              console.warn('⚠️ Skipping invalid JSON line:', jsonStr);
+              continue;
             }
-          } catch (e) {
-            console.warn(
-              '⚠️ JSON Parse skip (potongan tidak utuh):',
-              trimmedLine
-            );
-            // Kita skip error ini, karena potongan sisa akan diproses di putaran loop berikutnya
+
+            try {
+              const data = JSON.parse(jsonStr);
+
+              // --- LOGIKA UPDATE STATE (SAMA SEPERTI SEBELUMNYA) ---
+              if (data.type === 'meta') {
+                currentSource = data.source;
+                setLastSource(data.source);
+              } else if (data.type === 'chunk') {
+                if (data.content) {
+                  fullText += data.content;
+                  setMessages((prev) =>
+                    prev.map((msg) =>
+                      msg.id === aiMessageId
+                        ? { ...msg, text: fullText, source: currentSource }
+                        : msg
+                    )
+                  );
+                }
+              } else if (data.type === 'error') {
+                throw new Error(data.message);
+              }
+              // -----------------------------------------------------
+            } catch (e) {
+              // Log error tapi JANGAN bikin aplikasi crash (hanya skip baris rusak ini)
+              console.error('❌ JSON Parse Fail pada:', jsonStr, e);
+            }
           }
         }
       }
-      // ==========================================================
-      // ▲▲▲ SELESAI STREAMING ▲▲▲
-      // ==========================================================
     } catch (error) {
       console.error('Stream Error:', error);
       // Update pesan AI jadi error
@@ -304,7 +315,7 @@ export const ChatProvider = ({ children }) => {
       setLastSource('Error');
     } finally {
       setIsLoading(false);
-      // Tandai streaming selesai (hilangkan kursor kedip)
+      // Tandai streaming selesai (hilangkan kursor kedip jika ada UI-nya)
       setMessages((prev) =>
         prev.map((msg) =>
           msg.id === aiMessageId ? { ...msg, isStreaming: false } : msg
