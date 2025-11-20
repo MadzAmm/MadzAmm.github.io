@@ -1,11 +1,11 @@
 import { useScroll } from 'framer-motion';
-import React, { useRef, lazy, Suspense } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageTransition from './PageTransition';
 import DateBubble from '../components/DateBubble/DateBubble';
 import Portfolio from '../components/Portfolio/Portfolio';
 import ContactSection from '../components/ContactSection/ContactSection';
-import Wave from '../components/MorphingWave/Wave';
+
 import Footer from '../components/hero/footer/Footer';
 import useResponsiveBubble from '../components/DateBubble/UseResponsiveBubble';
 import './pages.scss';
@@ -78,8 +78,8 @@ export default function PortfolioPage() {
             {
               range: [0, 0.1],
               text: 'About',
-              bg: '#002f45', // Latar belakang hover 'About'
-              baseBg: '#ff4d4d', // Latar belakang dasar 'About'
+              bg: '#002f45',
+              baseBg: '#ff4d4d',
               color: '#fff',
               onClick: () => navigate('/about'),
               isHoverable: true,
@@ -87,8 +87,8 @@ export default function PortfolioPage() {
             {
               range: [0.1, 0.2],
               text: 'Home',
-              bg: '#ff4d4d', // Latar belakang hover 'About'
-              baseBg: '#002f45', // Latar belakang dasar 'About'
+              bg: '#ff4d4d',
+              baseBg: '#002f45',
               color: '#fff',
               onClick: () => navigate('/'),
               isHoverable: true,

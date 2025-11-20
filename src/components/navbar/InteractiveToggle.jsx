@@ -68,12 +68,12 @@ const InteractiveToggle = ({
 
   const leftDisplayText =
     leftLink === currentLink && leftLink === 'Homepage'
-      ? '© Code by 마드잠'
+      ? 'Crafted by 마드잠'
       : formatLinkText(leftLink);
 
   const rightDisplayText =
     rightLink === currentLink && rightLink === 'Homepage'
-      ? '© Code by 마드잠'
+      ? 'Crafted by 마드잠'
       : formatLinkText(rightLink);
 
   // ... (semua handler: handleMouseMove, handleMouseLeave, handleContainerClick, handleDragEnd tetap sama) ...

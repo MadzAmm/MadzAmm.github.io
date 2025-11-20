@@ -10,7 +10,7 @@ const Velocity = () => {
   // Mendeteksi arah scroll (atas atau bawah)
   useMotionValueEvent(scrollY, 'change', (latest) => {
     const delta = latest - prevY.current;
-    // Kita hanya perlu tahu arahnya, bukan seberapa cepat
+    // perlu tahu arahnya, bukan seberapa cepat
     if (delta !== 0) {
       setDirection(delta > 0 ? 1 : -1);
     }

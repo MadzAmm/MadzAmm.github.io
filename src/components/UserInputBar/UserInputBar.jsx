@@ -12,7 +12,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import './UserInputBar.scss';
 import { ButtonReveal } from '../buttonReveal/ButtonReveal';
 
-// Hook (useOnClickOutside) tetap sama
+// Hook useOnClickOutside
 const useOnClickOutside = (ref, callback) => {
   useEffect(() => {
     const listener = (event) => {
@@ -30,8 +30,7 @@ const useOnClickOutside = (ref, callback) => {
   }, [ref, callback]);
 };
 
-// ==========================================================
-// --- SUMBER DATA (SAMA) ---
+// SUMBER DATA ===============================
 // ==========================================================
 const ALL_TASKS = [
   { id: 'chat_general', name: 'General' },
@@ -42,7 +41,7 @@ const ALL_TASKS = [
   { id: 'analisis_ml', name: 'Analisis ML' },
 ];
 
-// Varian animasi (tetap sama)
+// Varian animasi
 const otherMenuVariants = {
   open: {
     opacity: 1,
@@ -84,8 +83,7 @@ export default function UserInputBar() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // ==========================================================
-  // --- STATE LOGIKA BARU (TASK 1, TASK 2, ACTIVE) ---
+  //  STATE LOGIKA (TASK 1, TASK 2, ACTIVE) =============
   // ==========================================================
   const [task1, setTask1] = useState(ALL_TASKS[0]); // Kiri: General
   const [task2, setTask2] = useState(ALL_TASKS[1]); // Kanan: Coding
@@ -106,12 +104,12 @@ export default function UserInputBar() {
     dragControls.start(event);
   };
 
-  // 'stopDrag' sekarang hanya memanggil 'unlockScroll'
+  // 'stopDrag' hanya memanggil 'unlockScroll'
   const stopDrag = () => {
     unlockScroll();
   };
 
-  // 3. INI ADALAH KUNCI PERBAIKANNYA
+  // 3. KUNCI PERBAIKANNYA
   useEffect(() => {
     // Fungsi 'return' ini akan dijalankan saat komponen 'unmount'
     return () => {
@@ -119,7 +117,6 @@ export default function UserInputBar() {
       unlockScroll();
     };
   }, []); // [] = jalankan hanya saat mount dan unmount
-  //  AKHIR PERBAIKAN
 
   const dropdownRef = useRef(null);
   useOnClickOutside(dropdownRef, () => setIsDropdownOpen(false));
@@ -172,15 +169,14 @@ export default function UserInputBar() {
       dragListener={false}
       dragMomentum={false}
       onDragEnd={stopDrag}>
-      {/* === 4. TAMBAHKAN HANDLE DI SINI (di bagian paling atas) === */}
+      {/* HANDLE DI SINI  */}
       <div
         className='drag-handle-bar'
         onPointerDown={startDrag}>
         <FiMoreHorizontal />
       </div>
       {/* === AKHIR HANDLE === */}
-
-      {/* Tombol Expand (Tetap) */}
+      {/* Tombol Expand */}
       <button
         type='button'
         whileTap={{ scale: '0.85' }}
@@ -189,8 +185,7 @@ export default function UserInputBar() {
         onClick={() => setIsExpanded(!isExpanded)}>
         {isExpanded ? <FiChevronDown /> : <FiChevronUp />}
       </button>
-
-      {/* Input Area Atas (Tetap) */}
+      {/* Input Area Atas  */}
       <div className='input-area'>
         <TextareaAutosize
           value={prompt}
@@ -207,8 +202,7 @@ export default function UserInputBar() {
           }}
         />
       </div>
-
-      {/* Area Task & Tombol Kirim Bawah (DIRIMBAK) */}
+      {/* Area Task & Tombol Kirim Bawah */}
       <div className='task-toggles'>
         <div className='upload-div'>
           <ButtonReveal
@@ -222,12 +216,11 @@ export default function UserInputBar() {
         <div
           className='task-dropdown-container'
           ref={dropdownRef}>
-          {/* ========================================================== */}
-          {/* --- AREA TOGGLE BARU (DUA TOMBOL AKTIF) --- */}
+          {/*  AREA TOGGLE BARU (DUA TOMBOL AKTIF) ============ */}
           {/* ========================================================== */}
 
           {/* --- TOGGLE 1: KIRI --- */}
-          {/* Ini adalah tombol biasa yang bisa di-klik */}
+
           <ButtonReveal
             type='button'
             whileTap={{ scale: '0.85' }}

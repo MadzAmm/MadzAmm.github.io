@@ -266,7 +266,7 @@ const styles = {
     backgroundColor: 'rgba(255, 247, 237, 0)',
     padding: '80px clamp(20px, 5vw, 60px)',
     fontFamily: "'Helvetica Neue', Arial, sans-serif",
-    color: '#111111',
+    color: '#002f45',
     // overflow: 'hidden',
     position: 'relative',
   },
@@ -310,19 +310,20 @@ const styles = {
   number: {
     fontSize: '15px',
     fontWeight: '600',
-    color: '#333333',
+    color: '#FF4D4D',
   },
   title: {
     fontWeight: '900',
     lineHeight: '0.95',
     margin: '0',
-    fontSize: '60px',
+    fontSize: '40px',
   },
   description: {
     fontSize: '18px',
     lineHeight: '1.6',
     margin: '0',
     maxWidth: '500px',
+    color: '#4a4a4aff',
   },
 };
 styles.desktopItemContainer_last = {

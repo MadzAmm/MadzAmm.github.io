@@ -34,7 +34,7 @@ export default function useResponsiveBubble(pageKey = 'default') {
           ? [700, 400, 500, 600, 430]
           : isTablet
           ? [250, 250, 220, 210, 260]
-          : [300, 300, 200, 300, 199],
+          : [300, 300, 200, 300, 400],
         scaleInput: [0, 0.1, 0.3, 0.7, 1],
         scaleOutput: isMobile
           ? [0.6, 0.5, 0.7, 0.6, 0.7]

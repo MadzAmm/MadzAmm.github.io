@@ -16,7 +16,7 @@ export default function ContactPage() {
   });
   const { position, motionConfig } = useResponsiveBubble('contact');
 
-  // --- Logika Form Tetap di Sini ---
+  // --- Logika Form ---
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -47,18 +47,17 @@ export default function ContactPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // ==================================================================
-  // --- FUNGSI SUBMIT DENGAN EMAILJS ---
+  // FUNGSI SUBMIT DENGAN EMAILJS ===============================
   // ==================================================================
   const handleSubmit = () => {
     if (formState !== 'idle' || !validateForm()) return;
 
     setFormState('loading');
 
-    // Kredensial EmailJS Anda (sesuai permintaan Anda)
+    // Kredensial EmailJS
     const SERVICE_ID = 'service_nfztccn';
-    const TEMPLATE_ID = 'template_lu5ui7o'; // <-- Key Anda
-    const PUBLIC_KEY = 'kfDaQJZ6MvJ9qJPxs'; // <-- Key Anda
+    const TEMPLATE_ID = 'template_lu5ui7o';
+    const PUBLIC_KEY = 'kfDaQJZ6MvJ9qJPxs';
 
     // Objek formData sudah sesuai dengan yang dibutuhkan template
     const templateParams = formData;
@@ -77,13 +76,9 @@ export default function ContactPage() {
       }
     );
   };
-  // ==================================================================
-  // --- AKHIR PERUBAHAN ---
-  // ==================================================================
 
   const { isMobile } = useResponsiveBubble('contact');
 
-  // --- Mendefinisikan Tahapan Bubble untuk Halaman Ini ---
   const contactPageStages = [
     {
       range: [0, 0.4],

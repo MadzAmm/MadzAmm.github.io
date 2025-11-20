@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import { useScroll, useMotionValue } from 'framer-motion';
 import PageTransition from './PageTransition';
 import DateBubble from '../components/DateBubble/DateBubble';
-// import HeroAbout from '../components/SectionPage/heroAbout/HeroAbout';
 import { useNavigate } from 'react-router-dom';
 import useResponsiveBubble from '../components/DateBubble/UseResponsiveBubble';
 import StickyTextMerge from '../components/SectionPage/coba/StickyTextMerge';
@@ -50,33 +49,19 @@ export default function AboutPage() {
         </div>
         <div className='parallax-wrapper'>
           <ParallaxScroller>
-            {/* Section 1 (Tidak interaktif) */}
-            {/* <div
-              className='bridge'
-              height={50} // Beri prop 'height' agar scroller tahu durasinya
-              style={{
-                ...sectionStyle,
-                height: '20vh',
-              }}></div> */}
-
-            {/* Section 2 (INTERAKTIF) */}
             <div
               className='tech'
-              height={100} // Beri prop 'height' yang lebih besar agar durasi scroll lebih lama
-              interactive='true' // <-- TAMBAHKAN PROP INI
+              height={100}
+              interactive='true'
               style={{
                 ...sectionStyle,
                 background: 'rgb(255, 178, 97)',
                 marginTop: '-200px',
                 boxShadow: '0 20px 20px rgba(0,0,0,0.2)',
               }}>
-              {/* Karena parent-nya (div ini) sudah diatur interaktif oleh Section,
-        maka TechBubbles di dalamnya otomatis bisa di-hover di seluruh area.
-      */}
               <TechBubbles />
             </div>
 
-            {/* Section 3 (INTERAKTIF) */}
             <div
               height={75}
               interactive='true'>

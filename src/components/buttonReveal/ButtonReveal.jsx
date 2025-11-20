@@ -1,7 +1,5 @@
-import React from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 
-// Nama baru yang lebih umum
 export const ButtonReveal = ({
   as = 'div', // Render sebagai <div> secara default
   children,

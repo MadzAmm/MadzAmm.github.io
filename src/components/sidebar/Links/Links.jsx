@@ -29,8 +29,8 @@ const itemVariants = {
   },
 };
 
-// 1. Definisikan link sosial Anda sebagai array objek
-// Ganti "..." dengan URL profil Anda yang sebenarnya
+// 1. Definisikan link sosial sebagai array objek
+
 const socialLinks = [
   {
     name: 'Instagram',
@@ -50,10 +50,9 @@ const socialLinks = [
   },
 ];
 
-// MODIFIKASI: Terima props `items` dari Sidebar
+// Terima props `items` dari Sidebar
 const Links = ({ items, setOpen, open, onLinkClick }) => {
-  // MODIFIKASI: Hapus array 'items' yang statis (hardcoded).
-  // const items = ['homepage', 'services', 'portfolio', 'contact', 'about']; // <-- BARIS INI DIHAPUS
+  //  Hapus array 'items' yang statis (hardcoded).
 
   return (
     <motion.div
@@ -67,7 +66,6 @@ const Links = ({ items, setOpen, open, onLinkClick }) => {
         <h3>NAVIGATION</h3>
       </motion.div>
 
-      {/* MODIFIKASI: .map() sekarang menggunakan 'items' dari props secara dinamis */}
       {items.map((item) => {
         const path =
           item.toLowerCase() === 'homepage' ? '/' : `/${item.toLowerCase()}`;
@@ -101,30 +99,27 @@ const Links = ({ items, setOpen, open, onLinkClick }) => {
         );
       })}
 
-      {/* Bagian Socials dimodifikasi */}
       <motion.div
         className='social'
         variants={itemVariants}>
         <h3>SOCIALS</h3>
         <div className='linkSocial'>
-          {/* 2. Gunakan array 'socialLinks' yang baru untuk di-map */}
           {socialLinks.map((social) => (
             <Magnetic
-              key={social.name} // Gunakan .name sebagai key
+              key={social.name}
               pullForceParent={0.5}
               pullForceChild={0.25}>
               <motion.a
-                href={social.url} // <-- 3. Gunakan .url untuk href
-                target='_blank' // Tambahkan ini agar link terbuka di tab baru
+                href={social.url}
+                target='_blank' // agar link terbuka di tab baru
                 rel='noopener noreferrer' // Praktik terbaik untuk keamanan
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.85 }}>
                 <div
                   className='slot-viewport'
-                  data-text={social.name} // <-- 4. Gunakan .name untuk data-text
+                  data-text={social.name} // <-- Gunakan .name untuk data-text
                 >
                   <span className='slot-text'>{social.name}</span>{' '}
-                  {/* Gunakan .name untuk teks */}
                 </div>
               </motion.a>
             </Magnetic>

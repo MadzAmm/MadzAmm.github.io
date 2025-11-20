@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, delay } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import './PageTransition.scss';
 
@@ -15,9 +15,6 @@ export default function PageTransition({ label = '', children }) {
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
-
-  // ⌨️ Efek mengetik label
-  //   Trigger efek mengetik saat
 
   useEffect(() => {
     if (phase !== 'hold' || !label || typeof label !== 'string') return;

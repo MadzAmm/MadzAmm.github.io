@@ -18,7 +18,7 @@
 
 // // --- CONFIG & DATA ---
 // const listWaveConfig = {
-//   initialY: { desktop: -300, tablet: -300, mobile: -400 },
+//   initialY: { desktop: 0, tablet: -300, mobile: -400 },
 //   finalY: { desktop: -395, tablet: -750, mobile: -550 },
 //   topWave: {
 //     wavePreset: { desktop: 'energetic', tablet: 'default', mobile: 'calm' },
@@ -102,10 +102,10 @@
 //       <motion.div
 //         className='marquee-track'
 //         style={{ x }}>
-//         <span style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
+//         <span style={{ fontSize: 'clamp(2.5rem, 5vw, 2.8rem)' }}>
 //           {textContent.repeat(10)}
 //         </span>
-//         <span style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
+//         <span style={{ fontSize: 'clamp(2.5rem, 5vw, 2.8rem)' }}>
 //           {textContent.repeat(10)}
 //         </span>
 //       </motion.div>
@@ -114,34 +114,23 @@
 // };
 
 // // --- KOMPONEN ANAK ---
-// const ListItem = ({
+// const ListItemContent = ({
 //   project,
 //   index,
-//   onMouseEnter,
-//   onMouseLeave,
-//   onClick,
+//   // onMouseEnter,
+//   // onMouseLeave,
+//   // onClick,
 //   isHovered,
 //   scrollDirection,
 //   // Tambahan props untuk touch events
-//   onTouchStart,
-//   onTouchMove,
-//   onTouchEnd,
+//   // onTouchStart,
+//   // onTouchMove,
+//   // onTouchEnd,
+//   // style,
 // }) => {
 //   return (
-//     <motion.div
-//       className='list-item-activity'
-//       // Event Handlers untuk mouse (tetap ada)
-//       onMouseEnter={() => onMouseEnter(project)}
-//       onMouseLeave={onMouseLeave}
-//       onClick={() => onClick(project)}
-//       // Event Handlers baru untuk touch screen
-//       onTouchStart={(e) => onTouchStart(e, project)}
-//       onTouchMove={onTouchMove}
-//       onTouchEnd={onTouchEnd}
-//       initial={{ opacity: 0.5, scale: 0.95 }}
-//       whileInView={{ opacity: 1, scale: 1 }}
-//       viewport={{ once: true, amount: 0.6 }}
-//       transition={{ duration: 0.5, ease: 'easeOut' }}>
+//     // Gunakan React Fragment (<>) sebagai pembungkus
+//     <>
 //       <motion.span
 //         className='list-item-number'
 //         animate={{ opacity: isHovered ? 0 : 1, scale: isHovered ? 0.8 : 1 }}
@@ -178,11 +167,11 @@
 //           </motion.div>
 //         )}
 //       </AnimatePresence>
-//     </motion.div>
+//     </>
 //   );
 // };
 
-// // PERBAIKAN: TeaserImage sekarang mendengarkan touchmove
+// //TeaserImage mendengarkan touchmove
 // const TeaserImage = ({ hoveredProject }) => {
 //   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -260,6 +249,42 @@
 //   );
 // };
 
+// const ActivityBlock = ({
+//   config,
+//   scrollProgress,
+//   children,
+//   ...eventHandlers
+// }) => {
+//   const { startX, endX, color, height } = config;
+
+//   // Animasi scroll horizontal
+//   const xScroll = useTransform(
+//     scrollProgress,
+//     [0, 1],
+//     [`${startX}%`, `${endX}%`]
+//   );
+
+//   return (
+//     // Wrapper: menangani animasi 'masuk' (initialX) & tinggi (height)
+//     <motion.div
+//       className='block-wrapper' // Kita akan pakai style .block-wrapper dari Hero
+//       style={{ height: height }}
+//       transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
+//       {...eventHandlers} // Terapkan onMouseEnter, onClick, dll. di sini
+//     >
+//       {/* Content: menangani animasi 'scroll' (xScroll) & warna */}
+//       <motion.div
+//         className='block-content' // Kita akan pakai style .block-content dari Hero
+//         style={{
+//           x: xScroll,
+//           backgroundColor: color,
+//         }}>
+//         {children} {/* Konten (ListItem atau blok kosong) dirender di sini */}
+//       </motion.div>
+//     </motion.div>
+//   );
+// };
+
 // // --- KOMPONEN UTAMA ---
 // const Activity = () => {
 //   const navigate = useNavigate();
@@ -274,7 +299,12 @@
 //     target: headerRef,
 //     offset: ['start start', 'end start'],
 //   });
-//   const yText = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
+
+//   const smoothScrollHeader = useSpring(scrollYProgress, {
+//     stiffness: 200,
+//     damping: 50,
+//   });
+//   const yText = useTransform(smoothScrollHeader, [0, 1], ['0%', '10%']);
 //   const waveBotRef = useRef(null);
 
 //   // --- LOGIKA BARU UNTUK LAYAR SENTUH ---
@@ -306,6 +336,111 @@
 //     // Mengarahkan ke halaman detail proyek sesuai ID
 //     navigate(`/project/${project.id}`);
 //   };
+
+//   const listWrapperRef = useRef(null); // Ref baru untuk wrapper list
+//   const { scrollYProgress: listScrollProgress } = useScroll({
+//     target: listWrapperRef,
+//     // Animasikan saat wrapper masuk dan keluar layar
+//     offset: ['start end', 'end start'],
+//   });
+
+//   const smoothScrollList = useSpring(listScrollProgress, {
+//     stiffness: 200,
+//     damping: 50,
+//   });
+
+//   // Periksa apakah activityItems ada 5 item
+//   const blockLayout = [];
+//   if (activityItems.length >= 5) {
+//     // (Contoh nilai - ganti sesuai selera Anda)
+//     blockLayout.push(
+//       {
+//         type: 'item',
+//         project: activityItems[0],
+//         index: 0,
+//         height: '12%',
+//         startX: 15,
+//         endX: -20,
+//         color: '#fff7ed',
+//       }, //1
+//       {
+//         type: 'empty',
+//         height: '8%',
+//         startX: -90,
+//         endX: 0,
+//         color: '#fff7ed',
+//       }, //2
+//       {
+//         type: 'empty',
+//         height: '8%',
+//         startX: 80,
+//         endX: 0,
+//         color: '#fff7ed',
+//       }, //3
+//       {
+//         type: 'item',
+//         project: activityItems[1],
+//         index: 1,
+//         height: '12%',
+//         startX: 20,
+//         endX: -20,
+//         color: '#fff7ed',
+//       }, //4
+//       {
+//         type: 'empty',
+//         height: '8%',
+//         startX: 100,
+//         endX: 0,
+//         color: '#fff7ed',
+//       }, //5
+//       {
+//         type: 'item',
+//         project: activityItems[2],
+//         index: 2,
+//         height: '12%',
+//         startX: -20,
+//         endX: 15,
+//         color: '#fff7ed',
+//       }, //6
+//       {
+//         type: 'empty',
+//         height: '8%',
+//         startX: -90,
+//         endX: 30,
+//         color: '#fff7ed',
+//       }, //7
+//       {
+//         type: 'item',
+//         project: activityItems[3],
+//         index: 3,
+//         height: '12%',
+//         startX: 0,
+//         endX: -20,
+//         color: '#fff7ed',
+//       }, //8
+//       {
+//         type: 'empty',
+//         height: '8%',
+//         startX: 90,
+//         endX: 0,
+//         color: '#fff7ed',
+//       }, //9
+//       {
+//         type: 'item',
+//         project: activityItems[4],
+//         index: 4,
+//         height: '12%',
+//         startX: -20,
+//         endX: 5,
+//         color: '#fff7ed',
+//       } //10
+//     );
+//   } else {
+//     // Fallback jika item tidak cukup: tampilkan sebagai list biasa
+//     activityItems.forEach((project, index) => {
+//       blockLayout.push({ type: 'item', project, index, height: 'auto' });
+//     });
+//   }
 
 //   return (
 //     <motion.div
@@ -351,27 +486,43 @@
 //         <div className='main-content-wrapper'>
 //           <motion.div
 //             key='list'
-//             className='list-view-wrapper-activity'>
+//             className='list-view-wrapper-activity'
+//             ref={listWrapperRef}>
 //             <div
-//               className='list-view'
-//               style={{ zIndex: '9999' }}>
-//               {activityItems.map((project, index) => (
-//                 <ListItem
-//                   key={project.id}
-//                   project={project}
-//                   index={index}
-//                   // Props untuk mouse
-//                   onMouseEnter={handleMouseEnterItem}
-//                   onMouseLeave={handleMouseLeaveItem}
-//                   onClick={handleListItemClick}
-//                   // Props baru untuk sentuhan
-//                   onTouchStart={handleTouchStart}
-//                   onTouchMove={handleTouchMove}
-//                   onTouchEnd={handleTouchEnd}
-//                   // Props state
-//                   isHovered={hoveredItem?.id === project.id}
-//                   scrollDirection={scrollDirection}
-//                 />
+//               className='list-view-activity'
+//               style={{
+//                 zIndex: '9999',
+//                 display: 'flex',
+//                 flexDirection: 'column',
+//               }}>
+//               {blockLayout.map((config, i) => (
+//                 <ActivityBlock
+//                   className='list-item-activity '
+//                   key={config.project ? config.project.id : `empty-${i}`}
+//                   config={config}
+//                   scrollProgress={smoothScrollList}
+//                   {...(config.type === 'item' && {
+//                     onMouseEnter: () => handleMouseEnterItem(config.project),
+//                     onMouseLeave: handleMouseLeaveItem,
+//                     onClick: () => handleListItemClick(config.project),
+//                     onTouchStart: (e) => handleTouchStart(e, config.project),
+//                     onTouchMove: handleTouchMove,
+//                     onTouchEnd: handleTouchEnd,
+//                   })}>
+//                   {/* Masukkan Konten sebagai 'children' */}
+//                   {config.type === 'item' && (
+//                     <ListItemContent
+//                       project={config.project}
+//                       index={config.index}
+//                       isHovered={hoveredItem?.id === config.project.id}
+//                       scrollDirection={scrollDirection}
+//                     />
+//                   )}
+//                   {config.type === 'empty' && (
+//                     // Tambahkan kelas ini untuk styling
+//                     <div className='list-item-empty'></div>
+//                   )}
+//                 </ActivityBlock>
 //               ))}
 //             </div>
 //             <div className='WaveContainer'>
@@ -408,15 +559,8 @@
 // };
 
 // export default Activity;
-//
-//
-//
-//
-//
-//
 
-///
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react'; // Tambah useMemo
 import {
   motion,
   AnimatePresence,
@@ -457,12 +601,12 @@ const listWaveConfig = {
   springConfig: { stiffness: 10000, damping: 500 },
 };
 
-// --- UTILITAS ANIMASI ---
 const wrap = (min, max, v) => {
   const rangeSize = max - min;
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 };
 
+// Pindahkan ini ke luar komponen agar tidak dihitung ulang
 const activityItems = MasterData.filter((project) => project.isActivity).slice(
   0,
   5
@@ -494,6 +638,7 @@ const useScrollDirection = () => {
 };
 
 // --- KOMPONEN MARQUEE ---
+// (Tidak berubah, kode Marquee Anda sudah bagus)
 const MarqueeText = ({ text, direction }) => {
   const BASE_VELOCITY = 80;
   const marqueeX = useMotionValue(0);
@@ -531,23 +676,10 @@ const MarqueeText = ({ text, direction }) => {
   );
 };
 
-// --- KOMPONEN ANAK ---
-const ListItemContent = ({
-  project,
-  index,
-  // onMouseEnter,
-  // onMouseLeave,
-  // onClick,
-  isHovered,
-  scrollDirection,
-  // Tambahan props untuk touch events
-  // onTouchStart,
-  // onTouchMove,
-  // onTouchEnd,
-  // style,
-}) => {
+// --- KOMPONEN ANAK (ListItemContent) ---
+// (Tidak berubah)
+const ListItemContent = ({ project, index, isHovered, scrollDirection }) => {
   return (
-    // Gunakan React Fragment (<>) sebagai pembungkus
     <>
       <motion.span
         className='list-item-number'
@@ -589,37 +721,29 @@ const ListItemContent = ({
   );
 };
 
-// PERBAIKAN: TeaserImage sekarang mendengarkan touchmove
+// --- KOMPONEN TeaserImage ---
+// (Tidak berubah)
 const TeaserImage = ({ hoveredProject }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
   useEffect(() => {
-    // Fungsi gabungan untuk update posisi dari mouse atau sentuhan
     const updatePosition = (e) => {
       let x, y;
       if (e.touches && e.touches.length > 0) {
-        // Untuk event sentuhan
         x = e.touches[0].clientX;
         y = e.touches[0].clientY;
       } else {
-        // Untuk event mouse
         x = e.clientX;
         y = e.clientY;
       }
       setMousePosition({ x, y });
     };
-
-    // Daftarkan kedua event listener
     window.addEventListener('mousemove', updatePosition);
     window.addEventListener('touchmove', updatePosition);
-
-    // Hapus kedua listener saat komponen dibongkar
     return () => {
       window.removeEventListener('mousemove', updatePosition);
       window.removeEventListener('touchmove', updatePosition);
     };
   }, []);
-
   return (
     <AnimatePresence>
       {hoveredProject && (
@@ -667,6 +791,9 @@ const TeaserImage = ({ hoveredProject }) => {
   );
 };
 
+// ==========================================================
+// OPTIMASI: ActivityBlock
+// ==========================================================
 const ActivityBlock = ({
   config,
   scrollProgress,
@@ -675,7 +802,7 @@ const ActivityBlock = ({
 }) => {
   const { startX, endX, color, height } = config;
 
-  // Animasi scroll horizontal
+  // OPTIMASI: Langsung transform dari progress, tanpa spring tambahan per item
   const xScroll = useTransform(
     scrollProgress,
     [0, 1],
@@ -683,21 +810,18 @@ const ActivityBlock = ({
   );
 
   return (
-    // Wrapper: menangani animasi 'masuk' (initialX) & tinggi (height)
     <motion.div
-      className='block-wrapper' // Kita akan pakai style .block-wrapper dari Hero
+      className='block-wrapper'
       style={{ height: height }}
-      transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
-      {...eventHandlers} // Terapkan onMouseEnter, onClick, dll. di sini
-    >
-      {/* Content: menangani animasi 'scroll' (xScroll) & warna */}
+      // OPTIMASI: Menghapus transition yang tidak perlu untuk layout statis
+      {...eventHandlers}>
       <motion.div
-        className='block-content' // Kita akan pakai style .block-content dari Hero
+        className='block-content'
         style={{
           x: xScroll,
           backgroundColor: color,
         }}>
-        {children} {/* Konten (ListItem atau blok kosong) dirender di sini */}
+        {children}
       </motion.div>
     </motion.div>
   );
@@ -706,159 +830,129 @@ const ActivityBlock = ({
 // --- KOMPONEN UTAMA ---
 const Activity = () => {
   const navigate = useNavigate();
+  const handleNavigate = () => navigate('/portfolio');
 
-  const handleNavigate = () => {
-    navigate('/portfolio');
-  };
   const [hoveredItem, setHoveredItem] = useState(null);
   const headerRef = useRef(null);
+  const listWrapperRef = useRef(null);
+  const waveBotRef = useRef(null);
   const scrollDirection = useScrollDirection();
-  const { scrollYProgress } = useScroll({
+
+  // --- Scroll Header ---
+  const { scrollYProgress: headerProgress } = useScroll({
     target: headerRef,
     offset: ['start start', 'end start'],
   });
-
-  const smoothScrollHeader = useSpring(scrollYProgress, {
-    stiffness: 200,
-    damping: 50,
+  // Mengurangi stiffness/damping agar lebih responsif, tidak "berat"
+  const smoothScrollHeader = useSpring(headerProgress, {
+    stiffness: 150,
+    damping: 30,
   });
   const yText = useTransform(smoothScrollHeader, [0, 1], ['0%', '10%']);
-  const waveBotRef = useRef(null);
 
-  // --- LOGIKA BARU UNTUK LAYAR SENTUH ---
+  // --- Scroll List (PARALLAX) ---
+  const { scrollYProgress: listProgress } = useScroll({
+    target: listWrapperRef,
+    offset: ['start end', 'end start'],
+  });
+  // OPTIMASI: Spring tunggal untuk seluruh list, bukan per item
+  const smoothScrollList = useSpring(listProgress, {
+    stiffness: 120,
+    damping: 25,
+  });
+
+  // --- Touch Handlers ---
   const holdTimerRef = useRef(null);
-
   const handleTouchStart = (e, project) => {
-    // Mulai timer untuk mendeteksi "hold"
-    holdTimerRef.current = setTimeout(() => {
-      setHoveredItem(project);
-    }, 200); // 200ms durasi hold
+    holdTimerRef.current = setTimeout(() => setHoveredItem(project), 200);
   };
-
-  const handleTouchMove = () => {
-    // Jika pengguna menggeser jari (scroll), batalkan timer hold
-    clearTimeout(holdTimerRef.current);
-  };
-
+  const handleTouchMove = () => clearTimeout(holdTimerRef.current);
   const handleTouchEnd = () => {
-    // Selalu bersihkan timer dan hilangkan efek saat jari diangkat
     clearTimeout(holdTimerRef.current);
     setHoveredItem(null);
   };
-  // --- Akhir Logika Baru ---
 
-  // Handler untuk mouse (tetap berfungsi)
   const handleMouseEnterItem = (item) => setHoveredItem(item);
   const handleMouseLeaveItem = () => setHoveredItem(null);
-  const handleListItemClick = (project) => {
-    // Mengarahkan ke halaman detail proyek sesuai ID
-    navigate(`/project/${project.id}`);
-  };
+  const handleListItemClick = (project) => navigate(`/project/${project.id}`);
 
-  const listWrapperRef = useRef(null); // Ref baru untuk wrapper list
-  const { scrollYProgress: listScrollProgress } = useScroll({
-    target: listWrapperRef,
-    // Animasikan saat wrapper masuk dan keluar layar
-    offset: ['start end', 'end start'],
-  });
-
-  const smoothScrollList = useSpring(listScrollProgress, {
-    stiffness: 200,
-    damping: 50,
-  });
-
-  // Periksa apakah activityItems ada 5 item
-  const blockLayout = [];
-  if (activityItems.length >= 5) {
-    // (Contoh nilai - ganti sesuai selera Anda)
-    blockLayout.push(
-      {
-        type: 'item',
-        project: activityItems[0],
-        index: 0,
-        height: '12%',
-        startX: 15,
-        endX: -20,
-        color: '#fff7ed',
-      }, //1
-      {
-        type: 'empty',
-        height: '8%',
-        startX: -90,
-        endX: 0,
-        color: '#fff7ed',
-      }, //2
-      {
-        type: 'empty',
-        height: '8%',
-        startX: 80,
-        endX: 0,
-        color: '#fff7ed',
-      }, //3
-      {
-        type: 'item',
-        project: activityItems[1],
-        index: 1,
-        height: '12%',
-        startX: 20,
-        endX: -20,
-        color: '#fff7ed',
-      }, //4
-      {
-        type: 'empty',
-        height: '8%',
-        startX: 100,
-        endX: 0,
-        color: '#fff7ed',
-      }, //5
-      {
-        type: 'item',
-        project: activityItems[2],
-        index: 2,
-        height: '12%',
-        startX: -20,
-        endX: 15,
-        color: '#fff7ed',
-      }, //6
-      {
-        type: 'empty',
-        height: '8%',
-        startX: -90,
-        endX: 30,
-        color: '#fff7ed',
-      }, //7
-      {
-        type: 'item',
-        project: activityItems[3],
-        index: 3,
-        height: '12%',
-        startX: 0,
-        endX: -20,
-        color: '#fff7ed',
-      }, //8
-      {
-        type: 'empty',
-        height: '8%',
-        startX: 90,
-        endX: 0,
-        color: '#fff7ed',
-      }, //9
-      {
-        type: 'item',
-        project: activityItems[4],
-        index: 4,
-        height: '12%',
-        startX: -20,
-        endX: 5,
-        color: '#fff7ed',
-      } //10
-    );
-  } else {
-    // Fallback jika item tidak cukup: tampilkan sebagai list biasa
-    activityItems.forEach((project, index) => {
-      blockLayout.push({ type: 'item', project, index, height: 'auto' });
-    });
-  }
+  // OPTIMASI: useMemo untuk blockLayout agar tidak dihitung ulang setiap render
+  const blockLayout = useMemo(() => {
+    const layout = [];
+    if (activityItems.length >= 5) {
+      layout.push(
+        {
+          type: 'item',
+          project: activityItems[0],
+          index: 0,
+          height: '12%',
+          startX: 15,
+          endX: -20,
+          color: '#fff7ed',
+        }, //1
+        { type: 'empty', height: '8%', startX: -90, endX: 0, color: '#fff7ed' }, //2
+        { type: 'empty', height: '8%', startX: 80, endX: 0, color: '#fff7ed' }, //3
+        {
+          type: 'item',
+          project: activityItems[1],
+          index: 1,
+          height: '12%',
+          startX: 20,
+          endX: -20,
+          color: '#fff7ed',
+        }, //4
+        { type: 'empty', height: '8%', startX: 100, endX: 0, color: '#fff7ed' }, //5
+        {
+          type: 'item',
+          project: activityItems[2],
+          index: 2,
+          height: '12%',
+          startX: -20,
+          endX: 15,
+          color: '#fff7ed',
+        }, //6
+        {
+          type: 'empty',
+          height: '8%',
+          startX: -90,
+          endX: 30,
+          color: '#fff7ed',
+        }, //7
+        {
+          type: 'item',
+          project: activityItems[3],
+          index: 3,
+          height: '12%',
+          startX: 0,
+          endX: -20,
+          color: '#fff7ed',
+        }, //8
+        { type: 'empty', height: '8%', startX: 90, endX: 0, color: '#fff7ed' }, //9
+        {
+          type: 'item',
+          project: activityItems[4],
+          index: 4,
+          height: '12%',
+          startX: -20,
+          endX: 5,
+          color: '#fff7ed',
+        } //10
+      );
+    } else {
+      activityItems.forEach((project, index) => {
+        layout.push({
+          type: 'item',
+          project,
+          index,
+          height: 'auto',
+          startX: 0,
+          endX: 0,
+          color: '#fff7ed',
+        });
+      });
+    }
+    return layout;
+  }, []); // Dependensi kosong karena activityItems statis di luar
 
   return (
     <motion.div
@@ -867,6 +961,7 @@ const Activity = () => {
       animate='open'
       className='activity-container'>
       <TeaserImage hoveredProject={hoveredItem} />
+
       <motion.header
         ref={headerRef}
         className='activity-header'
@@ -898,6 +993,7 @@ const Activity = () => {
           </div>
         </motion.div>
       </motion.header>
+
       <motion.main
         className='content-area'
         variants={itemVariants}>
@@ -915,7 +1011,7 @@ const Activity = () => {
               }}>
               {blockLayout.map((config, i) => (
                 <ActivityBlock
-                  className='list-item-activity '
+                  className='list-item-activity'
                   key={config.project ? config.project.id : `empty-${i}`}
                   config={config}
                   scrollProgress={smoothScrollList}
@@ -927,7 +1023,6 @@ const Activity = () => {
                     onTouchMove: handleTouchMove,
                     onTouchEnd: handleTouchEnd,
                   })}>
-                  {/* Masukkan Konten sebagai 'children' */}
                   {config.type === 'item' && (
                     <ListItemContent
                       project={config.project}
@@ -937,7 +1032,6 @@ const Activity = () => {
                     />
                   )}
                   {config.type === 'empty' && (
-                    // Tambahkan kelas ini untuk styling
                     <div className='list-item-empty'></div>
                   )}
                 </ActivityBlock>
@@ -957,10 +1051,11 @@ const Activity = () => {
             </div>
           </motion.div>
         </div>
+
         <div className='more-activity-container'>
           <Magnetic>
             <ButtonReveal
-              as='button' // Menjadikannya elemen <button> asli (baik untuk aksesibilitas)
+              as='button'
               onClick={handleNavigate}
               className='more-activity-btn'
               whileHover={{ scale: 1.05 }}

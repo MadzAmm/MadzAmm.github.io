@@ -10,6 +10,8 @@ $font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
 
 /* Main container styling */
 .contact-section-container {
+  position: relative;
+  width: 100%;
   min-height: 100vh;
   background-color: $bg-color;
   color: $text-color;
@@ -18,7 +20,7 @@ $font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem 3rem 0 3rem;
+  // padding: 1rem 3rem 0 3rem;
   overflow: hidden;
 
   /* Main content wrapper */
@@ -30,58 +32,107 @@ $font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
   }
 
   /* Header section with image and title */
-  .header {
-    display: flex;
+  .header-area {
     align-items: center;
-    margin-top: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 40px;
+    gap: 20px;
+    margin-left: 10vw;
   }
 
   .profile-image {
-    width: 65px;
-    height: 65px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
     margin-right: 1rem;
     object-fit: cover;
     background-color: rgba(65, 65, 72, 0);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: -20vh;
   }
 
   .main-title {
-    font-size: 3rem; // 48px
+    font-size: 10rem; // 48px
     font-weight: 700;
     line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-family: 'Champion-HTF-Bantamweight';
+    z-index: 1;
+    margin-bottom: -20vh;
+
+    color: #918d8a;
 
     .word {
       display: inline-block;
       margin-right: 0.75rem; // Gives space between words
     }
   }
-}
 
-/* Line container for the horizontal rule and the button */
-.line-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin: 3rem 0;
-}
+  .parallax-blocks-container {
+    width: 100%;
+    height: 400px; // Tinggi area blok (tidak memenuhi layar)
+    display: flex;
+    flex-direction: column;
+    justify-content: center; // Blok ada di tengah vertikal container ini
+    // gap: 10px; // Jarak antar blok
+    // margin: 40px 0; // Margin atas dan bawah (ruang kosong yang diminta)
+    position: relative;
+    z-index: 2;
 
-.horizontal-line {
-  height: 1px;
-  background-color: $border-color;
-  flex-grow: 1;
-}
+    .block-wrapper {
+      width: 100%;
+      position: relative;
+      overflow: visible;
+      display: flex;
+      align-items: center;
+      background-color: transparent;
+      // border-bottom: 5px solid #fff7ed;
 
-.contact-info-buttons {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  padding-top: 3vh;
+      // Style untuk Konten Blok (yang bergerak)
+      .block-content {
+        width: 120%; // Lebih lebar dari layar untuk efek parallax
+        height: 100%;
+        display: flex;
+
+        align-items: center;
+        justify-content: start; // Konten (tombol) di tengah blok
+        // border-radius: 50px; // Membuat blok lonjong/bulat
+        will-change: transform; // Optimasi performa
+
+        // Styling konten di dalam blok (Tombol & Label)
+        .contact-item-wrapper {
+          display: flex;
+          margin-left: 10vw;
+          align-items: center;
+          gap: 20px;
+        }
+        .contact-item-wrapper-phone {
+          display: flex;
+          // align-items: center;
+          gap: 20px;
+          margin-left: 60vw;
+
+          .label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.7;
+            margin-right: 15px;
+          }
+        }
+      }
+    }
+  }
+  .footer-area {
+    margin-top: -12vh;
+  }
 }
 
 .info-button {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: #1c1c1f;
   border: 1px solid $border-color;
   border-radius: 9999px;
   padding: 1.5rem 1.5rem;
@@ -89,7 +140,7 @@ $font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
   font-weight: 500;
   width: 25vw;
   cursor: pointer;
-
+  color: #918d8a;
   // PENTING: Tambahkan properti ini ke class .info-button yang sudah ada
   position: relative; // Agar elemen ::before dan background-fill bisa diposisikan
   overflow: hidden; // Agar clip-path berfungsi dengan benar
@@ -101,7 +152,7 @@ $font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
   transition: color 0.4s ease-in-out;
 
   &:hover {
-    color: #002f45; // Warna teks saat di-hover (misalnya hitam/gelap)
+    color: #fff7ed; // Warna teks saat di-hover (misalnya hitam/gelap)
   }
 
   &:focus {
@@ -113,7 +164,7 @@ $font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
 .background-fill {
   position: absolute;
   inset: 0; // Mengisi seluruh area tombol
-  background-color: #ffffff; // Warna latar belakang saat di-hover (misalnya putih)
+  background-color: #002f45; // Warna latar belakang saat di-hover (misalnya putih)
   z-index: 1; // Berada di bawah teks
 }
 
@@ -122,178 +173,99 @@ $font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
   z-index: 2; // Pastikan teks selalu di atas
 }
 
-/* Decorative arrow element */
-.decorative-arrow {
-  position: relative;
-  top: -10px;
-  right: 0;
-  transform: translateY(70%) rotate(45deg);
-  color: #2d3748; // A very dark, subtle gray
-  font-size: 3rem;
-  pointer-events: none; // Makes it non-interactive
-  display: none; // Hidden on small screens by default
-}
-
 .velocity {
-  margin-bottom: -4vh;
-  padding-top: 2vh;
+  margin-bottom: 0vh;
+  padding-top: 0vh;
 }
-// @media (max-width: 900px) {
-//   .contact-section-container {
-//     padding: 5rem;
-//   }
 
-//   .contact-info-buttons {
-//     flex-direction: row;
-
-//     gap: 3rem;
-//   }
-
-//   .velocity {
-//     margin-bottom: -25vh;
-//     padding-top: 25vh;
-//   }
-// }
-//   .contact-info-buttons {
-//     display: flex;
-//     flex-direction: row;
-//     gap: 2rem;
-//   }
-//   .velocity {
-//     margin-top: -25vh;
-//   }
-// }
-
-// /* --- Media Queries for Responsiveness --- */
-// @media (min-width: 768px) {
-//   // Tablet and larger screens
-
-//     .header {
-//       margin-bottom: 2rem;
-//     }
-
-//     .main-title {
-//       font-size: 3.75rem; // 60px
-//     }
-
-//     .line-container {
-//       margin: 4rem 0;
-//     }
-
-//     .decorative-arrow {
-//       display: block; // Show the arrow on larger screens
-//     }
-//
-//   }
-// }
-
+// Responsive
 @media (max-width: 768px) {
   .contact-section-container {
-    padding: 1rem 1rem 0 1rem;
-  }
-  //   /* Header section with image and title */
-  .header {
-    gap: 10px;
-    padding: 2.5rem 0 2rem 1.5rem;
-    margin: 0 0 -1rem;
-
-    .profile-image {
-      width: 15%;
-      height: 15%;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 0.3rem;
-    }
-  }
-  // .profile-image {
-  //   margin-right: 2rem;
-  // }
-
-  .contact-info-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-  .decorative-arrow {
-    display: none;
-  }
-
-  .velocity {
-    margin-bottom: -9rem;
-    padding-top: 4rem;
-  }
-  .info-button {
-    padding-inline: 4rem;
-    text-align: center;
-    width: 90vw;
-  }
-}
-
-@media (max-width: 1024px) {
-  //   /* Header section with image and title */
-  .header {
-    gap: 20px;
-    .profile-image {
-      width: 20%;
-      height: 20%;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-  }
-
-  .contact-info-buttons {
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    gap: 1rem;
-  }
-  .info-button {
-    padding-inline: 4rem;
-    text-align: center;
-    width: 90vw;
-  }
-}
-
-@media (max-width: 480px) {
-  //   /* Header section with image and title */
-  .header {
-    .profile-image {
-      width: 23%;
-      height: 23%;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-  }
-
-  .velocity {
-    margin-bottom: -6rem;
-    padding-top: 2rem;
-  }
-}
-@media (max-width: 400px) {
-  //   /* Header section with image and title */
-  .header {
-    gap: 10px;
-    padding: 2rem 0 2rem 1.5rem;
-    margin: 0 0 -1rem;
-    .profile-image {
-      width: 22%;
-      height: 22%;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .main-title {
-      font-size: 2.5rem; // 48px
-      font-weight: 700;
-      line-height: 1.1;
-
-      .word {
-        display: inline-block;
-        margin-right: 0.75rem; // Gives space between words
+    .header-area {
+      padding-top: 20vh;
+      .profile-image {
+        margin-top: -70px;
+        height: 100px;
+        width: 100px;
       }
+      .main-title {
+        font-size: 5rem;
+      }
+    }
+    .parallax-blocks-container {
+      height: 65vh;
+      .block-content {
+        .contact-item-wrapper {
+          flex-direction: column;
+          gap: 5px;
+          .info-button {
+            font-size: 0.8rem;
+            padding: 15px 40px;
+            text-align: center;
+            margin-left: -40px;
+            width: 100%;
+          }
+        }
+        .contact-item-wrapper-phone {
+          flex-direction: column;
+          gap: 5px;
+          .info-button {
+            font-size: 0.8rem;
+            padding: 15px 2px;
+            text-align: center;
+            width: 20vh;
+          }
+        }
+      }
+    }
+    .footer-area {
+      margin-top: -10vh;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 480px) {
+  .contact-section-container {
+    .header-area {
+      padding-top: 20vh;
+      .profile-image {
+        margin-top: -70px;
+        height: 80px;
+        width: 80px;
+      }
+      .main-title {
+        font-size: 4rem;
+      }
+    }
+    .parallax-blocks-container {
+      height: 65vh;
+      .block-content {
+        .contact-item-wrapper {
+          flex-direction: column;
+          gap: 5px;
+          .info-button {
+            font-size: 0.8rem;
+            padding: 15px 40px;
+            text-align: center;
+            margin-left: -40px;
+            width: 100%;
+          }
+        }
+        .contact-item-wrapper-phone {
+          flex-direction: column;
+          gap: 5px;
+          .info-button {
+            font-size: 0.8rem;
+            padding: 15px 2px;
+            text-align: center;
+            width: 20vh;
+          }
+        }
+      }
+    }
+    .footer-area {
+      margin-top: -10vh;
     }
   }
 }

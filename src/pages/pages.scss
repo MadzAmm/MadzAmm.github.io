@@ -3,22 +3,15 @@
   width: 100vw;
 
   margin-left: -30px;
-  // KUNCI 1: Mendorong konten ke bawah seukuran
-  // (Safe Area + Margin Atas Navbar + Tinggi Navbar)
-  // Ini memberi ruang agar <Hero /> Anda tidak tertutup.
+
   padding-top: calc(env(safe-area-inset-top));
 
-  // KUNCI 2: Memberi ruang di bawah untuk navigasi bawah Safari
-  // Ini memberi ruang agar <Footer /> Anda tidak terpotong.
   padding-bottom: env(safe-area-inset-bottom);
 
-  // KUNCI 3: Memberi ruang di samping (sesuai margin navbar)
   padding-left: calc(env(safe-area-inset-left));
 
-  // Anda mungkin juga mau padding kanan agar simetris
   padding-right: calc(env(safe-area-inset-right));
 
-  // Pastikan konten setidaknya setinggi layar
   min-height: 100vh;
 
   .dateBubbleLayer {

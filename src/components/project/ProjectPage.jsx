@@ -195,8 +195,8 @@ const SnakeCursor = () => {
     </>
   );
 };
-// ===================================================================
-// Komponen Parallax Gambar (Tidak ada perubahan)
+
+// Komponen Parallax Gambar
 // ===================================================================
 const ContentParallaxImage = ({
   src,
@@ -248,7 +248,6 @@ const itemVariants = {
   closed: { y: 200, opacity: 0 },
 };
 
-// ===================================================================
 // Komponen Utama Halaman Proyek (DINAMIS)
 // ===================================================================
 const ProjectPage = () => {

@@ -1,8 +1,4 @@
-// src/components/About/About.scss
-// Impor variabel dan mixin
-
 .about-page-container {
-  // Reset kursor agar kembali normal di halaman About
   cursor: default;
 }
 
@@ -129,7 +125,7 @@
   }
 }
 
-// Bagian Baru: Services Section (Mengikuti gaya gambar referensi)
+//  Services Section (Mengikuti gaya gambar referensi)
 .services-section {
   padding: 5vh 8vw 10vh;
 
@@ -229,7 +225,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  // padding-right: 5vw; // Dihapus karena gap sudah ada
   z-index: 5;
   text-align: left; // Atur teks rata kiri
 
@@ -267,7 +262,7 @@
   align-items: center;
   position: relative;
   height: auto;
-  max-width: 50%; // Tetap di 40% untuk desktop agar tidak terlalu lebar
+  max-width: 50%; // Tetap di 50% untuk desktop agar tidak terlalu lebar
   order: 0; // Gambar di kiri
 
   @media (max-width: 992px) {
@@ -287,7 +282,7 @@
   aspect-ratio: 4 / 5;
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
+  // border-radius: 8px;
   isolation: isolate;
 
   &::after {
@@ -317,7 +312,7 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 20vh; // Jarak ke heading
-  // box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); // Sedikit bayangan
+  // box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
   flex-shrink: 0; // Pastikan tidak menyusut
 
   .lottie-globe {
@@ -340,6 +335,3 @@
 .about-page-container {
   cursor: default; // Pastikan kursor normal di halaman ini
 }
-
-// Pastikan tidak ada overflow-y: hidden/scroll/auto di parent manapun
-// (Ini perlu dicek di App.js atau komponen layout utama)

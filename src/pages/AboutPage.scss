@@ -1,42 +1,30 @@
 .pageWrapper {
   left: -3px;
 
-  // KUNCI 1: Mendorong konten ke bawah seukuran
-  // (Safe Area + Margin Atas Navbar + Tinggi Navbar)
-  // Ini memberi ruang agar <Hero /> Anda tidak tertutup.
   padding-top: calc(env(safe-area-inset-top));
 
-  // KUNCI 2: Memberi ruang di bawah untuk navigasi bawah Safari
-  // Ini memberi ruang agar <Footer /> Anda tidak terpotong.
   padding-bottom: env(safe-area-inset-bottom);
 
-  // KUNCI 3: Memberi ruang di samping (sesuai margin navbar)
   padding-left: calc(env(safe-area-inset-left));
 
-  // Anda mungkin juga mau padding kanan agar simetris
   padding-right: calc(env(safe-area-inset-right));
 
-  // Pastikan konten setidaknya setinggi layar
   min-height: 100vh;
 }
 
 .coaching-container {
-  // Wajib agar z-index berfungsi
   position: relative;
-  // Angkat ke lapisan atas (angka tinggi)
+
   z-index: 20;
-  // Beri warna latar belakang agar tidak transparan
+
   background-color: #fff7ed;
 }
 
 .parallax-wrapper {
-  // Tarik wrapper ini ke atas sejauh tinggi satu layar penuh,
-  // sehingga ia berada tepat di belakang .coaching-container
   margin-top: -15vh;
 
-  // Wajib agar z-index berfungsi
   position: relative;
-  // Letakkan di lapisan bawah
+
   z-index: 10;
 }
 

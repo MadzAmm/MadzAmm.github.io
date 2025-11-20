@@ -1,12 +1,5 @@
-import { useRef, useState } from 'react';
-import {
-  motion,
-  useScroll,
-  useMotionValueEvent,
-  useSpring,
-  useTransform,
-  AnimatePresence,
-} from 'framer-motion';
+import { useRef } from 'react';
+import { useScroll } from 'framer-motion';
 import Hero from '../components/hero/Hero';
 import Footer from '../components/hero/footer/Footer';
 import PageTransition from './PageTransition';
@@ -15,7 +8,6 @@ import './pages.scss';
 import useResponsiveBubble from '../components/DateBubble/UseResponsiveBubble';
 import ContactSection from '.././components/ContactSection/ContactSection';
 import Activity from '../components/aboutSection/Activity';
-// import UserInputBar from '../components/UserInputBar/UserInputBar';
 
 export default function Homepage({ navState }) {
   const ref = useRef(null);
@@ -37,9 +29,6 @@ export default function Homepage({ navState }) {
         <div>
           <Activity />
         </div>
-        {/* <div>
-          <UserInputBar />
-        </div> */}
 
         <div className='dateBubbleLayer'>
           <DateBubble

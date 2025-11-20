@@ -12,23 +12,14 @@
     top: 0;
     bottom: 0;
     right: 0;
-    width: 100vw; //atur lebar sidebar (100vw berarti penuh satu layar)
+    width: 100vw;
     background: white;
-
-    // ==========================================================
-    // LANGKAH 1: Buat Mixin (Resep) untuk Efek Gulir
-    // ==========================================================
-    // Mixin ini berisi SEMUA logika animasi yang sama
-    // untuk kedua jenis link.
-    // ==========================================================
 
     @mixin slot-flipper-effect {
       .slot-viewport {
         position: relative;
         display: inline-block;
         overflow: hidden;
-        // HATI-HATI: 'height' dan 'line-height' TIDAK diatur di sini,
-        // karena akan berbeda untuk nav dan sosial.
       }
 
       .slot-text {
@@ -40,7 +31,7 @@
       .slot-viewport::after {
         content: attr(data-text);
         position: absolute;
-        top: 0%; // Mulai dari bawah
+        top: 0%;
         left: 0;
         width: 100%;
         transform: translate(0%, 100%) rotate(-10deg); //translateY(0%)
@@ -59,19 +50,12 @@
       }
     }
 
-    // ==========================================================
-    // LANGKAH 2: Terapkan Mixin ke Masing-Masing Link
-    // ==========================================================
-    // Di sinilah kita mengatur ukuran dan warna yang BERBEDA.
-    // ==========================================================
-
-    // --- Target Link Navigasi ---
     .links .nav-item a {
       // 1. Panggil "resep" efek gulir
       @include slot-flipper-effect;
 
       // 2. Atur GAYA UNIK untuk Navigasi (Ukuran Besar)
-      // (Sesuaikan nilai ini)
+
       font-size: 140px;
       font-weight: 600px;
       @media (max-width: 768px) {
@@ -86,12 +70,12 @@
 
       // 4. Atur WARNA UNIK untuk Navigasi
       .slot-text {
-        color: #002f45; // Warna default nav
+        color: #002f45;
       }
       .slot-viewport::after {
         text-transform: uppercase;
         font-family: 'Champion-HTF-Bantamweight';
-        color: #ff4d4d; // Warna hover nav
+        color: #ff4d4d;
       }
     }
 
@@ -262,12 +246,12 @@
     justify-content: flex-start;
 
     .bg {
-      width: 100vw; // ubah dari 400px ke full width
+      width: 100vw;
     }
 
     .links {
       a {
-        font-size: 24px; // perkecil ukuran font agar pas di layar kecil
+        font-size: 24px;
       }
     }
   }
