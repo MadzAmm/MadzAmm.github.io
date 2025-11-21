@@ -34,53 +34,53 @@ _Enam provider dengan 30 lebih model ai yang ditanamkan untuk mekanisme cascade 
 
 **1. Gemini**
 
-`@gemini-pro`: 'gemini-2.5-pro'
-`@gemini-f`: 'gemini-2.5-flash'
-`@gemini-2`.0-f: 'gemini-2.0-flash'
+- `@gemini-pro`: 'gemini-2.5-pro'
+- `@gemini-f`: 'gemini-2.5-flash'
+- `@gemini-2`.0-f: 'gemini-2.0-flash'
 
 **2. Groq**
 
-`@groq-llama`: 'llama-3.1-8b-instant'
-`@groq-compound`: 'groq/compound'
-`@groq-qwen`: 'qwen/qwen3-32b',
-`@groq-gpt`: 'openai/gpt-oss-120b'
+- `@groq-llama`: 'llama-3.1-8b-instant'
+- `@groq-compound`: 'groq/compound'
+- `@groq-qwen`: 'qwen/qwen3-32b',
+- `@groq-gpt`: 'openai/gpt-oss-120b'
 
 **3. Cerebras**
 
-`@Cerebras-llama3`: 'llama3.1-8b'
-`@cerebras-gpt`: 'gpt-oss-120b'
-`@cerebras-llama`: 'llama-3.3-70b'
-`@cerebras-qwen`: 'qwen-3-235b-a22b-instruct-2507'
+- `@Cerebras-llama3`: 'llama3.1-8b'
+- `@cerebras-gpt`: 'gpt-oss-120b'
+- `@cerebras-llama`: 'llama-3.3-70b'
+- `@cerebras-qwen`: 'qwen-3-235b-a22b-instruct-2507'
 
 **4. OpenRouter**
 
-`@router-mic`: 'microsoft/mai-ds-r1:free'
-`@router-gem`: 'google/gemini-2.0-flash-exp:free'
-`@router-r1t`: 'tngtech/deepseek-r1t2-chimera:free'
-`@router-chim`: 'tngtech/deepseek-r1t-chimera:free'
-`@router-sher`:'openrouter/sherlock-think-alpha'
-`@router-deepchat`: 'deepseek/deepseek-chat-v3-0324:free'
-`@router-hermes`: 'nousresearch/hermes-3-llama-3.1-405b:free'
-`@router-3llama`: 'meta-llama/llama-3.2-3b-instruct:free'
-`@router-gemini`: 'google/gemini-2.0-flash-exp:free'
-`@router-sherlock`:'openrouter/sherlock-dash-alpha'
-`@router-mistral`:'mistralai/mistral-7b-instruct:free'
-`@router-deepseek`: 'deepseek/deepseek-r1-distill-llama-70b:free'
-`@router-llama`: 'meta-llama/llama-3.3-70b-instruct:free'
-`@router-coder`: 'qwen/qwen3-coder:free'
+- `@router-mic`: 'microsoft/mai-ds-r1:free'
+- `@router-gem`: 'google/gemini-2.0-flash-exp:free'
+- `@router-r1t`: 'tngtech/deepseek-r1t2-chimera:free'
+- `@router-chim`: 'tngtech/deepseek-r1t-chimera:free'
+- `@router-sher`:'openrouter/sherlock-think-alpha'
+- `@router-deepchat`: 'deepseek/deepseek-chat-v3-0324:free'
+- `@router-hermes`: 'nousresearch/hermes-3-llama-3.1-405b:free'
+- `@router-3llama`: 'meta-llama/llama-3.2-3b-instruct:free'
+- `@router-gemini`: 'google/gemini-2.0-flash-exp:free'
+- `@router-sherlock`:'openrouter/sherlock-dash-alpha'
+- `@router-mistral`:'mistralai/mistral-7b-instruct:free'
+- `@router-deepseek`: 'deepseek/deepseek-r1-distill-llama-70b:free'
+- `@router-llama`: 'meta-llama/llama-3.3-70b-instruct:free'
+- `@router-coder`: 'qwen/qwen3-coder:free'
 
 **5. Sambanova**
 
-`@nova-r1`: 'DeepSeek-R1'
-`@nova-deepseek`: 'DeepSeek-R1-Distill-Llama-70B'
-`@nova-llama`: 'Meta-Llama-3.3-70B-Instruct'
+- `@nova-r1`: 'DeepSeek-R1'
+- `@nova-deepseek`: 'DeepSeek-R1-Distill-Llama-70B'
+- `@nova-llama`: 'Meta-Llama-3.3-70B-Instruct'
 
 **6. Cloudflare**
 
-`@cf-gemma`: '@cf/google/gemma-3-12b-it'
-`@cf-gpt`: '@cf/openai/gpt-oss-120b'
-`@cf-llama`: '@cf/meta/llama-3.3-70b-instruct-fp8-fast'
-`@cf-mistral`: '@cf/mistralai/mistral-small-3.1-24b-instruct'
+-  `@cf-gemma`: '@cf/google/gemma-3-12b-it'
+- `@cf-gpt`: '@cf/openai/gpt-oss-120b'
+- `@cf-llama`: '@cf/meta/llama-3.3-70b-instruct-fp8-fast'
+- `@cf-mistral`: '@cf/mistralai/mistral-small-3.1-24b-instruct'
 
 ## 🛠️ Teknologi yang Digunakan
 
@@ -106,4 +106,6 @@ _Enam provider dengan 30 lebih model ai yang ditanamkan untuk mekanisme cascade 
 
 |            Mode Chat Aktif            |      
 | :-----------------------------------: | 
-| ![Chat UI](https://github.com/user-attachments/assets/8737b3a5-7fbd-40d2-a88b-f5c80e3e33d3) | 
+
+https://github.com/user-attachments/assets/1870ff75-b5b4-46a9-acfe-fec0743d43e5
+
