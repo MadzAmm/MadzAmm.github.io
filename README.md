@@ -95,11 +95,15 @@ _Enam provider dengan 30 lebih model ai yang ditanamkan untuk mekanisme cascade 
 
 - ▲ **Vercel Serverless Functions** (Node.js)
 - 🌐 **OpenAI SDK** (Standardisasi API)
+
+
+
+
 - 🧠 **Google Generative AI SDK** & **Groq SDK**
 - 🛡️ **CORS** (Keamanan akses)
 
 ## 📸 Galeri
 
-|            Mode Chat Aktif            |             Tampilan Mobile              |
-| :-----------------------------------: | :--------------------------------------: |
-| ![Chat UI](./screenshots/chat-ui.png) | ![Mobile View](./screenshots/mobile.png) |
+|            Mode Chat Aktif            |      
+| :-----------------------------------: | 
+| ![Chat UI](https://github.com/user-attachments/assets/8737b3a5-7fbd-40d2-a88b-f5c80e3e33d3) | 
