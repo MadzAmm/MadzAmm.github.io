@@ -120,12 +120,12 @@ const Velocity = () => {
           ))}
         </motion.div>
       </div> */}
-      Teks
+
       <div
         style={{
           // overflow: 'hidden',
           whiteSpace: 'nowrap',
-          background: '#1c1c1f', // background warna teks
+          background: 'tranparent', // background warna teks
         }}>
         <motion.div
           style={{

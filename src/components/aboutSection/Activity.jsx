@@ -580,7 +580,7 @@ import { AnimateInteractiveText } from '../AnimatedText/AnimateInteractiveText '
 
 // --- CONFIG & DATA ---
 const listWaveConfig = {
-  initialY: { desktop: 0, tablet: -300, mobile: -400 },
+  initialY: { desktop: -200, tablet: -300, mobile: -400 },
   finalY: { desktop: -395, tablet: -750, mobile: -550 },
   topWave: {
     wavePreset: { desktop: 'energetic', tablet: 'default', mobile: 'calm' },

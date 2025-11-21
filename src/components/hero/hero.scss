@@ -1,36 +1,4 @@
-// @mixin slot-flipper-effect {
-//   .slot-viewport {
-//     position: relative;
-//     display: inline-block;
-//     overflow: hidden;
-//   }
 
-//   .slot-text {
-//     display: block;
-//     transform: translateY(0%) rotate(0deg);
-//     transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
-//   }
-
-//   .slot-viewport::after {
-//     content: attr(data-text);
-//     position: absolute;
-//     top: 0%;
-//     left: 0;
-//     width: 100%;
-//     transform: translate(0%, 100%) rotate(-10deg);
-//     transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
-//   }
-
-//   // Trigger hover
-//   &:hover {
-//     .slot-text {
-//       transform: translateY(-120%) rotate(-10deg);
-//     }
-//     .slot-viewport::after {
-//       transform: translateY(-0%) rotate(0deg);
-//     }
-//   }
-// }
 
 .hero {
   height: 100vh;

@@ -1,0 +1,51 @@
+.pageContainer {
+  @keyframes moveBackground {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  background: linear-gradient(
+    -145deg,
+    #2c8973,
+    // Warna asli Anda
+    #004564,
+    // Warna baru 1
+    #002f45,
+    // Warna baru 2
+    #01362d // Warna baru 3
+  );
+  animation: moveBackground 15s ease infinite;
+  background-size: 400% 400%;
+}
+
+.sidebarContent {
+  @keyframes moveBackground {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  background: linear-gradient(
+    -145deg,
+    #2c8973,
+    // Warna asli Anda
+    #004564,
+    // Warna baru 1
+    #002f45,
+    // Warna baru 2
+    #01362d // Warna baru 3
+  );
+  animation: moveBackground 15s ease infinite;
+  background-size: 400% 400%;
+}

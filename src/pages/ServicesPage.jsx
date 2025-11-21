@@ -5,6 +5,7 @@ import DateBubble from '../components/DateBubble/DateBubble';
 import LiquidGlass from '../components/LiquidGlass/LiquidGlass';
 import ProjectPage from '../components/project/ProjectPage';
 import { useNavigate } from 'react-router-dom';
+import useResponsiveBubble from '../components/DateBubble/UseResponsiveBubble';
 import './pages.scss';
 
 /**
@@ -68,6 +69,7 @@ export default function ServicesPage() {
     target: scrollRef,
     offset: ['start start', 'end end'],
   });
+  const { position, motionConfig } = useResponsiveBubble('project');
 
   // 2. Perbaiki sintaks useRef. 'pageWrapper' akan menjadi container mouse
   const pageWrapperRef = useRef(null);
@@ -107,20 +109,56 @@ export default function ServicesPage() {
       >
         <DateBubble
           mode='custom'
-          motionConfig={{
-            xInput: [0, 0.5, 1],
-            xOutput: [1000, 0, 10000],
-            yInput: [0, 0.5, 1],
-            yOutput: [-200, -300, -400],
-            scaleInput: [0, 0.5, 1],
-            scaleOutput: [1, 1.4, 1],
-          }}
+          scrollYProgress={scrollYProgress}
+          navigate={navigate} //atur navigate di customStages dibawah
+          position={position} //atur di UseResponsive
+          motionConfig={motionConfig} //atur di UseResponsive
           customStages={[
-            { range: [0, 0.3], text: 'Our Services' },
-            { range: [0.3, 0.6], text: 'Solutions' },
-            { range: [0.6, 1], text: 'Support' },
+            {
+              range: [0, 0.1],
+              text: 'About',
+              bg: '#002f45',
+              baseBg: '#ff4d4d',
+              color: '#fff',
+              onClick: () => navigate('/about'),
+              isHoverable: true,
+            },
+            {
+              range: [0.1, 0.2],
+              text: 'Home',
+              bg: '#ff4d4d',
+              baseBg: '#002f45',
+              color: '#fff',
+              onClick: () => navigate('/'),
+              isHoverable: true,
+            },
+            {
+              range: [0.2, 0.8],
+              text: 'Home',
+              bg: 'rgba(0, 0, 0, 0.3)',
+              color: '#fff',
+              isHoverable: false,
+            },
+
+            {
+              range: [0.9, 0.95],
+              text: 'Tap to top',
+              baseBg: '#ff4d4d',
+              bg: 'rgba(0, 0, 0, 0.3)',
+              color: '#fff',
+              onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+              isHoverable: true,
+            },
+            {
+              range: [0.9, 1],
+              text: 'Get in touch',
+              baseBg: '#002f45',
+              bg: 'rgba(0, 0, 0, 0.3)',
+              color: '#fff',
+              onClick: () => navigate('/contact'),
+              isHoverable: true,
+            },
           ]}
-          position={{ top: '35%', left: '2rem' }}
         />
 
         {/* 3. BUAT RENDER BERSYARAT

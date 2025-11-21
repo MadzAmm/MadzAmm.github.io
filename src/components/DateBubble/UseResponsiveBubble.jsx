@@ -31,7 +31,7 @@ export default function useResponsiveBubble(pageKey = 'default') {
           : [470, -400, 550, 450, 500],
         yInput: [0, 0.1, 0.3, 0.7, 1],
         yOutput: isMobile
-          ? [700, 400, 500, 600, 430]
+          ? [700, 400, 500, 600, 580]
           : isTablet
           ? [250, 250, 220, 210, 260]
           : [300, 300, 200, 300, 400],
@@ -60,16 +60,16 @@ export default function useResponsiveBubble(pageKey = 'default') {
           : [50, -900, 1000, -900, -135],
         yInput: [0, 0.1, 0.3, 1], //persantase scroll
         yOutput: isMobile
-          ? [-300, -250, 400, -200]
+          ? [-300, -250, 400, 30]
           : isTablet
           ? [250, 250, 220, 260]
-          : [200, 150, 100, 160],
+          : [100, 150, 100, 300],
         scaleInput: [0, 0.1, 0.3, 0.7, 1], //persantase scroll
         scaleOutput: isMobile
           ? [0.7, 0.8, 0.8, 0.8, 0.7]
           : isTablet
           ? [1, 0.9, 1.5, 0.9, 1]
-          : [1.5, 1, 1, 1, 1.3],
+          : [1, 1, 1, 1, 1.3],
       },
     },
 
@@ -116,16 +116,44 @@ export default function useResponsiveBubble(pageKey = 'default') {
           : [-300, 100, 550, 900, 100, 300],
         yInput: [0, 0.2, 0.4, 0.6, 0.8, 1],
         yOutput: isMobile
-          ? [-390, -390, 400, 400, -400, -190]
+          ? [-390, -390, 400, 400, -400, -30]
           : isTablet
           ? [250, 250, 220, 210, 260, 0]
-          : [-180, -400, 200, -200, -199, -150],
+          : [-180, -400, 200, -200, -199, -30],
         scaleInput: [0, 0.2, 0.4, 0.6, 0.8, 1],
         scaleOutput: isMobile
           ? [0.45, 0.5, 0.7, 0.6, 0.7, 0.7]
           : isTablet
           ? [1, 0.9, 1.5, 0.9, 1, 1]
           : [0.5, 0.6, 0.7, 0.6, 0.7, 1.3],
+      },
+    },
+
+    project: {
+      position: isMobile
+        ? { top: '50%', left: '50%' }
+        : isTablet
+        ? { top: '45%', right: '2rem' }
+        : { top: '10%', right: '4rem', translateY: '-50%' },
+      motionConfig: {
+        xInput: [0, 0.1, 0.3, 0.7, 1], //persantase scroll
+        xOutput: isMobile
+          ? [70, -100, 300, 0, 70]
+          : isTablet
+          ? [100, -100, -50, 50, -80]
+          : [50, -900, 1000, -900, -135],
+        yInput: [0, 0.1, 0.3, 1], //persantase scroll
+        yOutput: isMobile
+          ? [-300, -250, 400, 30]
+          : isTablet
+          ? [250, 250, 220, 260]
+          : [100, 150, 100, 300],
+        scaleInput: [0, 0.1, 0.3, 0.7, 1], //persantase scroll
+        scaleOutput: isMobile
+          ? [0.5, 0.8, 0.8, 0.8, 0.7]
+          : isTablet
+          ? [1, 0.9, 1.5, 0.9, 1]
+          : [1, 1, 1, 1, 1.3],
       },
     },
     // Tambahkan konfigurasi untuk halaman lain di sini dengan tambahkan pageKey, pasang const { position, motionConfig } = useResponsiveBubble(misal'about'); di page masing-masing.

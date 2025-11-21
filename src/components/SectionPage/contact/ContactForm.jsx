@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnimateInteractiveText } from '../../AnimatedText/AnimateInteractiveText ';
+import './ContactForm.scss';
 
 const variants = {
   open: { transition: { staggerChildren: 0.1 } },
@@ -14,27 +15,27 @@ const itemVariants = {
 const formFields = [
   {
     name: 'name',
-    label: "What's your name?",
+    label: 'Your Name',
     type: 'text',
-    placeholder: 'Albert Einstein *',
+    placeholder: 'Anna *',
   },
   {
     name: 'email',
-    label: "What's your email?",
+    label: 'Email',
     type: 'email',
-    placeholder: 'your@email.com *',
+    placeholder: 'Anna10@example.com *',
   },
   {
     name: 'organization',
-    label: "What's the name of your organization?",
+    label: 'Organization / Company',
     type: 'text',
-    placeholder: 'Alphabet Inc.®',
+    placeholder: 'Anna Inc. *',
   },
   {
     name: 'message',
-    label: 'Your message',
+    label: 'Message',
     type: 'textarea',
-    placeholder: 'Hello, can you help me with ...*',
+    placeholder: 'Brief description of your project or question... *',
   },
 ];
 
@@ -121,7 +122,7 @@ const NotificationArea = ({ formState }) => {
       <AnimatePresence>
         {(formState === 'success' || formState === 'error') && (
           <AnimateInteractiveText
-            initialColor={formState === 'success' ? '#28a745' : '#dc3545'}
+            initialColor={formState === 'success' ? '#86d799ff' : '#dc3545'}
             as='motion.p'
             style={{
               ...styles.notificationText,
@@ -155,12 +156,15 @@ const ContactForm = ({
       variants={variants}
       initial='closed'
       animate='open'
+      className='pageContainer'
       style={styles.pageContainer}>
       <motion.header
         variants={itemVariants}
+        className='header'
         style={styles.header}>
         <h1 style={styles.title}>
-          Let's start a <br /> project together
+          Let’s Bring <br />
+          Your Ideas to Life.
         </h1>
       </motion.header>
 
@@ -169,7 +173,9 @@ const ContactForm = ({
         variants={itemVariants}
         style={mainContentStyle}>
         <aside style={styles.sidebar}>
-          <div style={styles.sidebarContent}>
+          <div
+            className='sidebarContent'
+            style={styles.sidebarContent}>
             <div style={styles.sidebarImage}></div>
             <div style={styles.sidebarContact}>
               <p style={styles.sidebarTitle}>CONTACT DETAILS</p>
@@ -242,7 +248,7 @@ const ContactForm = ({
 // --- STYLING ---
 const styles = {
   pageContainer: {
-    backgroundColor: '#1c1c1f',
+    // backgroundColor: '#1c1c1f',
     color: '#FFFFFF',
     padding: 'clamp(2rem, 5vw, 4rem)',
     fontFamily: 'system-ui, sans-serif',
@@ -260,7 +266,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderBottom: '1px solid #4b5563',
+    borderBottom: '1.3px solid rgba(255, 255, 255, 0.2)',
     height: '15vh',
     paddingTop: '2.5rem',
     marginBottom: '1rem',
@@ -327,7 +333,7 @@ const styles = {
   fieldContainer: {
     display: 'flex',
     gap: '2rem',
-    borderBottom: '1px solid #4b5563',
+    borderBottom: '1.3px solid rgba(255, 255, 255, 0.2)',
     padding: '2rem 0',
   },
   fieldNumber: { color: '#888', fontSize: '0.8rem', paddingTop: '0.5rem' },
