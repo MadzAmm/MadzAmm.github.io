@@ -7,6 +7,7 @@ import {
 } from 'framer-motion';
 import Magnetic from '../DateBubble/Magnetic';
 import Wave from '../MorphingWave/Wave';
+import './CoachingApproach.scss';
 
 const WaveConfig = {
   initialY: { desktop: 1400, tablet: 1400, mobile: 350 },
@@ -160,7 +161,11 @@ const ApproachItem = ({ item, isMobile, isOpen, onToggle, isLast }) => {
           style={styles.accordionHeader}>
           <div style={styles.leftColumn}>
             <span style={styles.number}>{number}</span>
-            <h2 style={{ ...styles.title, fontSize: '42px' }}>{title}</h2>
+            <h2
+              className='title-accordion'
+              style={{ ...styles.title, fontSize: '25px' }}>
+              {title}
+            </h2>
           </div>
         </div>
         <AnimatePresence>
@@ -319,8 +324,10 @@ const styles = {
     fontSize: '40px',
   },
   description: {
-    fontSize: '18px',
-    lineHeight: '1.6',
+    paddingLeft: '50px',
+    paddingRight: '20px',
+    fontSize: '15px',
+    // lineHeight: '1.6',
     margin: '0',
     maxWidth: '500px',
     color: '#4a4a4aff',

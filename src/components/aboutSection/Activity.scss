@@ -164,7 +164,7 @@ $anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
   height: 100%;
   padding: 1rem; // Sesuaikan padding
   position: relative;
-  will-change: transform;
+  // will-change: transform;
 
   // PENTING:
   // 'ListItemContent' Anda sekarang ada di sini.
@@ -422,7 +422,7 @@ $anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
 .marquee-track {
   display: flex;
   white-space: nowrap;
-  will-change: transform;
+  // will-change: transform;
 
   span {
     display: block;

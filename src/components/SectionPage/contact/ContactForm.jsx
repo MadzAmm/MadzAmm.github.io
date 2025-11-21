@@ -15,27 +15,27 @@ const itemVariants = {
 const formFields = [
   {
     name: 'name',
-    label: 'Your Name',
+    label: 'Who is asking?',
     type: 'text',
-    placeholder: 'Anna *',
+    placeholder: 'e.g. Annalina. S *',
   },
   {
     name: 'email',
-    label: 'Email',
+    label: 'Best email to reach you',
     type: 'email',
-    placeholder: 'Anna10@example.com *',
+    placeholder: 'e.g. Anna10@example.com *',
   },
   {
     name: 'organization',
-    label: 'Organization / Company',
+    label: 'Representing',
     type: 'text',
-    placeholder: 'Anna Inc. *',
+    placeholder: 'e.g. Anna Inc, Alphabet Inc.. *',
   },
   {
     name: 'message',
-    label: 'Message',
+    label: 'How can we help?',
     type: 'textarea',
-    placeholder: 'Brief description of your project or question... *',
+    placeholder: 'Share your project details here... *',
   },
 ];
 

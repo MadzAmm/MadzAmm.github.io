@@ -14,7 +14,7 @@ const contactDetails = {
 // KOMPONEN 'AnimatedBlock' (Diadaptasi dari Hero)
 // ==========================================================
 const AnimatedBlock = ({ scrollProgress, config }) => {
-  const { startX, endX, color, height, content: children, initialX } = config;
+  const { startX, endX, color, height, content: children } = config;
 
   // Transformasi posisi X berdasarkan scroll
   const xScroll = useTransform(
@@ -26,21 +26,24 @@ const AnimatedBlock = ({ scrollProgress, config }) => {
   return (
     <div
       className='block-wrapper'
-      style={{ height: height }} // Tinggi blok
-    >
+      style={{ height: height }}>
       <motion.div
         className='block-content'
-        initial={{ x: initialX }}
-        whileInView={{ x: '0%' }} // Animasi masuk saat terlihat
+        // --- BAGIAN YANG DIPERBAIKI ---
+        // Hapus 'x' dari sini agar tidak bentrok dengan xScroll
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        // ------------------------------
+
         viewport={{ once: true }}
         transition={{
           type: 'spring',
-          stiffness: 50,
-          damping: 20,
-          delay: 0.1,
+          stiffness: 200,
+          damping: 50,
+          restDelta: 0.001,
         }}
         style={{
-          x: xScroll, // Efek Parallax Scroll
+          x: xScroll, // Biarkan ini menjadi satu-satunya penguasa posisi X
           backgroundColor: color,
         }}>
         {children}
@@ -75,7 +78,7 @@ const ContactSection = () => {
   const blockConfigs = [
     {
       // BLOK 1: Kosong
-      initialX: '-100%',
+
       startX: -80,
       endX: -60,
       color: 'rgba(197, 197, 198, 0.2)', // Warna gelap (sesuaikan tema)
@@ -84,9 +87,9 @@ const ContactSection = () => {
     },
     {
       // BLOK 2: EMAIL BUTTON
-      initialX: '100%',
+
       startX: 60,
-      endX: 50,
+      endX: 40,
       color: 'rgba(197, 197, 198, 0.2)',
       height: '25%',
       content: (
@@ -106,18 +109,18 @@ const ContactSection = () => {
     },
     {
       // BLOK 3: Kosong (Pemisah)
-      initialX: '-100%',
+
       startX: -80,
-      endX: -20,
+      endX: 0,
       color: 'rgba(197, 197, 198, 0.2)',
       height: '10%',
       content: null,
     },
     {
       // BLOK 4: PHONE BUTTON
-      initialX: '100%',
-      startX: -50,
-      endX: -60,
+
+      startX: -80,
+      endX: -30,
       color: 'rgba(197, 197, 198, 0.2)',
       height: '25%',
       content: (
@@ -137,7 +140,7 @@ const ContactSection = () => {
     },
     {
       // BLOK 5: Kosong
-      initialX: '-100%',
+
       startX: 80,
       endX: 30,
       color: 'rgba(197, 197, 198, 0.2)',
@@ -160,7 +163,12 @@ const ContactSection = () => {
           className='profile-image'
           initial={{ scale: 0 }}
           whileInView={{ scale: 1 }}
-          transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+          transition={{
+            type: 'spring',
+            stiffness: 200,
+            damping: 50,
+            restDelta: 0.001,
+          }}
         />
         <h1 className='main-title'>Let's work together</h1>
       </motion.div>

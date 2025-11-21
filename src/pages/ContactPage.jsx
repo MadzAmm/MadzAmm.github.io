@@ -55,9 +55,9 @@ export default function ContactPage() {
     setFormState('loading');
 
     // Kredensial EmailJS
-    const SERVICE_ID = 'service_nfztccn';
-    const TEMPLATE_ID = 'template_lu5ui7o';
-    const PUBLIC_KEY = 'kfDaQJZ6MvJ9qJPxs';
+    const SERVICE_ID = import.meta.env.VITE_SERVICE_ID;
+    const TEMPLATE_ID = import.meta.env.VITE_TEMPLATE_ID;
+    const PUBLIC_KEY = import.meta.env.VITE_PUBLIC_KEY;
 
     // Objek formData sudah sesuai dengan yang dibutuhkan template
     const templateParams = formData;
@@ -110,7 +110,7 @@ export default function ContactPage() {
       range: [0.8, 1], // Tahap akhir menjadi tombol submit
       text:
         formState === 'idle'
-          ? 'Submit Form'
+          ? "Let's Talk"
           : formState === 'loading'
           ? 'Sending...'
           : formState === 'success'

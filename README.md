@@ -44,41 +44,6 @@ _Sistem juga mendukung **Shortcuts** (misal: `@groq`, `@pro`) untuk mem-bypass l
 - 🧠 **Google Generative AI SDK** & **Groq SDK**
 - 🛡️ **CORS** (Keamanan akses)
 
-## 💻 Cara Menjalankan di Lokal
-
-1.  **Clone repositori:**
-
-    ```bash
-    git clone [https://github.com/username/genius-web-backend.git](https://github.com/username/genius-web-backend.git)
-    cd genius-web-backend
-    ```
-
-2.  **Instal dependensi:**
-
-    ```bash
-    npm install
-    ```
-
-3.  **Atur Environment Variables:**
-    Buat file `.env` dan isi dengan kunci API Anda:
-
-    ```env
-    GEMINI_API_KEY=...
-    GROQ_API_KEY=...
-    OPENROUTER_API_KEY=...
-    CEREBRAS_API_KEY=...
-    SAMBANOVA_API_KEY=...
-    CLOUDFLARE_API_TOKEN=...
-    CLOUDFLARE_ACCOUNT_ID=...
-    ```
-
-4.  **Jalankan server:**
-    ```bash
-    npm start
-    # atau untuk development dengan Vercel CLI
-    vercel dev
-    ```
-
 ## 📸 Galeri
 
 |            Mode Chat Aktif            |             Tampilan Mobile              |

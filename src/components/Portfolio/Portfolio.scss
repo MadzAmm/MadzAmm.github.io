@@ -2,7 +2,7 @@
 $font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
   'Helvetica Neue', Arial, sans-serif;
 $primary-bg: #fff7ed;
-$primary-text: #111;
+$primary-text: #002f45;
 $secondary-text: #888;
 $border-color: #c7c5c5;
 $active-bg: #002f45;
@@ -856,14 +856,14 @@ $reduced-gap: 2px;
     text-align: center;
   }
   .list-item-title {
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-size: clamp(1rem, 5vw, 2rem);
     font-weight: 500;
     line-height: 1.1;
     margin: 0;
     color: #002f45;
   }
   .list-item-category {
-    font-size: 1rem;
+    font-size: 0.8rem;
     color: $secondary-text;
     margin-top: 0.5rem;
     text-transform: capitalize;
