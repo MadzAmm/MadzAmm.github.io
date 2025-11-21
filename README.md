@@ -52,4 +52,4 @@ _Sistem juga mendukung **Shortcuts** (misal: `@groq`, `@pro`) untuk mem-bypass l
 
 |            Mode Chat Aktif            |      
 | :-----------------------------------: | 
-| ![Chat UI]([./screenshots/chat-ui.png](https://github.com/user-attachments/assets/8737b3a5-7fbd-40d2-a88b-f5c80e3e33d3)) | 
+| ![Chat UI](https://github.com/user-attachments/assets/8737b3a5-7fbd-40d2-a88b-f5c80e3e33d3) | 
