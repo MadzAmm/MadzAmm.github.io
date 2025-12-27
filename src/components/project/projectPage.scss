@@ -25,6 +25,245 @@
   // Pastikan tidak ada overflow-y: hidden/scroll/auto di parent manapun
 }
 
+// ==========================================
+// PREMIUM SKELETON STYLES
+// ==========================================
+
+// 1. Animasi Shimmer yang lebih halus & warm
+@keyframes premium-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-loading-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-light); // Warna dasar page
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  cursor: wait;
+}
+
+// 2. Base Class untuk semua elemen skeleton
+.sk-item {
+  // Gradient Cream ke Putih (Bukan Abu-abu)
+  background: linear-gradient(
+    90deg,
+    #efe5d8 0%,
+    // Sedikit lebih gelap dari bg-light
+    #fbf4ea 50%,
+    // Highlight
+    #efe5d8 100%
+  );
+  background-size: 200% 100%;
+  animation: premium-shimmer 2s infinite linear; // Animasi lebih pelan & elegan
+  border-radius: 4px;
+}
+
+// 3. Spesifik Bagian Title (Meniru Font Syne Besar)
+.sk-title {
+  width: 60%; // Tidak full width biar terlihat seperti teks
+  height: clamp(2.5rem, 10vw, 7.5rem); // Sama persis dengan font asli
+  margin-bottom: 60px;
+  border-radius: 8px;
+
+  @media (max-width: 768px) {
+    width: 80%;
+  }
+}
+
+// 4. Spesifik Meta Data
+.sk-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05); // Garis tipis halus
+}
+
+.sk-meta-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sk-label {
+  width: 80px;
+  height: 12px;
+  opacity: 0.6;
+}
+
+.sk-value {
+  width: 140px;
+  height: 20px;
+}
+
+// 5. Spesifik Hero Image (Penting!)
+.sk-hero-image {
+  width: 100%;
+  height: 100vh; // Full screen height
+  margin-top: 5vh;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 90%,
+    0% 100%
+  ); // Opsional: Sedikit styling artistik
+}
+
+// ==========================================
+// PROJECT SPECIFICS (REMASTERED)
+// ==========================================
+
+.project-specifics-container {
+  width: 100%;
+  margin-top: -2rem;
+  @media (max-width: 768px) {
+    margin-top: 1rem;
+  }
+}
+
+.specs-grid {
+  display: grid;
+  width: 100%;
+  margin-top: 5rem;
+
+  // DESKTOP: Grid otomatis menyesuaikan.
+  // Minimal lebar kolom 220px. Jika layar luas, akan jadi 2 atau 3 kolom.
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+
+  // Jarak antar elemen
+  column-gap: 4rem; // Jarak horizontal yang lega
+  row-gap: 0.8rem; // Jarak vertikal yang cukup
+
+  // --- MOBILE RESPONSIVE (Max 768px) ---
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1.4rem; // Jarak antar item lebih rapat di HP
+    margin-top: -0.5rem;
+    margin-bottom: -1rem;
+    padding-inline: 10px;
+  }
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem; // Jarak antara Label dan Value
+
+  // Garis pemisah di atas setiap item (Style Premium Minimalis)
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 0.5rem;
+  position: relative;
+  transition: all 0.3s ease;
+  @media (max-width: 768px) {
+    margin-top: -1rem;
+  }
+
+  // 1. LABEL (Judul Kecil: TOOLS, FRONTEND, dll)
+  .spec-label {
+    font-family: 'Inter', sans-serif; // Atau font body Anda
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em; // Tracking luas agar elegan
+    color: #888; // Warna abu-abu (muted)
+    margin-bottom: 0.2rem;
+    @media (max-width: 768px) {
+      margin-top: 0.1rem;
+      font-size: 0.5rem;
+    }
+  }
+
+  // 2. VALUE (Isi: React, Python, Link...)
+  .spec-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem; // Ukuran standar agar terbaca jelas
+    font-weight: normal;
+    color: #2b2a2a; // Warna gelap kontras
+    line-height: 1.5;
+
+    // Mencegah teks panjang (seperti URL) merusak layout mobile
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    @media (max-width: 768px) {
+      text-align: left;
+      margin-top: -0.5rem;
+      font-size: 0.6rem;
+    }
+  }
+
+  // 3. LINKS (Styling khusus untuk <a>)
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    color: #111;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+    width: fit-content;
+    @media (max-width: 768px) {
+      text-align: left;
+      margin-top: -0.5rem;
+      font-size: 0.6rem;
+    }
+
+    // Efek Hover: Garis bawah muncul & warna berubah
+    &:hover {
+      color: #004564; // Warna aksen Anda
+      border-bottom: 1px solid #004564;
+      opacity: 1;
+    }
+
+    // Panah kecil (↗)
+    &::after {
+      content: '↗';
+      font-size: 1em;
+      transition: transform 0.2s ease;
+    }
+
+    &:hover::after {
+      transform: translate(2px, -5px); // Panah bergerak sedikit saat hover
+    }
+  }
+
+  // 4. COLOR PALETTE (Khusus Design)
+  .palette-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+
+    .color-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s;
+      @media (max-width: 768px) {
+        width: 15px;
+        height: 15px;
+      }
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
 // Kursor Kustom
 .snakeCursor {
   @media (max-width: 900px) {
@@ -145,7 +384,6 @@
 .content-showcase-section {
   padding: 10vh 5vw;
   position: relative;
-  background-color: var(--bg-dark);
   z-index: 3;
   background-color: #333;
 }
@@ -252,7 +490,7 @@
 .stacked-sections-container {
   position: relative; // WAJIB
   // Tinggi harus selalu cukup untuk scroll sticky + elemen di atasnya
-  height: 220vh; // Tetapkan tinggi ini di SEMUA ukuran layar
+  height: 200vh; // Tetapkan tinggi ini di SEMUA ukuran layar
 
   // JANGAN atur height: auto di sini lagi
   // @media (max-width: 992px) {
@@ -263,18 +501,18 @@
 // Section Tipografi (Sticky SELALU AKTIF)
 .typography-section-reworked {
   // --- Konfigurasi Sticky Utama (Berlaku di SEMUA UKURAN) ---
-  height: 120vh; // Tinggi tetap > viewport
+  height: 50%; // Tinggi tetap > viewport
   position: sticky; // SELALU STICKY
-  top: -15vh; // Tempel di atas container
+
   z-index: 1; // Di bawah .next-project-section
 
   // --------------------------------------------------------
 
   // Gaya visual lainnya
-  background-color: var(--bg-light);
+  background-color: #fff7ed;
   display: flex;
   align-items: center;
-  padding: 10vh 5vw;
+  // padding: 10vh 5vw;
   box-sizing: border-box;
 
   // --- Penyesuaian Layout Responsif (TANPA mengubah sticky) ---
@@ -291,7 +529,7 @@
   }
   // ------------------------------------------------------------
   @media (max-width: 768px) {
-    height: 90vh;
+    height: 50%;
   }
 }
 
@@ -299,7 +537,7 @@
 .next-project-section {
   position: relative; // Tetap relative
   z-index: 2; // Tetap di atas typography
-  height: 100vh; // Tetap 100vh agar mengisi sisa
+  height: 50%; // Tetap 100vh agar mengisi sisa
   background-color: var(--bg-dark);
   color: var(--text-light);
   display: flex;
@@ -316,7 +554,7 @@
     // height: 80vh; // Bisa dikembalikan jika diinginkan lebih pendek
   }
   @media (max-width: 768px) {
-    height: 130vh;
+    height: 50%;
   }
 }
 
@@ -326,14 +564,16 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-right: 5vw;
+  padding-right: 1vw;
   z-index: 5;
+  height: 100%;
   @media (max-width: 992px) {
     padding-right: 0;
     align-items: center;
     flex: none;
     width: 100%;
     order: 1;
+    margin-bottom: -20vh;
   }
 }
 .typography-image-container {
@@ -378,19 +618,29 @@
   }
 }
 .typography-heading {
+  position: relative;
+  width: 100%;
+  padding-bottom: 3vh;
   font-family: var(--font-heading);
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 700;
   line-height: 1.2;
-  margin: 0 0 2vh 0;
+  @media (max-width: 768px) {
+    padding-bottom: 1vh;
+  }
 }
 .typography-paragraph {
+  position: relative;
   font-size: clamp(0.9rem, 1.5vw, 1rem);
   line-height: 1.6;
-  max-width: 450px;
+  margin: 8vh 0 -10vh 0;
   color: #444;
   @media (max-width: 992px) {
     max-width: 90%;
+    margin: 4vh 0 -5vh 0;
+  }
+  @media (max-width: 600px) {
+    margin: 4vh 0 -6vh 0;
   }
 }
 

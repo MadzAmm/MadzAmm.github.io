@@ -18,22 +18,11 @@ const variants = {
 const visibilityVariants = {
   visible: {
     opacity: 1,
-    y: 0,
-    scale: 1, // Muncul ke ukuran penuh
-    transition: {
-      type: 'spring', // Ini akan memberikan efek 'kenyal'
-      stiffness: 400, // Seberapa kaku pegasnya
-      damping: 25, // Seberapa cepat berhenti memantul
-    },
+    pointerEvents: 'auto',
   },
   hidden: {
     opacity: 0,
-    y: 0,
-    scale: 0.4, // Mengecil sedikit saat tersembunyi
-    transition: {
-      ease: 'easeOut',
-      duration: 0.2,
-    },
+    pointerEvents: 'none',
   },
 };
 

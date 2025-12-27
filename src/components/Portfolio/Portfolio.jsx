@@ -15,7 +15,8 @@ import './Portfolio.scss';
 import Magnetic from '../DateBubble/Magnetic';
 import Wave from '../MorphingWave/Wave';
 import { ButtonReveal } from '../buttonReveal/ButtonReveal';
-import { MasterData } from '../../data/MasterData';
+// import { MasterData } from '../../data/MasterData'; // <-- HAPUS INI
+import { supabase } from '../../lib/supabaseClient'; // <-- GANTI DENGAN INI
 
 // --- Wave Configs ---
 const listWaveConfig = {
@@ -149,87 +150,8 @@ const SlotText = ({ children }) => (
 );
 
 // --- DATA & VARIANTS ---
-// const projectData = [
-//   {
-//     id: 1,
-//     title: 'The Damai',
-//     category: ['design', 'development'],
-//     year: 2024,
-//     imageUrl: 'hand.jpg',
-//   },
-//   {
-//     id: 2,
-//     title: 'FABRIC™',
-//     category: ['design', 'development'],
-//     year: 2023,
-//     imageUrl: 'child.png',
-//   },
-//   {
-//     id: 3,
-//     title: 'Base',
-//     category: ['development', 'design'],
-//     year: 2023,
-//     imageUrl: 'audit.png',
-//   },
-//   {
-//     id: 4,
-//     title: 'Bonus',
-//     category: ['design'],
-//     year: 2022,
-//     imageUrl: 'momChild.png',
-//   },
-//   {
-//     id: 5,
-//     title: 'Studio',
-//     category: ['design'],
-//     year: 2022,
-//     imageUrl: 'm.png',
-//   },
-//   {
-//     id: 6,
-//     title: 'Archive',
-//     category: ['development'],
-//     year: 2021,
-//     imageUrl: 'u.png',
-//   },
-//   {
-//     id: 7,
-//     title: 'React Course',
-//     category: ['learning'],
-//     year: 2025,
-//     imageUrl: 'mum.jpg',
-//   },
-//   {
-//     id: 8,
-//     title: 'Lead Developer at TechCorp',
-//     category: ['experience'],
-//     year: 2024,
-//     imageUrl: 'fil.png',
-//   },
-//   {
-//     id: 9,
-//     title: 'WebAward 2023',
-//     category: ['achievements'],
-//     year: 2023,
-//     imageUrl: 'kkn.jpg',
-//   },
-//   {
-//     id: 10,
-//     title: 'AWS Certified Developer',
-//     category: ['credentials'],
-//     year: 2025,
-//     imageUrl: 'pbak.jpg',
-//   },
-//   {
-//     id: 11,
-//     title: 'Vue.js Workshop',
-//     category: ['learning'],
-//     year: 2024,
-//     imageUrl: 'library.jpg',
-//   },
-// ];
-
-const projectData = MasterData;
+// Data sekarang dikelola oleh State di dalam komponen Portfolio
+// const projectData = MasterData; // <-- INI DIGANTI LOGIKA SUPABASE
 
 const marqueeText =
   'Let us collaborate and create something exceptional together.';
@@ -766,6 +688,43 @@ const DraggableToggle = ({ style, setStyle, options }) => {
 // --- MAIN PORTFOLIO COMPONENT ---
 const Portfolio = () => {
   const navigate = useNavigate();
+  // --- SUPABASE INTEGRATION START ---
+  const [projectData, setProjectData] = useState([]); // State untuk data
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          .order('id', { ascending: true }); // Mengurutkan berdasarkan ID, sesuaikan jika perlu
+
+        if (error) {
+          console.error('Error fetching projects:', error);
+        } else if (data) {
+          // Mapping data dari Supabase (snake_case) ke format komponen (camelCase)
+          // Agar komponen di bawah TIDAK PERLU DIUBAH sama sekali.
+          const mappedData = data.map((item) => ({
+            id: item.id,
+            title: item.title,
+            category: item.category || [], // Pastikan array
+            year: item.year,
+            imageUrl: item.image_url, // Mapping image_url database ke imageUrl komponen
+          }));
+          setProjectData(mappedData);
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+  // --- SUPABASE INTEGRATION END ---
+
   const [filter, setFilter] = useState('all');
   const [viewMode, setViewMode] = useState('list');
   const [slideStyle, setSlideStyle] = useState('default');
@@ -917,7 +876,7 @@ const Portfolio = () => {
       ).length;
     });
     return counts;
-  }, []);
+  }, [projectData]); // Dependency ditambah projectData agar update saat fetch selesai
   const filteredProjects =
     filter === 'all'
       ? projectData
@@ -955,7 +914,7 @@ const Portfolio = () => {
     setHoveredItem(null);
   };
   // const handleMouseEnterItem = (item) =>
-  //   !isAnySliderDragging && setHoveredItem(item);
+  //    !isAnySliderDragging && setHoveredItem(item);
   // const handleMouseLeaveItem = () => setHoveredItem(null);
   const handleTouchStart = (e, project) => {
     holdTimerRef.current = setTimeout(() => {
@@ -1412,7 +1371,7 @@ const Portfolio = () => {
                       ))}{' '}
                     </motion.div>
                   )}{' '}
-                </AnimatePresence>{' '}
+                </AnimatePresence>
               </div>
             ) : (
               viewModes.map((mode) => (
@@ -1714,7 +1673,8 @@ const Portfolio = () => {
                     {' '}
                     <InteractiveSlider
                       scrollDirection={scrollDirection}
-                      onDragStateChange={setIsAnySliderDragging}>
+                      onDragStateChange={setIsAnySliderDragging}
+                      baseVelocity={15}>
                       {' '}
                       {projects1.map((project) => (
                         <motion.div

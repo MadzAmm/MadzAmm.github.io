@@ -10,8 +10,8 @@ import Wave from '../MorphingWave/Wave';
 import './CoachingApproach.scss';
 
 const WaveConfig = {
-  initialY: { desktop: 1400, tablet: 1400, mobile: 350 },
-  finalY: { desktop: 1300, tablet: 1450, mobile: 200 },
+  initialY: { desktop: 1100, tablet: 1400, mobile: 350 },
+  finalY: { desktop: 1100, tablet: 1450, mobile: 200 },
   topWave: {
     wavePreset: { desktop: 'energetic', tablet: 'default', mobile: 'calm' },
     controlPoints: {
@@ -23,7 +23,7 @@ const WaveConfig = {
   bottomWave: {
     wavePreset: { desktop: 'calm', tablet: 'calm', mobile: 'calm' },
     controlPoints: {
-      desktop: [700, 730, 550],
+      desktop: [700, 600, 550],
       tablet: [650, 650, 550],
       mobile: [550, 650, 550],
     },

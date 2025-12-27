@@ -13,8 +13,8 @@ const Section = ({
   const duration = end - start;
   const inputRange = [start, start + duration * 0.5, end, end + duration];
   const y = useTransform(scrollYProgress, inputRange, [
-    '30%',
-    '5%',
+    '60%',
+    '0%',
     '0%',
     '-100%',
   ]);

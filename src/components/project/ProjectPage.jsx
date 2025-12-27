@@ -3,89 +3,162 @@ import {
   motion,
   useScroll,
   useTransform,
-  AnimatePresence,
   useSpring,
   useMotionValue,
 } from 'framer-motion';
-import './ProjectPage.scss'; // Menggunakan SCSS
-
-// --- (1) IMPORT BARU ---
 import { useParams, useNavigate } from 'react-router-dom';
-import { MasterData } from '../../data/MasterData'; // <-- Sesuaikan path ke masterData
+import { supabase } from '../../lib/supabaseClient';
 import Magnetic from '../DateBubble/Magnetic';
+import LikeButton from './LikeButton';
+import './ProjectPage.scss';
 
 // ===================================================================
-// Kursor Kustom (Tidak ada perubahan)
+// 1. KOMPONEN PROJECT SPECIFICS (DATA LOGIC SUDAH BENAR)
 // ===================================================================
-// const CustomCursor = ({ variant }) => {
-//   const mouse = {
-//     x: useSpring(0, { damping: 25, stiffness: 300 }),
-//     y: useSpring(0, { damping: 25, stiffness: 300 }),
-//   };
-//   const scale = useSpring(0, { damping: 20, stiffness: 200 });
+// ===================================================================
+// GANTI KOMPONEN DetailItem YANG LAMA DENGAN INI
+// ===================================================================
+const DetailItem = ({ label, value }) => {
+  // 1. Jika nilai kosong/null, jangan render apa-apa
+  if (!value) return null;
 
-//   useEffect(() => {
-//     const onMouseMove = (e) => {
-//       mouse.x.set(e.clientX);
-//       mouse.y.set(e.clientY);
-//     };
-//     window.addEventListener('mousemove', onMouseMove);
-//     return () => window.removeEventListener('mousemove', onMouseMove);
-//   }, []);
+  // 2. LOGIKA DETEKSI PALET WARNA
+  // Kita cek apakah:
+  // a) Nilainya adalah Array (kumpulan data)
+  // b) DAN item pertama dalam array itu dimulai dengan tanda '#' (ciri khas kode warna hex)
+  const isColorPalette =
+    Array.isArray(value) &&
+    typeof value[0] === 'string' &&
+    value[0].startsWith('#');
 
-//   // const variants = {
-//   //   default: {
-//   //     height: 25,
-//   //     width: 25,
-//   //     backgroundColor: 'white',
-//   //     mixBlendMode: 'difference',
-//   //     transition: { type: 'spring', stiffness: 500, damping: 28 },
-//   //   },
-//   //   hover: {
-//   //     height: 120,
-//   //     width: 120,
-//   //     backgroundColor: '#0041c2',
-//   //     mixBlendMode: 'normal',
-//   //     transition: { type: 'spring', stiffness: 400, damping: 25 },
-//   //   },
-//   // };
+  return (
+    <div className='spec-item'>
+      <span className='spec-label'>{label}</span>
+      <span
+        className='spec-value'
+        style={{ width: '100%' }}>
+        {isColorPalette ? (
+          // --- INI WRAPPER PALET WARNA YANG ANDA MINTA ---
+          <div className='palette-wrapper'>
+            {value.map((color, i) => (
+              <div
+                key={i}
+                title={color} // Munculkan kode warna saat di-hover
+                className='color-circle'
+                style={{
+                  backgroundColor: color,
+                }}
+              />
+            ))}
+          </div>
+        ) : // --- AKHIR WRAPPER ---
+        // Tampilan Normal (Jika bukan warna)
+        // Jika array biasa (misal: Tools), gabung pakai koma. Jika string, tampilkan langsung.
+        Array.isArray(value) ? (
+          value.join(', ')
+        ) : (
+          value
+        )}
+      </span>
+    </div>
+  );
+};
 
-//   return (
-//     <motion.div
-//       className='custom-cursor'
-//       variants={variant}
-//       animate={variant}
-//       style={{
-//         x: mouse.x,
-//         y: mouse.y,
-//         translateX: '-50%',
-//         translateY: '-50%',
-//       }}>
-//       <AnimatePresence>
-//         {variant === 'hover' && (
-//           <Magnetic>
-//             <motion.span
-//               className='cursor-text'
-//               initial={{ opacity: 0 }}
-//               animate={{ opacity: 1, transition: { delay: 0.1 } }}
-//               exit={{ opacity: 0 }}>
-//               Next
-//             </motion.span>
-//           </Magnetic>
-//         )}
-//       </AnimatePresence>
-//     </motion.div>
-//   );
-// };
+const LinkItem = ({ label, url, color = 'white' }) => {
+  if (!url) return null;
+  return (
+    <div className='spec-item'>
+      <span className='spec-label'>{label}</span>
+      <a
+        href={url}
+        target='_blank'
+        rel='noreferrer'
+        style={{
+          color: color,
+          textDecoration: 'underline',
+          textUnderlineOffset: '4px',
+          cursor: 'pointer',
+        }}>
+        Open Link
+      </a>
+    </div>
+  );
+};
 
-// --- TENTUKAN JUMLAH DAN GAYA EKOR ---
-const NUMBER_OF_DOTS = 10; // Jumlah lingkaran di ekor
-const SPRING_CONFIG = { stiffness: 400, damping: 25 }; // Kecepatan gerak
+// ... import dan komponen DetailItem / LinkItem di atas tetap sama ...
+
+const ProjectSpecifics = ({ project }) => {
+  const { details, repoLink, notionLink, externalLink, emergencyLink } =
+    project;
+
+  // 1. Pastikan details adalah object, bukan null
+  const safeDetails = details || {};
+
+  // 2. Ambil semua key dan value dari JSON
+  const detailEntries = Object.entries(safeDetails);
+
+  // 3. Helper untuk merapikan nama Label (misal: "dataSource" -> "Data Source")
+  const formatLabel = (key) => {
+    return key
+      .replace(/([A-Z])/g, ' $1') // Tambah spasi sebelum huruf besar
+      .replace(/^./, (str) => str.toUpperCase()) // Huruf pertama kapital
+      .replace('_', ' '); // Ganti underscore dengan spasi
+  };
+
+  return (
+    <div className='specs-grid'>
+      {/* 4. LOOPING OTOMATIS (Ini kuncinya agar data pasti muncul) */}
+      {detailEntries.length > 0 ? (
+        detailEntries.map(([key, value]) => (
+          <DetailItem
+            key={key}
+            label={formatLabel(key)}
+            value={value}
+          />
+        ))
+      ) : (
+        // Pesan jika JSON kosong (opsional, bisa dihapus)
+        <div style={{ opacity: 0.5, fontSize: '0.8rem' }}>
+          No specs details.
+        </div>
+      )}
+
+      {/* 5. Link-link Project (Selalu Muncul) */}
+      <LinkItem
+        label='Repository'
+        url={repoLink}
+        color='#35428dff'
+      />
+      <LinkItem
+        label='Documentation'
+        url={notionLink}
+        color='#35428dff'
+      />
+      <LinkItem
+        label='Live Demo'
+        url={externalLink}
+        color='#35428dff'
+      />
+
+      {emergencyLink && (
+        <LinkItem
+          label='Emergency'
+          url={emergencyLink}
+          color='#35428dff'
+        />
+      )}
+    </div>
+  );
+};
+
+// ===================================================================
+// 2. HELPER (CURSOR & PARALLAX)
+// ===================================================================
+const NUMBER_OF_DOTS = 10;
+const SPRING_CONFIG = { stiffness: 400, damping: 25 };
 
 const SnakeCursor = () => {
   const [cursorVariant, setCursorVariant] = useState('default');
-
-  // Lacak posisi mouse
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -94,23 +167,17 @@ const SnakeCursor = () => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
     };
-
-    // Deteksi hover pada link atau tombol
     const handleMouseOver = (e) => {
-      if (e.target.closest('a, .next-project-content')) {
+      if (e.target.closest('a, .next-project-content, .spec-item a'))
         setCursorVariant('hover');
-      }
     };
     const handleMouseOut = (e) => {
-      if (e.target.closest('a,  .next-project-content')) {
+      if (e.target.closest('a, .next-project-content, .spec-item a'))
         setCursorVariant('default');
-      }
     };
-
     window.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseover', handleMouseOver);
     document.addEventListener('mouseout', handleMouseOut);
-
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseover', handleMouseOver);
@@ -118,39 +185,19 @@ const SnakeCursor = () => {
     };
   }, [mouseX, mouseY]);
 
-  // Buat array 'dots'
-  // Setiap dot akan mengikuti mouse, tapi dengan lag yang berbeda
   const dots = Array.from({ length: NUMBER_OF_DOTS }).map((_, i) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const springX = useSpring(mouseX, {
       ...SPRING_CONFIG,
-      damping: SPRING_CONFIG.damping + i * 4, // Makin ke belakang makin lambat
+      damping: SPRING_CONFIG.damping + i * 4,
     });
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const springY = useSpring(mouseY, {
       ...SPRING_CONFIG,
       damping: SPRING_CONFIG.damping + i * 4,
     });
-
     return { x: springX, y: springY };
   });
-
-  // Varian untuk setiap dot
-  const dotVariants = {
-    default: {
-      scale: 1,
-      backgroundColor: 'white',
-      mixBlendMode: 'difference',
-    },
-    hover: {
-      scale: 2, // Dot akan membesar saat hover
-      height: 50,
-      width: 50,
-      backgroundColor: '#0041c2',
-      mixBlendMode: 'normal',
-      transition: { type: 'spring', stiffness: 400, damping: 25 },
-    },
-  };
 
   return (
     <>
@@ -158,15 +205,25 @@ const SnakeCursor = () => {
         <motion.div
           key={index}
           className='snakeCursor'
-          variants={dotVariants}
           animate={cursorVariant}
+          variants={{
+            default: {
+              scale: 1,
+              backgroundColor: 'white',
+              mixBlendMode: 'difference',
+            },
+            hover: {
+              scale: 2,
+              height: 50,
+              width: 50,
+              backgroundColor: '#0041c2',
+              mixBlendMode: 'normal',
+            },
+          }}
           style={{
             x: dot.x,
             y: dot.y,
-            // --- INI KUNCI EFEKNYA ---
-            // 'scale' membuat ekornya mengecil ke belakang
             scale: (NUMBER_OF_DOTS - index) / NUMBER_OF_DOTS,
-            // --- ---
             position: 'fixed',
             top: 0,
             left: 0,
@@ -177,17 +234,15 @@ const SnakeCursor = () => {
             translateX: '-50%',
             translateY: '-50%',
             zIndex: 9999,
-            display: cursorVariant === 'hover' && index > 0 ? 'none' : 'flex', // Gunakan flex untuk menengahkan teks
-            alignItems: 'center', // Pusatkan teks secara vertikal
-            justifyContent: 'center', // Pusatkan teks secara horizontal
-            color: 'white', // Warna teks
-            fontSize: '8px', // Ukuran teks
-            fontWeight: '200', // Berat teks
-          }}
-          transition={{ type: 'spring', stiffness: 500, damping: 28 }}>
+            display: cursorVariant === 'hover' && index > 0 ? 'none' : 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'white',
+            fontSize: '8px',
+          }}>
           {cursorVariant === 'hover' && index === 0 && (
             <Magnetic>
-              <span className='cursor-text'>Next</span>
+              <span className='cursor-text'>View</span>
             </Magnetic>
           )}
         </motion.div>
@@ -196,25 +251,17 @@ const SnakeCursor = () => {
   );
 };
 
-// Komponen Parallax Gambar
-// ===================================================================
-const ContentParallaxImage = ({
-  src,
-  alt,
-  offset = ['start end', 'end start'],
-  speed = 0.1,
-}) => {
+const ContentParallaxImage = ({ src, alt, speed = 0.1 }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: offset,
+    offset: ['start end', 'end start'],
   });
   const y = useTransform(
     scrollYProgress,
     [0, 1],
     [`-${speed * 100}%`, `${speed * 100}%`]
   );
-
   return (
     <div
       className='content-parallax-wrapper'
@@ -222,23 +269,20 @@ const ContentParallaxImage = ({
       <motion.img
         src={src}
         alt={alt}
-        style={{
-          y,
-          WebkitTouchCallout: 'none', // <- Properti Kunci img untuk iOS
-          KhtmlUserSelect: 'none',
-          MozUserSelect: 'none',
-          msUserSelect: 'none',
-          userSelect: 'none',
-        }}
-        onContextMenu={(e) => e.preventDefault()} // Mencegah klik kanan
-        onDragStart={(e) => e.preventDefault()} // Mencegah drag
-        draggable='false' //mencegah drag di beberapa browser yang berbasis webkit (chrome, safari)
+        style={{ y }}
         className='content-parallax-image'
+        draggable='false'
+        onContextMenu={(e) => e.preventDefault()}
       />
     </div>
   );
 };
 
+// ===================================================================
+// 3. VARIAN ANIMASI (DIKEMBALIKAN DARI KODE ASLI)
+// ===================================================================
+
+// Stagger Animation untuk Halaman Masuk
 const openVariants = {
   open: { transition: { staggerChildren: 0.1 } },
   closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
@@ -248,33 +292,120 @@ const itemVariants = {
   closed: { y: 200, opacity: 0 },
 };
 
-// Komponen Utama Halaman Proyek (DINAMIS)
+// Animasi Kartu Next Project (Wallet Effect)
+const cardWalletVariants = {
+  rest: {
+    y: 120,
+    scale: 0.95,
+    transition: { type: 'tween', ease: 'easeOut', duration: 0.4 },
+  },
+  hover: {
+    y: 40,
+    scale: 1,
+    transition: { type: 'spring', stiffness: 250, damping: 30 },
+  },
+};
+
+const titleVariants = {
+  rest: {
+    opacity: 1,
+    transition: { type: 'tween', ease: 'easeOut', duration: 0.4 },
+  },
+  hover: {
+    opacity: 0.2,
+    transition: { type: 'tween', ease: 'easeIn', duration: 0.3 },
+  },
+};
+
+// ===================================================================
+// 4. KOMPONEN UTAMA
 // ===================================================================
 const ProjectPage = () => {
-  const [cursorVariant, setCursorVariant] = useState('default');
-
-  // --- (2) AMBIL DATA DINAMIS ---
-  const { projectId } = useParams(); // Ambil ID dari URL (misal: "1", "12")
+  const { projectId } = useParams();
   const navigate = useNavigate();
+  const [project, setProject] = useState(null);
+  const [nextProject, setNextProject] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Cari proyek saat ini berdasarkan ID.
-  // Gunakan parseInt karena ID di URL adalah string.
-  const project = MasterData.find((p) => p.id === parseInt(projectId));
+  // --- FETCHING DATA ---
+  useEffect(() => {
+    const fetchProjectData = async () => {
+      setLoading(true);
+      try {
+        const id = parseInt(projectId);
+        if (isNaN(id)) return;
 
-  // Cari proyek BERIKUTNYA untuk link "Next Case".
-  // Temukan index proyek saat ini.
-  const currentIndex = MasterData.findIndex(
-    (p) => p.id === parseInt(projectId)
-  );
-  let nextProject = null;
-  // Pastikan currentIndex valid sebelum mencari nextProject
-  if (currentIndex !== -1) {
-    // Gunakan modulo (%) agar kembali ke awal jika sudah di akhir array.
-    nextProject = MasterData[(currentIndex + 1) % MasterData.length];
-  }
+        // 1. Current Project
+        const { data: dbData, error } = await supabase
+          .from('projects')
+          .select('*')
+          .eq('id', id)
+          .single();
 
-  // --- (3) PERSIAPAN SCROLL & ANIMASI (Tidak ada perubahan) ---
+        if (error || !dbData) throw new Error('Project not found');
+
+        const mappedProject = {
+          id: dbData.id,
+          title: dbData.title,
+          category: dbData.category,
+          year: dbData.year,
+          place: dbData.place,
+          company: dbData.company,
+          heroImage: dbData.hero_image,
+          detailImage1: dbData.detail_image_1,
+          detailImage2: dbData.detail_image_2,
+          imageUrl: dbData.image_url,
+          tagline: dbData.tagline,
+          descriptionTitle: dbData.description_title,
+          descriptionBody: dbData.description_body,
+          repoLink: dbData.repo_link,
+          notionLink: dbData.notion_link,
+          emergencyLink: dbData.emergency_link,
+          externalLink: dbData.external_link,
+          details: dbData.details,
+        };
+
+        // 2. Next Project
+        let { data: nextDbData } = await supabase
+          .from('projects')
+          .select('id, title, image_url')
+          .gt('id', id)
+          .order('id', { ascending: true })
+          .limit(1)
+          .single();
+
+        if (!nextDbData) {
+          const { data: firstData } = await supabase
+            .from('projects')
+            .select('id, title, image_url')
+            .order('id', { ascending: true })
+            .limit(1)
+            .single();
+          nextDbData = firstData;
+        }
+
+        const mappedNextProject = nextDbData
+          ? {
+              id: nextDbData.id,
+              title: nextDbData.title,
+              imageUrl: nextDbData.image_url,
+            }
+          : null;
+
+        setProject(mappedProject);
+        setNextProject(mappedNextProject);
+      } catch (err) {
+        console.error('Error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProjectData();
+  }, [projectId]);
+
+  // --- ANIMASI SCROLL ---
   const typographyRef = useRef(null);
+  const fullParallaxRef = useRef(null);
   const { scrollYProgress: typographyScroll } = useScroll({
     target: typographyRef,
     offset: ['start end', 'end start'],
@@ -286,108 +417,67 @@ const ProjectPage = () => {
     [0, 1],
     ['-20%', '20%']
   );
-
-  const cardWalletVariants = {
-    rest: {
-      y: 120,
-      scale: 0.95,
-      transition: { type: 'tween', ease: 'easeOut', duration: 0.4 },
-    },
-    hover: {
-      y: 40,
-      scale: 1,
-      transition: { type: 'spring', stiffness: 250, damping: 30 },
-    },
-  };
-
-  const titleVariants = {
-    rest: {
-      opacity: 1,
-      transition: { type: 'tween', ease: 'easeOut', duration: 0.4 },
-    },
-    hover: {
-      opacity: 0.2,
-      transition: { type: 'tween', ease: 'easeIn', duration: 0.3 },
-    },
-  };
-
-  const fullParallaxRef = useRef(null);
-  const { scrollYProgress: fullParallaxScroll } = useScroll({
+  const { scrollYProgress: fullScroll } = useScroll({
     target: fullParallaxRef,
     offset: ['start end', 'end start'],
   });
-  const fullParallaxY = useTransform(
-    fullParallaxScroll,
-    [0, 1],
-    ['-15%', '15%']
-  );
-  // --- Akhir persiapan scroll ---
+  const fullParallaxY = useTransform(fullScroll, [0, 1], ['-15%', '15%']);
 
-  // --- (4) PENANGANAN JIKA PROYEK TIDAK DITEMUKAN ---
-  useEffect(() => {
-    // Jika 'project' tidak ditemukan (ID salah) ATAU 'nextProject' tidak ditemukan (seharusnya tidak terjadi dengan modulo, tapi jaga-jaga)
-    if (!project || !nextProject) {
-      console.error(`Project with ID ${projectId} not found.`); // Log error
-      // Tunggu sebentar lalu redirect
-      const timer = setTimeout(() => {
-        navigate('/portfolio', { replace: true }); // replace: true agar tidak masuk history
-      }, 1500); // Redirect setelah 1.5 detik
-
-      // Cleanup timer jika komponen unmount sebelum timeout
-      return () => clearTimeout(timer);
-    }
-  }, [project, nextProject, projectId, navigate]);
-
-  // Jika data belum siap (misal ID salah dan sedang menunggu redirect)
-  if (!project || !nextProject) {
+  // --- PREMIUM SKELETON LOADER ---
+  if (loading || !project || !nextProject) {
     return (
-      <div
-        className='page-container'
-        style={{
-          padding: '5rem',
-          textAlign: 'center',
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <h1>Loading Project...</h1>
-        <p>If you see this for too long, the project might not exist.</p>
-        <p>Redirecting back shortly...</p>
+      <div className='skeleton-loading-container'>
+        {/* 1. Bagian Intro (Title & Meta) */}
+        <section className='project-intro'>
+          {/* Title Besar Placeholder */}
+          <div className='sk-item sk-title' />
+
+          {/* Grid Meta Data (3 Kolom Fake) */}
+          <div className='sk-meta-grid'>
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className='sk-meta-col'>
+                <div className='sk-item sk-label' />
+                <div className='sk-item sk-value' />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 2. Bagian Hero Image Placeholder */}
+        <div className='sk-item sk-hero-image' />
       </div>
     );
   }
 
-  // --- (5) RENDER JSX DINAMIS ---
   return (
-    // Gunakan key unik agar Framer Motion mendeteksi perubahan halaman
     <motion.div
-      key={project.id} // <-- Tambahkan key di sini
+      key={project.id}
       className='page-container'
-      variants={openVariants}
+      variants={openVariants} // ✅ Animasi Stagger Dikembalikan
       initial='closed'
       animate='open'
-      style={{ cursor: 'default' }}
+      exit='closed'
       transition={{ duration: 0.5 }}>
       <SnakeCursor />
 
-      {/* Bagian 1: Header Proyek (DINAMIS) */}
+      {/* 1. Header (Pakai itemVariants untuk stagger) */}
       <motion.section
         className='project-intro'
         variants={itemVariants}>
         <motion.h1 className='project-title'>{project.title}</motion.h1>
         <motion.div className='project-meta'>
           <div>
-            <span>ROLE / SERVICES</span>
-            <p>{project.category.join(' & ')}</p>
+            <span>SERVICES</span>
+            <p>{project.category?.join(' & ')}</p>
           </div>
           <div>
             <span>CREDITS</span>
             <p>Owned By: {project.company}</p>
           </div>
           <div>
-            <span>LOCATION & YEAR</span>
+            <span>LOCATION / YEAR</span>
             <p>
               {project.place} © {project.year}
             </p>
@@ -395,40 +485,30 @@ const ProjectPage = () => {
         </motion.div>
       </motion.section>
 
-      {/* Bagian 2: Gambar Parallax Pertama (DINAMIS) */}
+      {/* 2. Hero Image */}
       <motion.section
-        variants={itemVariants}
+        className='parallax-section'
         ref={fullParallaxRef}
-        className='parallax-section'>
+        variants={itemVariants}>
         <div className='parallax-image-wrapper'>
           <motion.img
-            src={project.heroImage} // <-- DINAMIS
-            alt={project.title} // <-- DINAMIS
-            style={{
-              y: fullParallaxY,
-              scale: 1.15,
-              WebkitTouchCallout: 'none', // <- Properti Kunci img untuk iOS
-              KhtmlUserSelect: 'none',
-              MozUserSelect: 'none',
-              msUserSelect: 'none',
-              userSelect: 'none',
-            }}
-            onContextMenu={(e) => e.preventDefault()} // Mencegah klik kanan
-            onDragStart={(e) => e.preventDefault()} // Mencegah drag
-            draggable='false' //mencegah drag di beberapa browser yang berbasis webkit (chrome, safari)
+            src={project.heroImage}
+            alt={project.title}
+            style={{ y: fullParallaxY, scale: 1.15 }}
+            draggable='false'
+            onContextMenu={(e) => e.preventDefault()}
           />
         </div>
       </motion.section>
 
-      {/* Bagian 3: Showcase Frame Putih (DINAMIS) */}
+      {/* 3. Showcase Frame */}
       <section className='content-showcase-section'>
         <div className='showcase-frame'>
           <header className='frame-header'>
-            <div className='frame-logo'>© 마드잠</div> {/* Ganti jika perlu */}
+            <div className='frame-logo'>© PORTFOLIO</div>
             <div className='frame-nav'>
-              {/* Ambil kategori pertama atau default */}
-              <span>{(project.category[0] || 'Project').toUpperCase()}</span>
-              <span>{project.year}</span> {/* <-- DINAMIS */}
+              <span>{project.category?.[0]?.toUpperCase()}</span>
+              <span>{project.year}</span>
               <div className='frame-menu-icon'>
                 <span></span>
                 <span></span>
@@ -437,29 +517,27 @@ const ProjectPage = () => {
           </header>
           <div className='frame-content'>
             <ContentParallaxImage
-              src={project.detailImage1} // <-- DINAMIS
-              alt={`${project.title} detail`} // <-- DINAMIS
-              speed={0.1}
+              src={project.detailImage1}
+              alt='Detail'
             />
           </div>
           <footer className='frame-footer'>
-            {/* Menggunakan dangerouslySetInnerHTML untuk memproses <br /> */}
             <h3
               className='footer-title'
               dangerouslySetInnerHTML={{
-                __html: project.tagline.toUpperCase(),
-              }} // <-- DINAMIS
+                __html: project.tagline?.toUpperCase(),
+              }}
             />
+            {/* ✅ Teks Sapere Aude Dikembalikan */}
             <div className='footer-partner'>
-              <span>Sapere aude</span> {/* Ganti jika perlu */}
+              <span>Sapere aude</span>
             </div>
           </footer>
         </div>
       </section>
 
-      {/* Container untuk menumpuk dua section terakhir */}
+      {/* 4. Typography & Details */}
       <div className='stacked-sections-container'>
-        {/* Bagian 4: Tipografi (DINAMIS) */}
         <section
           className='typography-section-reworked'
           ref={typographyRef}>
@@ -467,81 +545,85 @@ const ProjectPage = () => {
             <motion.h2
               className='typography-heading'
               style={{ y: headingY }}
-              dangerouslySetInnerHTML={{ __html: project.descriptionTitle }} // <-- DINAMIS
+              dangerouslySetInnerHTML={{ __html: project.descriptionTitle }}
             />
+            <motion.div
+              className='project-specifics-container'
+              style={{ y: paragraphY }}>
+              <ProjectSpecifics project={project} />
+            </motion.div>
             <motion.p
               className='typography-paragraph'
               style={{ y: paragraphY }}>
-              {project.descriptionBody} {/* <-- DINAMIS */}
+              {project.descriptionBody}
             </motion.p>
+
+            {/* {project.emergencyLink && (
+              <motion.div style={{ y: paragraphY, marginTop: '20px' }}>
+                <a
+                  href={project.emergencyLink}
+                  target='_blank'
+                  rel='noreferrer'
+                  style={{
+                    color: '#ff5555',
+                    fontSize: '0.9rem',
+                    textDecoration: 'underline',
+                  }}>
+                  Download Emergency Backup
+                </a>
+              </motion.div>
+            )} */}
+
+            <motion.div style={{ y: paragraphY, marginTop: '3rem' }}>
+              <LikeButton projectId={project.id} />
+            </motion.div>
           </div>
+
           <div className='typography-image-container'>
             <div className='typography-parallax-image'>
               <motion.img
-                src={project.detailImage2} // <-- DINAMIS
-                alt={`${project.title} mood`} // <-- DINAMIS
-                style={{
-                  y: typographyImageY,
-                  WebkitTouchCallout: 'none', // <- Properti Kunci img untuk iOS
-                  KhtmlUserSelect: 'none',
-                  MozUserSelect: 'none',
-                  msUserSelect: 'none',
-                  userSelect: 'none',
-                }}
-                onContextMenu={(e) => e.preventDefault()} // Mencegah klik kanan
-                onDragStart={(e) => e.preventDefault()} // Mencegah drag
-                draggable='false' //mencegah drag di beberapa browser yang berbasis webkit (chrome, safari)
+                src={project.detailImage2}
+                alt='Mood'
+                style={{ y: typographyImageY }}
+                draggable='false'
               />
             </div>
           </div>
         </section>
 
-        {/* Bagian 5: Proyek Berikutnya (DINAMIS) */}
+        {/* 5. Next Project (Animasi Card Dikembalikan) */}
         <section className='next-project-section'>
-          {/* Menggunakan onClick + navigate untuk SPA navigation yang lebih baik */}
-          <motion.div // Mengganti <a> dengan <div> atau elemen non-link
-            // Hapus href
-            className='next-project-link' // Tetap gunakan class untuk styling
-            onClick={() => navigate(`/project/${nextProject.id}`)} // <-- DINAMIS
-            style={{ cursor: 'pointer' }} // Tambahkan pointer cursor
-            onMouseEnter={() => setCursorVariant('hover')}
-            onMouseLeave={() => setCursorVariant('default')}
+          <motion.div
+            className='next-project-link'
+            onClick={() => navigate(`/project/${nextProject.id}`)}
+            style={{ cursor: 'pointer' }}
             initial='rest'
-            whileHover='hover'
+            whileHover='hover' // ✅ Trigger animasi saat hover
             animate='rest'>
             <div className='next-project-content'>
               <span>Next Project</span>
               <motion.h2 variants={titleVariants}>
-                {nextProject.title} {/* <-- DINAMIS */}
+                {nextProject.title}
               </motion.h2>
               <div className='card-animation-wrapper'>
+                {/* ✅ Animasi Dompet (Card Wallet) */}
                 <motion.div
                   className='next-project-card-frame'
                   variants={cardWalletVariants}>
                   <div className='card-frame-content'>
                     <img
-                      src={nextProject.imageUrl} // <-- DINAMIS (Gunakan imageUrl list)
-                      alt={`${nextProject.title} Preview`} // <-- DINAMIS
-                      onContextMenu={(e) => e.preventDefault()} // Mencegah klik kanan
-                      onDragStart={(e) => e.preventDefault()} // Mencegah drag
-                      draggable='false' //mencegah drag di beberapa browser yang berbasis webkit (chrome, safari)
-                      style={{
-                        WebkitTouchCallout: 'none', // <- Properti Kunci img untuk iOS
-                        KhtmlUserSelect: 'none',
-                        MozUserSelect: 'none',
-                        msUserSelect: 'none',
-                        userSelect: 'none',
-                      }}
+                      src={nextProject.imageUrl}
+                      alt='Next'
+                      draggable='false'
                     />
                   </div>
                 </motion.div>
               </div>
             </div>
-          </motion.div>{' '}
-          {/* Tutup motion.div pengganti <a> */}
+          </motion.div>
         </section>
       </div>
-    </motion.div> // Tutup motion.div utama dengan key
+    </motion.div>
   );
 };
 

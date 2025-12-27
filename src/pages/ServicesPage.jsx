@@ -1,41 +1,247 @@
+// import { useScroll } from 'framer-motion';
+// import { useRef, React, useState, useEffect } from 'react';
+// import PageTransition from './PageTransition';
+// import DateBubble from '../components/DateBubble/DateBubble';
+// import LiquidGlass from '../components/LiquidGlass/LiquidGlass';
+// import ProjectPage from '../components/project/ProjectPage';
+// import { useNavigate } from 'react-router-dom';
+// import useResponsiveBubble from '../components/DateBubble/UseResponsiveBubble';
+// import './pages.scss';
+
+// /**
+//  * Hook kustom untuk mengecek media query secara dinamis.
+//  * @param {string} query - String media query (mis: '(max-width: 768px)')
+//  * @returns {boolean} - True jika query cocok, false jika tidak.
+//  */
+// function useMediaQuery(query) {
+//   // 1. Dapatkan nilai awal saat komponen dimuat
+//   const [matches, setMatches] = useState(
+//     () => window.matchMedia(query).matches
+//   );
+
+//   useEffect(() => {
+//     const mediaQueryList = window.matchMedia(query);
+
+//     // 2. Buat fungsi listener untuk update state saat layar berubah
+//     const handleChange = (event) => {
+//       setMatches(event.matches);
+//     };
+
+//     // 3. Daftarkan listener
+//     // 'addEventListener' adalah cara baru, 'addListener' adalah fallback
+//     if (mediaQueryList.addEventListener) {
+//       mediaQueryList.addEventListener('change', handleChange);
+//     } else {
+//       mediaQueryList.addListener(handleChange);
+//     }
+
+//     // 4. Bersihkan listener saat komponen di-unmount
+//     return () => {
+//       if (mediaQueryList.removeEventListener) {
+//         mediaQueryList.removeEventListener('change', handleChange);
+//       } else {
+//         mediaQueryList.removeListener(handleChange);
+//       }
+//     };
+//   }, [query]); // Efek ini akan dijalankan ulang jika string query berubah
+
+//   return matches;
+// }
+
+// const sectionStyle = {
+//   width: '100%',
+//   height: '100vh',
+//   display: 'flex',
+//   flexDirection: 'column',
+//   alignItems: 'center',
+//   justifyContent: 'center',
+//   color: 'white',
+//   padding: '2rem',
+//   textAlign: 'center',
+//   fontSize: 'clamp(1.5rem, 5vw, 3rem)',
+// };
+
+// export default function ServicesPage() {
+//   const navigate = useNavigate();
+//   // 1. Ganti nama 'ref' menjadi 'scrollRef' agar lebih deskriptif
+//   const scrollRef = useRef(null);
+//   const { scrollYProgress } = useScroll({
+//     target: scrollRef,
+//     offset: ['start start', 'end end'],
+//   });
+//   const { position, motionConfig } = useResponsiveBubble('project');
+
+//   // 2. Perbaiki sintaks useRef. 'pageWrapper' akan menjadi container mouse
+//   const pageWrapperRef = useRef(null);
+
+//   const isMobile = useMediaQuery('(max-width: 768px)');
+
+//   // Objek konfigurasi Anda (tidak perlu diubah)
+//   const landingPageWaveConfig = {
+//     initialY: { desktop: 0, tablet: -50, mobile: 0 },
+//     finalY: { desktop: -300, tablet: -220, mobile: -150 },
+//     topWave: {
+//       wavePreset: { desktop: 'energetic', tablet: 'default', mobile: 'calm' },
+//       controlPoints: {
+//         desktop: [120, 0, 150, 0, 150, 120],
+//         tablet: [100, 150, 50, 150, 100],
+//         mobile: [100, 130, 100],
+//       },
+//     },
+//     bottomWave: {
+//       wavePreset: { desktop: 'calm', tablet: 'calm', mobile: 'calm' },
+//       controlPoints: {
+//         desktop: [1000, 220, 180],
+//         tablet: [190, 210, 190],
+//         mobile: [180, 210, 180],
+//       },
+//     },
+//     springConfig: { stiffness: 70, damping: 30 },
+//   };
+
+//   return (
+//     <PageTransition label='Project'>
+//       {/* 'pageWrapper' sekarang menjadi area scroll DAN area pelacakan mouse */}
+//       <div
+//         className='pageWrapper'
+//         ref={pageWrapperRef} // Gunakan ref ini untuk mouse container
+//         style={{ position: 'relative' }} // Dibutuhkan agar elemen di dalamnya bisa diposisikan
+//       >
+//         <DateBubble
+//           mode='custom'
+//           scrollYProgress={scrollYProgress}
+//           navigate={navigate} //atur navigate di customStages dibawah
+//           position={position} //atur di UseResponsive
+//           motionConfig={motionConfig} //atur di UseResponsive
+//           customStages={[
+//             {
+//               range: [0, 0.1],
+//               text: 'About',
+//               bg: '#002f45',
+//               baseBg: '#ff4d4d',
+//               color: '#fff',
+//               onClick: () => navigate('/about'),
+//               isHoverable: true,
+//             },
+//             {
+//               range: [0.1, 0.2],
+//               text: 'Home',
+//               bg: '#ff4d4d',
+//               baseBg: '#002f45',
+//               color: '#fff',
+//               onClick: () => navigate('/'),
+//               isHoverable: true,
+//             },
+//             {
+//               range: [0.2, 0.8],
+//               text: 'Home',
+//               bg: 'rgba(0, 0, 0, 0.3)',
+//               color: '#fff',
+//               isHoverable: false,
+//             },
+
+//             {
+//               range: [0.9, 0.95],
+//               text: 'Tap to top',
+//               baseBg: '#ff4d4d',
+//               bg: 'rgba(0, 0, 0, 0.3)',
+//               color: '#fff',
+//               onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+//               isHoverable: true,
+//             },
+//             {
+//               range: [0.9, 1],
+//               text: 'Get in touch',
+//               baseBg: '#002f45',
+//               bg: 'rgba(0, 0, 0, 0.3)',
+//               color: '#fff',
+//               onClick: () => navigate('/contact'),
+//               isHoverable: true,
+//             },
+//           ]}
+//         />
+
+//         {/* 3. BUAT RENDER BERSYARAT
+//           Ini artinya: "HANYA render LiquidGlass jika 'isMobile' bernilai 'false'"
+//         */}
+//         {!isMobile && (
+//           <LiquidGlass
+//             mouseContainer={pageWrapperRef}
+//             elasticity={0.5}
+//             mode={'prominent'}
+//             displacementScale={20}
+//             blurAmount={0}
+//             saturation={100}
+//             aberrationIntensity={10}
+//             cornerRadius={50}
+//             overLight={false}
+//             onClick={() => navigate('/Portfolio')}
+//             style={{
+//               position: 'fixed',
+//               boxSizing: 'border-box',
+//               bottom: '0',
+//               left: '50%',
+//               top: '80%',
+//               zIndex: 10,
+//             }}>
+//             <div
+//               className='p-6'
+//               style={{ textAlign: 'center' }}>
+//               <h1
+//                 style={{
+//                   fontSize: 'clamp(0.6rem, 1rem + 4vw, 2.6rem)',
+//                 }}>
+//                 All Project
+//               </h1>
+//               <p
+//                 style={{
+//                   fontSize: 'clamp(0.8rem, 0.7rem + 2vw, 1rem)',
+//                   maxWidth: '400px',
+//                 }}>
+//                 Driving growth and engagement through data-driven strategies.
+//               </p>
+//             </div>
+//           </LiquidGlass>
+//         )}
+//         <ProjectPage />
+//       </div>
+//     </PageTransition>
+//   );
+// }
+//
+//
+//
+//
 import { useScroll } from 'framer-motion';
 import { useRef, React, useState, useEffect } from 'react';
 import PageTransition from './PageTransition';
 import DateBubble from '../components/DateBubble/DateBubble';
 import LiquidGlass from '../components/LiquidGlass/LiquidGlass';
 import ProjectPage from '../components/project/ProjectPage';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom'; // Pastikan ada useParams
 import useResponsiveBubble from '../components/DateBubble/UseResponsiveBubble';
 import './pages.scss';
 
 /**
  * Hook kustom untuk mengecek media query secara dinamis.
- * @param {string} query - String media query (mis: '(max-width: 768px)')
- * @returns {boolean} - True jika query cocok, false jika tidak.
  */
 function useMediaQuery(query) {
-  // 1. Dapatkan nilai awal saat komponen dimuat
   const [matches, setMatches] = useState(
     () => window.matchMedia(query).matches
   );
 
   useEffect(() => {
     const mediaQueryList = window.matchMedia(query);
-
-    // 2. Buat fungsi listener untuk update state saat layar berubah
     const handleChange = (event) => {
       setMatches(event.matches);
     };
 
-    // 3. Daftarkan listener
-    // 'addEventListener' adalah cara baru, 'addListener' adalah fallback
     if (mediaQueryList.addEventListener) {
       mediaQueryList.addEventListener('change', handleChange);
     } else {
       mediaQueryList.addListener(handleChange);
     }
 
-    // 4. Bersihkan listener saat komponen di-unmount
     return () => {
       if (mediaQueryList.removeEventListener) {
         mediaQueryList.removeEventListener('change', handleChange);
@@ -43,27 +249,16 @@ function useMediaQuery(query) {
         mediaQueryList.removeListener(handleChange);
       }
     };
-  }, [query]); // Efek ini akan dijalankan ulang jika string query berubah
+  }, [query]);
 
   return matches;
 }
 
-const sectionStyle = {
-  width: '100%',
-  height: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: 'white',
-  padding: '2rem',
-  textAlign: 'center',
-  fontSize: 'clamp(1.5rem, 5vw, 3rem)',
-};
-
 export default function ServicesPage() {
   const navigate = useNavigate();
-  // 1. Ganti nama 'ref' menjadi 'scrollRef' agar lebih deskriptif
+  // 1. Ambil ID dari URL untuk mengecek apakah user sedang membuka project
+  const { projectId } = useParams();
+
   const scrollRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: scrollRef,
@@ -71,48 +266,22 @@ export default function ServicesPage() {
   });
   const { position, motionConfig } = useResponsiveBubble('project');
 
-  // 2. Perbaiki sintaks useRef. 'pageWrapper' akan menjadi container mouse
   const pageWrapperRef = useRef(null);
-
   const isMobile = useMediaQuery('(max-width: 768px)');
-
-  // Objek konfigurasi Anda (tidak perlu diubah)
-  const landingPageWaveConfig = {
-    initialY: { desktop: 0, tablet: -50, mobile: 0 },
-    finalY: { desktop: -300, tablet: -220, mobile: -150 },
-    topWave: {
-      wavePreset: { desktop: 'energetic', tablet: 'default', mobile: 'calm' },
-      controlPoints: {
-        desktop: [120, 0, 150, 0, 150, 120],
-        tablet: [100, 150, 50, 150, 100],
-        mobile: [100, 130, 100],
-      },
-    },
-    bottomWave: {
-      wavePreset: { desktop: 'calm', tablet: 'calm', mobile: 'calm' },
-      controlPoints: {
-        desktop: [1000, 220, 180],
-        tablet: [190, 210, 190],
-        mobile: [180, 210, 180],
-      },
-    },
-    springConfig: { stiffness: 70, damping: 30 },
-  };
 
   return (
     <PageTransition label='Project'>
-      {/* 'pageWrapper' sekarang menjadi area scroll DAN area pelacakan mouse */}
       <div
         className='pageWrapper'
-        ref={pageWrapperRef} // Gunakan ref ini untuk mouse container
-        style={{ position: 'relative' }} // Dibutuhkan agar elemen di dalamnya bisa diposisikan
-      >
+        ref={pageWrapperRef}
+        style={{ position: 'relative' }}>
+        {/* --- KOMPONEN BUBBLE (SELALU MUNCUL) --- */}
         <DateBubble
           mode='custom'
           scrollYProgress={scrollYProgress}
-          navigate={navigate} //atur navigate di customStages dibawah
-          position={position} //atur di UseResponsive
-          motionConfig={motionConfig} //atur di UseResponsive
+          navigate={navigate}
+          position={position}
+          motionConfig={motionConfig}
           customStages={[
             {
               range: [0, 0.1],
@@ -139,7 +308,6 @@ export default function ServicesPage() {
               color: '#fff',
               isHoverable: false,
             },
-
             {
               range: [0.9, 0.95],
               text: 'Tap to top',
@@ -161,9 +329,7 @@ export default function ServicesPage() {
           ]}
         />
 
-        {/* 3. BUAT RENDER BERSYARAT
-          Ini artinya: "HANYA render LiquidGlass jika 'isMobile' bernilai 'false'"
-        */}
+        {/* --- KOMPONEN LIQUID GLASS (SELALU MUNCUL DI DESKTOP) --- */}
         {!isMobile && (
           <LiquidGlass
             mouseContainer={pageWrapperRef}
@@ -203,7 +369,26 @@ export default function ServicesPage() {
             </div>
           </LiquidGlass>
         )}
-        <ProjectPage />
+
+        {/* --- KOMPONEN PROJECT PAGE (MUNCUL BERSAMAAN JIKA ADA ID) ---
+            Kita bungkus dengan DIV khusus untuk menghilangkan "Space Kosong".
+            Teknik ini (Breakout) memaksa elemen selebar layar meskipun induknya punya padding.
+        */}
+        {projectId && (
+          <div
+            style={{
+              width: '100vw', // Lebar layar penuh
+              position: 'relative',
+              left: '50%',
+              right: '50%',
+              marginLeft: '-50vw', // Tarik ke kiri mentok
+              marginRight: '-50vw', // Tarik ke kanan mentok
+              zIndex: 1, // Pastikan di bawah Bubble (Bubble biasanya z-index tinggi)
+              marginTop: '5vh', // Beri sedikit jarak dari atas jika perlu
+            }}>
+            <ProjectPage />
+          </div>
+        )}
       </div>
     </PageTransition>
   );

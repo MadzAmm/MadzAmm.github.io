@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react'; // Tambah useMemo
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   motion,
   AnimatePresence,
@@ -13,13 +13,14 @@ import './Activity.scss';
 import Magnetic from '../DateBubble/Magnetic';
 import Wave from '../MorphingWave/Wave';
 import { ButtonReveal } from '../buttonReveal/ButtonReveal';
-import { MasterData } from '../../data/MasterData';
+// import { MasterData } from '../../data/MasterData'; // <-- HAPUS INI
+import { supabase } from '../../lib/supabaseClient'; // <-- GANTI DENGAN INI
 import { AnimateInteractiveText } from '../AnimatedText/AnimateInteractiveText ';
 
 // --- CONFIG & DATA ---
 const listWaveConfig = {
-  initialY: { desktop: 0, tablet: -300, mobile: -400 },
-  finalY: { desktop: -395, tablet: -750, mobile: -550 },
+  initialY: { desktop: 0, tablet: -300, mobile: -500 },
+  finalY: { desktop: -295, tablet: -750, mobile: -550 },
   topWave: {
     wavePreset: { desktop: 'energetic', tablet: 'default', mobile: 'calm' },
     controlPoints: {
@@ -44,11 +45,7 @@ const wrap = (min, max, v) => {
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 };
 
-// Pindahkan ini ke luar komponen agar tidak dihitung ulang
-const activityItems = MasterData.filter((project) => project.isActivity).slice(
-  0,
-  5
-);
+// --- DATA SEKARANG DIKELOLA DI DALAM COMPONENT MENGGUNAKAN STATE ---
 
 const variants = {
   open: { transition: { staggerChildren: 0.1 } },
@@ -76,7 +73,6 @@ const useScrollDirection = () => {
 };
 
 // --- KOMPONEN MARQUEE ---
-// (Tidak berubah, kode Marquee Anda sudah bagus)
 const MarqueeText = ({ text, direction }) => {
   const BASE_VELOCITY = 80;
   const marqueeX = useMotionValue(0);
@@ -115,7 +111,6 @@ const MarqueeText = ({ text, direction }) => {
 };
 
 // --- KOMPONEN ANAK (ListItemContent) ---
-// (Tidak berubah)
 const ListItemContent = ({ project, index, isHovered, scrollDirection }) => {
   return (
     <>
@@ -160,7 +155,6 @@ const ListItemContent = ({ project, index, isHovered, scrollDirection }) => {
 };
 
 // --- KOMPONEN TeaserImage ---
-// (Tidak berubah)
 const TeaserImage = ({ hoveredProject }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   useEffect(() => {
@@ -240,7 +234,7 @@ const ActivityBlock = ({
 }) => {
   const { startX, endX, color, height } = config;
 
-  // OPTIMASI: Langsung transform dari progress, tanpa spring tambahan per item
+  // OPTIMASI 1: Transform langsung tanpa kalkulasi ulang yang berat
   const xScroll = useTransform(
     scrollProgress,
     [0, 1],
@@ -251,13 +245,14 @@ const ActivityBlock = ({
     <motion.div
       className='block-wrapper'
       style={{ height: height }}
-      // OPTIMASI: Menghapus transition yang tidak perlu untuk layout statis
       {...eventHandlers}>
+      {/* OPTIMASI 2: 'willChange' memberi tahu browser untuk menggunakan GPU */}
       <motion.div
         className='block-content'
         style={{
           x: xScroll,
           backgroundColor: color,
+          willChange: 'transform',
         }}>
         {children}
       </motion.div>
@@ -270,18 +265,72 @@ const Activity = () => {
   const navigate = useNavigate();
   const handleNavigate = () => navigate('/portfolio');
 
+  // --- SUPABASE STATE ---
+  const [activityItems, setActivityItems] = useState([]);
+  // ---------------------
+
   const [hoveredItem, setHoveredItem] = useState(null);
   const headerRef = useRef(null);
   const listWrapperRef = useRef(null);
   const waveBotRef = useRef(null);
   const scrollDirection = useScrollDirection();
 
+  // --- FETCH DATA SUPABASE ---
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        // Asumsi: Anda punya kolom 'is_activity' (boolean) atau 'category'
+        // Di sini saya mengambil data yang kategori atau kolomnya menandakan 'activity'
+        // Jika belum ada kolom 'is_activity', silakan sesuaikan query-nya.
+        // Contoh ini mengambil semua project lalu memfilter di JS (seperti kode lama)
+        // atau mengambil langsung jika ada kolom flag.
+
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          // .eq('is_activity', true) // OPTIONAL: Jika sudah ada kolom di DB
+          .order('id', { ascending: true });
+
+        if (error) {
+          console.error('Error fetching activity:', error);
+        } else if (data) {
+          // Mapping Data (Snake Case DB -> Camel Case Component)
+          const mappedData = data.map((item) => ({
+            id: item.id,
+            title: item.title,
+            category: item.category || [],
+            year: item.year,
+            imageUrl: item.image_url,
+            isActivity: item.is_activity || false, // Mapping flag activity
+          }));
+
+          // Filter data yang merupakan activity & batasi 5 item (Sesuai logika lama)
+          // Jika di DB belum ada kolom is_activity, Anda bisa memfilter berdasarkan kategori tertentu
+          const filtered = mappedData
+            .filter(
+              (p) =>
+                p.isActivity === true ||
+                p.category.includes('activity') ||
+                p.category.includes('learning')
+            )
+            .slice(0, 5);
+
+          setActivityItems(filtered);
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err);
+      }
+    };
+
+    fetchActivities();
+  }, []);
+
   // --- Scroll Header ---
   const { scrollYProgress: headerProgress } = useScroll({
     target: headerRef,
     offset: ['start start', 'end start'],
   });
-  // Mengurangi stiffness/damping agar lebih responsif, tidak "berat"
+
   const smoothScrollHeader = useSpring(headerProgress, {
     stiffness: 200,
     damping: 50,
@@ -294,10 +343,13 @@ const Activity = () => {
     target: listWrapperRef,
     offset: ['start end', 'end start'],
   });
-  // OPTIMASI: Spring tunggal untuk seluruh list, bukan per item
+
+  // OPTIMASI 3: Penyesuaian Spring agar lebih smooth (tidak patah-patah)
+  // Stiffness lebih rendah = lebih 'malas' tapi mulus. Mass rendah = lebih ringan.
   const smoothScrollList = useSpring(listProgress, {
-    stiffness: 200,
-    damping: 50,
+    stiffness: 120, // Sedikit dikurangi dari 200 agar transisi pixel lebih halus
+    damping: 30, // Damping disesuaikan
+    mass: 0.1, // Massa ringan agar respon cepat tapi tetap smooth
     restDelta: 0.001,
   });
 
@@ -316,9 +368,12 @@ const Activity = () => {
   const handleMouseLeaveItem = () => setHoveredItem(null);
   const handleListItemClick = (project) => navigate(`/project/${project.id}`);
 
-  // OPTIMASI: useMemo untuk blockLayout agar tidak dihitung ulang setiap render
+  // OPTIMASI 4: useMemo layout yang bergantung pada state activityItems
   const blockLayout = useMemo(() => {
     const layout = [];
+    // Jika data belum siap (fetching), return array kosong agar tidak error
+    if (!activityItems || activityItems.length === 0) return layout;
+
     if (activityItems.length >= 5) {
       layout.push(
         {
@@ -392,7 +447,7 @@ const Activity = () => {
       });
     }
     return layout;
-  }, []); // Dependensi kosong karena activityItems statis di luar
+  }, [activityItems]); // Dependensi ke activityItems agar update saat fetch selesai
 
   return (
     <motion.div

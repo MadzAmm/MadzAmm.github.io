@@ -153,7 +153,7 @@ const Wave = ({
       </defs>
       <motion.path
         d={d}
-        fill='rgba(0, 0, 0, 0.7)'
+        fill='rgba(0, 0, 0, 0.3)'
         filter={`url(#${blurId})`}
         style={{ y: 50 }}
       />

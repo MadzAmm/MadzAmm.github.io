@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import './Footer.scss';
 import Magnetic from '../../DateBubble/Magnetic';
 import { AnimateInteractiveText } from '../../AnimatedText/AnimateInteractiveText ';
-
+import VisitorStats from './VisitorStats';
 const Footer = () => {
   const [localTime, setLocalTime] = useState('');
 
@@ -42,6 +42,7 @@ const Footer = () => {
           <p>{localTime} GMT+7</p>
         </div>
       </div>
+      <VisitorStats />
       <div className='bottomLine'>
         <div className='footerBottom'>
           <h4>SOCIALS</h4>

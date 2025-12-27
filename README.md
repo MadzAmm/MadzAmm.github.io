@@ -77,7 +77,7 @@ _Enam provider dengan 30 lebih model ai yang ditanamkan untuk mekanisme cascade 
 
 **6. Cloudflare**
 
--  `@cf-gemma`: '@cf/google/gemma-3-12b-it'
+- `@cf-gemma`: '@cf/google/gemma-3-12b-it'
 - `@cf-gpt`: '@cf/openai/gpt-oss-120b'
 - `@cf-llama`: '@cf/meta/llama-3.3-70b-instruct-fp8-fast'
 - `@cf-mistral`: '@cf/mistralai/mistral-small-3.1-24b-instruct'
@@ -96,16 +96,12 @@ _Enam provider dengan 30 lebih model ai yang ditanamkan untuk mekanisme cascade 
 - ▲ **Vercel Serverless Functions** (Node.js)
 - 🌐 **OpenAI SDK** (Standardisasi API)
 
-
-
-
 - 🧠 **Google Generative AI SDK** & **Groq SDK**
 - 🛡️ **CORS** (Keamanan akses)
 
 ## 📸 Galeri
 
-|            Mode Chat Aktif            |      
-| :-----------------------------------: | 
+| Mode Chat Aktif |
+| :-------------: |
 
 https://github.com/user-attachments/assets/1870ff75-b5b4-46a9-acfe-fec0743d43e5
-
