@@ -3,7 +3,7 @@
   // flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: hsl(160, 22%, 78%);
+  background-color: #fff7ed;
   color: #002f45;
   z-index: 999;
 
@@ -13,7 +13,7 @@
     bottom: 0;
     right: 0;
     width: 100vw;
-    background: white;
+    background: #fff7ed;
 
     @mixin slot-flipper-effect {
       .slot-viewport {
