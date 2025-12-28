@@ -155,13 +155,43 @@ const SlotText = ({ children }) => (
 
 const marqueeText =
   'Let us collaborate and create something exceptional together.';
+// --- GANTI BAGIAN INI (Baris 206-214) ---
+
 const variants = {
-  open: { transition: { staggerChildren: 0.1 } },
-  closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
+  open: {
+    opacity: 1,
+    transition: {
+      // Jeda antar elemen muncul (cepat seperti About)
+      staggerChildren: 0.07,
+      // Sedikit delay di awal agar tidak kaget
+      delayChildren: 0,
+    },
+  },
+  closed: {
+    opacity: 0,
+    transition: {
+      staggerChildren: 0.05,
+      staggerDirection: -1,
+    },
+  },
 };
+
 const itemVariants = {
-  open: { y: 0, opacity: 1 },
-  closed: { y: 300, opacity: 0 },
+  open: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: 'tween',
+      // Kurva halus "Apple-style" yang kita pakai di About
+      ease: [0.25, 0.1, 0.25, 1],
+      duration: 0.5,
+    },
+  },
+  // Jarak tempuh dikurangi dari 300 menjadi 30 agar lebih 'sat-set'
+  closed: {
+    y: 30,
+    opacity: 0,
+  },
 };
 
 // --- KOMPONEN BARU & YANG DIPERBARUI UNTUK MODE LIST ---

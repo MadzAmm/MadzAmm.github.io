@@ -1,5 +1,5 @@
 import React, { useRef, useMemo } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
 // Komponen Section yang sudah diperbaiki
 const Section = ({
@@ -13,8 +13,8 @@ const Section = ({
   const duration = end - start;
   const inputRange = [start, start + duration * 0.5, end, end + duration];
   const y = useTransform(scrollYProgress, inputRange, [
-    '60%',
-    '0%',
+    '30%',
+    '10%',
     '0%',
     '-100%',
   ]);
@@ -91,6 +91,12 @@ export const ParallaxScroller = ({ children, defaultSectionHeight = 75 }) => {
     offset: ['start start', 'end end'],
   });
 
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100, // Kekakuan pegas (makin kecil makin "berat")
+    damping: 30, // Redaman (makin kecil makin membal, makin besar makin kaku)
+    restDelta: 0.001, // Sensitivitas berhenti
+  });
+
   return (
     <div
       ref={containerRef}
@@ -109,7 +115,7 @@ export const ParallaxScroller = ({ children, defaultSectionHeight = 75 }) => {
         {React.Children.map(children, (child, i) => (
           <Section
             key={i}
-            scrollYProgress={scrollYProgress}
+            scrollYProgress={smoothProgress}
             start={sectionProgressRanges[i]?.start || 0}
             end={sectionProgressRanges[i]?.end || 0}
             zIndex={totalSections - i}

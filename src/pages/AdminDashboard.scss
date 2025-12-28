@@ -9,6 +9,7 @@ $text-dark: #1e293b;
 $text-light: #f1f5f9;
 $text-muted: #64748b;
 $border: #e2e8f0;
+$white: #ffffff;
 
 @keyframes moveBackground {
   0% {
@@ -68,32 +69,32 @@ $border: #e2e8f0;
       flex-wrap: wrap;
 
       button {
-        padding: 0.6rem 1.2rem;
-        border-radius: 8px;
-        border: 1px solid #ffffff30;
-        background: $card-bg;
+        /* Styling tombol dibuat flat seperti link atau button standar */
+        padding: 0.5rem 1rem;
+        border: 1px solid transparent;
+        background: transparent;
         color: $text-muted;
-        font-weight: 600;
+        font-size: 0.9rem;
+        font-weight: 500;
         cursor: pointer;
-        transition: all 0.2s ease;
+        border-radius: 4px;
 
         &:hover {
-          background: darken($card-bg, 5%);
+          background-color: #f0f0f0;
+          color: $text-dark;
         }
 
         &.active {
-          background: $text-dark;
-          color: white;
-          @include premium-bg;
+          background-color: #e5e7eb;
+          color: $text-dark;
+          font-weight: 600;
+          border: 1px solid $border;
         }
 
         &.btn-logout {
-          background: $card-bg;
-
-          border-color: #fecaca;
+          color: $danger;
           &:hover {
-            background: #fecaca;
-            color: $danger;
+            background-color: #fef2f2;
           }
         }
       }
@@ -262,12 +263,244 @@ $border: #e2e8f0;
     padding: 1rem;
 
     .dashboard-header {
-      flex-direction: column;
-      align-items: flex-start;
-
       .tab-controls {
         width: 100%;
         justify-content: space-between;
+      }
+    }
+  }
+}
+
+/* =========================================
+   STYLE 1: HAMBURGER & MOBILE MENU (CLEAN)
+   ========================================= */
+
+.hamburger-btn {
+  display: none; /* Hidden di Desktop */
+  flex-direction: column;
+  justify-content: space-around;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+
+  span {
+    width: 100%;
+    height: 2px;
+    background: #333; /* Garis hitam standar */
+    transition: all 0.3s linear;
+  }
+
+  &.open {
+    span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -6px);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    .hamburger-btn {
+      display: flex;
+    }
+
+    .tab-controls {
+      /* Dropdown Menu Mobile - TAMPILAN STANDAR (PUTIH) */
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 200px;
+
+      background-color: $white; /* Background Putih */
+      border: 1px solid $border; /* Border abu tipis */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow halus standar */
+      border-radius: 4px;
+
+      flex-direction: column;
+      padding: 0.5rem 0; /* Padding vertikal seperti <select> */
+
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+      transition: all 0.2s ease;
+      z-index: 1000;
+
+      &.mobile-visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      button {
+        /* Item Menu Mobile */
+        width: 100%;
+        text-align: left;
+        border-radius: 0;
+        border: none;
+        padding: 0.5rem 1rem;
+        color: $text-dark;
+        font-weight: 400;
+
+        &:hover,
+        &.active {
+          background-color: $primary; /* Highlight Biru seperti native select */
+          color: $white;
+          border: none;
+        }
+
+        &.btn-logout {
+          border-top: 1px solid $border;
+          margin-top: 0.5rem;
+          color: $text-dark;
+          &:hover {
+            background-color: $danger;
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+}
+/* --- EXCEL STYLE FILTER --- */
+
+.table-responsive {
+  /* PENTING: Supaya dropdown bisa keluar dari area tabel */
+  overflow: visible !important;
+  /* Tapi jika tabelnya lebar sekali di mobile, ini bisa bikin layout aneh. 
+     Solusi terbaik untuk dropdown tabel adalah 'overflow-x: auto' pada container, 
+     tapi dropdown harus 'position: fixed' atau pakai React Portal. 
+     Untuk simplicity sekarang kita pakai absolute relative ke TH dulu. 
+  */
+  @media (max-width: 768px) {
+    overflow-x: auto !important;
+  }
+}
+/* =========================================
+   STYLE 2: EXCEL FILTER DROPDOWN (CLEAN)
+   ========================================= */
+
+.filterable-th {
+  position: relative;
+  cursor: default;
+  padding-right: 2rem !important;
+
+  .th-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filter-icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #999; /* Abu muda saat tidak aktif */
+    padding: 0;
+
+    &:hover {
+      color: #333;
+    }
+  }
+
+  &.filter-active .filter-icon-btn {
+    color: $primary; /* Biru saat aktif */
+  }
+}
+
+/* Ini Style untuk Dropdown Filter di Tabel */
+.excel-filter-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 2px;
+
+  /* Styling dibuat mirip Native Select Option */
+  background: $white;
+  border: 1px solid $border;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+
+  min-width: 180px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  font-weight: normal; /* Reset font bold dari th */
+
+  .filter-actions {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid $border;
+    margin-bottom: 0.5rem;
+
+    .btn-clear {
+      width: 100%;
+      background: #f1f1f1;
+      border: 1px solid #ccc;
+      color: #333;
+      padding: 4px;
+      font-size: 0.75rem;
+      border-radius: 2px;
+      cursor: pointer;
+
+      &:hover:not(:disabled) {
+        background: #e2e2e2;
+      }
+      &:disabled {
+        color: #aaa;
+        background: #f9f9f9;
+        border-color: #eee;
+        cursor: default;
+      }
+    }
+  }
+
+  .filter-options-list {
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* Rapat seperti list option */
+
+    /* Scrollbar standar browser */
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 3px;
+    }
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: $text-dark;
+      cursor: pointer;
+      padding: 4px 6px;
+
+      &:hover {
+        background-color: $primary; /* Biru saat hover */
+        color: $white;
+      }
+
+      input[type='checkbox'] {
+        margin: 0;
+        cursor: pointer;
+      }
+
+      /* Agar label text memenuhi ruang */
+      span {
+        flex: 1;
       }
     }
   }

@@ -2,10 +2,7 @@
   position: relative;
   width: 100vw;
 
-  margin-left: -30px;
-
-  padding-top: calc(env(safe-area-inset-top));
-
+  padding-top: calc(env(safe-area-inset-top) + 1%);
   padding-bottom: env(safe-area-inset-bottom);
 
   padding-left: calc(env(safe-area-inset-left));

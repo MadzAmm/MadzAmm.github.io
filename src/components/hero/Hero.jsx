@@ -57,9 +57,8 @@ const AnimatedBlock = ({ scrollProgress, config }) => {
       animate={{ x: 0 }} // Animasikan ke '0'
       transition={{
         type: 'spring', // Ini akan memberikan efek 'kenyal'
-        stiffness: 400, // Seberapa kaku pegasnya
-        damping: 25, // Seberapa cepat berhenti memantul
-        delay: 0.1,
+        stiffness: 50, // Seberapa kaku pegasnya
+        damping: 8, // Seberapa cepat berhenti memantul
       }}>
       {/* 4. INI ADALAH KONTEN/BALOK LAMA ANDA */}
       {/* Bertugas untuk animasi "scroll" */}

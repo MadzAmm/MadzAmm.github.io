@@ -120,11 +120,15 @@ $font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
         width: 120%; // Lebih lebar dari layar untuk efek parallax
         height: 100%;
         display: flex;
-
         align-items: center;
+        padding: 0.5rem;
         justify-content: start; // Konten (tombol) di tengah blok
         border-radius: 50px; // Membuat blok lonjong/bulat
         // will-change: transform; // Optimasi performa
+        @media (max-width: 768px) {
+          height: 65%;
+          padding: 1rem;
+        }
 
         // Styling konten di dalam blok (Tombol & Label)
         .contact-item-wrapper {
@@ -157,7 +161,7 @@ $font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
 
 .info-button {
   background-color: $bg-color;
-  border: 1px solid $border-color;
+  border: 1px solid #ffffff45;
   border-radius: 9999px;
   padding: 1.5rem 1.5rem;
   font-size: 1.3rem; // 18px

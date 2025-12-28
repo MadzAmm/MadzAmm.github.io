@@ -1,0 +1,75 @@
+// VisitorStats.scss
+
+.visitor-stats-container {
+  //   margin-top: 1.5rem;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: start; // Rata tengah secara vertikal
+  font-family: 'Courier New', Courier, monospace; // Monospace vibe
+  color: rgba(255, 255, 255, 0.8);
+  @media (max-width: 768px) {
+    border-top: 1.3px solid rgba(255, 255, 255, 0.2);
+    padding-top: 18px;
+    margin-top: 2px;
+    width: 100%;
+  }
+
+  // Styling Judul
+  .visitor-title {
+    margin: 0 0 0.6rem 0;
+    font-size: 0.6rem;
+    font-weight: 600;
+    // letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #aaa; // Warna judul agak redup biar elegan
+    // border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  // Container Angka
+  .visitor-metrics {
+    display: flex;
+    flex-wrap: wrap; // Agar aman di HP (turun ke bawah kalau sempit)
+    justify-content: flex-start;
+    gap: 1.5rem; // Jarak antar item
+
+    @media (max-width: 768px) {
+      //   gap: 1rem; // Jarak lebih rapat di HP
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem; // Jarak baris 1rem, jarak kolom 0.5rem
+      justify-items: start; // Item di tengah kolom
+      width: 100%;
+    }
+  }
+
+  // Item per Statistik
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #fff; // Terang saat di-hover
+    }
+
+    .label {
+      font-weight: 400;
+      opacity: 0.8;
+      @media (max-width: 480px) {
+        font-size: 0.75rem;
+      }
+    }
+
+    .value {
+      font-weight: 700;
+      color: #fff; // Angka selalu putih terang
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      @media (max-width: 480px) {
+        font-size: 0.75rem;
+      }
+    }
+  }
+}

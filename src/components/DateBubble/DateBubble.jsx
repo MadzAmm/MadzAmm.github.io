@@ -874,7 +874,7 @@ const DateBubble = ({
     {
       range: [0.9, Infinity],
       text: 'Get in Touch',
-      hoverText: 'Tanya Saya!',
+      hoverText: 'Ask Me!',
       bg: '#0b60df33',
       baseBg: '#002f45',
       color: '#fff',

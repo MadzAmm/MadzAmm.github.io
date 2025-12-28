@@ -333,7 +333,13 @@
 //
 //
 import React, { useState, useEffect, useRef } from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  ScrollRestoration,
+} from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 // --- IMPORTS PAGES ---

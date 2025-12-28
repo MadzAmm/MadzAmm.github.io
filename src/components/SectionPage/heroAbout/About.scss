@@ -197,7 +197,6 @@
 // Section Tipografi
 .typography-section-reworked {
   height: 120vh;
-
   position: sticky;
   top: -15vh;
   z-index: 1;
@@ -230,6 +229,9 @@
   justify-content: center;
   z-index: 5;
   text-align: left; // Atur teks rata kiri
+  @media (max-width: 768px) {
+    margin-bottom: -13vh;
+  }
 
   @media (max-width: 992px) {
     padding-right: 0;
@@ -246,6 +248,9 @@
     font-weight: 100;
     line-height: 1.2;
     margin: 0 0 2vh 0;
+    @media (max-width: 768px) {
+      margin: 2vh 0 0 0;
+    }
   }
   .typography-paragraph {
     font-size: clamp(0.7rem, 1.5vw, 1rem);
@@ -275,7 +280,7 @@
     width: 100%;
     order: 0; // Gambar di atas teks di mobile
   }
-  @media (max-width: 760px) {
+  @media (max-width: 768px) {
     max-width: 100%;
     margin-bottom: -8vh;
   }
@@ -299,7 +304,11 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    margin-top: 2vh;
     z-index: 0;
+    @media (max-width: 768px) {
+      margin-top: -2vh;
+    }
   }
 }
 

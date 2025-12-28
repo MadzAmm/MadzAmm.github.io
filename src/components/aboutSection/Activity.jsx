@@ -19,8 +19,8 @@ import { AnimateInteractiveText } from '../AnimatedText/AnimateInteractiveText '
 
 // --- CONFIG & DATA ---
 const listWaveConfig = {
-  initialY: { desktop: 0, tablet: -300, mobile: -500 },
-  finalY: { desktop: -295, tablet: -750, mobile: -550 },
+  initialY: { desktop: 0, tablet: -300, mobile: -400 },
+  finalY: { desktop: -295, tablet: -750, mobile: -400 },
   topWave: {
     wavePreset: { desktop: 'energetic', tablet: 'default', mobile: 'calm' },
     controlPoints: {
@@ -347,10 +347,13 @@ const Activity = () => {
   // OPTIMASI 3: Penyesuaian Spring agar lebih smooth (tidak patah-patah)
   // Stiffness lebih rendah = lebih 'malas' tapi mulus. Mass rendah = lebih ringan.
   const smoothScrollList = useSpring(listProgress, {
-    stiffness: 120, // Sedikit dikurangi dari 200 agar transisi pixel lebih halus
-    damping: 30, // Damping disesuaikan
-    mass: 0.1, // Massa ringan agar respon cepat tapi tetap smooth
-    restDelta: 0.001,
+    type: 'tween',
+    duration: 0.8, // Wajib set durasi (detik)
+    ease: 'easeOut', // Mengatur ritme kecepatan
+    // stiffness: 120, // Sedikit dikurangi dari 200 agar transisi pixel lebih halus
+    // damping: 30, // Damping disesuaikan
+    // mass: 0.1, // Massa ringan agar respon cepat tapi tetap smooth
+    // restDelta: 0.001,
   });
 
   // --- Touch Handlers ---

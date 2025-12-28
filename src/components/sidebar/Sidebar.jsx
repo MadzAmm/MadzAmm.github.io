@@ -10,7 +10,7 @@ const variants = {
     transition: { type: 'spring', stiffness: 50, damping: 10 },
   },
   closed: {
-    clipPath: 'circle(0 at calc(100% - 50px) 50px)',
+    clipPath: 'circle(0 at calc(100% - 0px) 50px)',
     transition: { delay: 0, type: 'spring', stiffness: 300, damping: 40 },
   },
 };

@@ -19,8 +19,6 @@ const sectionStyle = {
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  color: 'white',
-  padding: '2rem',
   textAlign: 'center',
   fontSize: 'clamp(1.5rem, 5vw, 3rem)',
 };

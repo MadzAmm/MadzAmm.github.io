@@ -108,9 +108,8 @@ const LikeButton = ({ projectId }) => {
         display: 'flex',
         alignItems: 'center',
         gap: '15px',
-        marginTop: '2rem',
+        marginTop: '2.3rem',
         paddingTop: '1rem',
-        borderTop: '1px solid rgba(0,0,0,0.1)',
       }}>
       {/* --- VIEW COUNTER (Mata) --- */}
       <div

@@ -238,6 +238,9 @@
     top: 20px;
     cursor: pointer;
     z-index: 500;
+    @media (max-width: 768px) {
+      top: calc(env(safe-area-inset-top) + 30px);
+    }
   }
 }
 

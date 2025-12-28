@@ -144,9 +144,9 @@
 
   // --- MOBILE RESPONSIVE (Max 768px) ---
   @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
     gap: 1.4rem; // Jarak antar item lebih rapat di HP
-    margin-top: -0.5rem;
+    margin-top: 2rem;
     margin-bottom: -1rem;
     padding-inline: 10px;
   }
@@ -179,6 +179,7 @@
     @media (max-width: 768px) {
       margin-top: 0.1rem;
       font-size: 0.5rem;
+      margin-left: 10px;
     }
   }
 
@@ -199,6 +200,7 @@
       text-align: left;
       margin-top: -0.5rem;
       font-size: 0.6rem;
+      margin-left: 10px;
     }
   }
 
@@ -217,6 +219,7 @@
       text-align: left;
       margin-top: -0.5rem;
       font-size: 0.6rem;
+      margin-left: 10px;
     }
 
     // Efek Hover: Garis bawah muncul & warna berubah
@@ -285,10 +288,10 @@
 }
 .project-title {
   font-family: var(--font-heading);
-  font-size: clamp(1rem, 12vw, 7.5rem);
+  font-size: clamp(1rem, 12vw, 5rem);
   font-weight: 700;
   line-height: 0.95;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.05em;
   margin: 0 0 8vh 0;
 }
 .project-meta {
@@ -573,7 +576,10 @@
     flex: none;
     width: 100%;
     order: 1;
-    margin-bottom: -20vh;
+  }
+
+  @media (max-width: 768px) {
+    height: 85%;
   }
 }
 .typography-image-container {
@@ -602,6 +608,9 @@
   overflow: hidden;
   border-radius: 8px;
   isolation: isolate;
+  @media (max-width: 768px) {
+    margin-bottom: -3vh;
+  }
 
   &::after {
     @include inner-depth-effect;
@@ -613,8 +622,12 @@
     inset: 0;
     width: 100%;
     height: 115%;
+    margin-top: -5vh;
     object-fit: cover;
     z-index: 0;
+    @media (max-width: 768px) {
+      margin-top: -4vh;
+    }
   }
 }
 .typography-heading {
@@ -639,8 +652,9 @@
     max-width: 90%;
     margin: 4vh 0 -5vh 0;
   }
-  @media (max-width: 600px) {
-    margin: 4vh 0 -6vh 0;
+  @media (max-width: 768px) {
+    margin: 4vh 0 -10vh 0;
+    padding-bottom: 5px;
   }
 }
 
@@ -660,10 +674,13 @@
     font-size: 13px;
     color: var(--text-muted);
     margin-bottom: 2rem;
+    @media (max-width: 768px) {
+      margin: -10vh 0 10vh 0;
+    }
   }
   h2 {
     font-family: var(--font-heading);
-    font-size: clamp(2.5rem, 12vw, 7rem);
+    font-size: clamp(2rem, 12vw, 6rem);
     font-weight: 700;
     line-height: 1;
     letter-spacing: -0.03em;
