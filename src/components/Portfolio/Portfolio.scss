@@ -16,6 +16,7 @@ $reduced-gap: 2px;
   background-color: $primary-bg;
   color: $primary-text;
   min-height: 100vh;
+  margin-top: -2%;
   &.slide-mode-active,
   &.list-mode-active,
   &:not(.list-mode-active):not(.slide-mode-active) {
