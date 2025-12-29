@@ -52,7 +52,6 @@ export default function PortfolioPage() {
           style={{
             zIndex: '3',
             position: 'relative',
-            backgroundColor: '#fff7ed',
           }}>
           <Portfolio />
         </main>

@@ -1,22 +1,25 @@
 .pageWrapper {
-  min-height: 100vh;
+  position: relative;
+  width: 100vw;
+
   padding-top: calc(env(safe-area-inset-top) + 1%);
   padding-bottom: env(safe-area-inset-bottom);
+
+  padding-left: calc(env(safe-area-inset-left));
+
+  padding-right: calc(env(safe-area-inset-right));
+
+  min-height: 100dvh;
 }
 
 .coaching-container {
   position: relative;
-
   z-index: 20;
-
-  background-color: #fff7ed;
 }
 
 .parallax-wrapper {
   margin-top: -15vh;
-
   position: relative;
-
   z-index: 10;
 }
 

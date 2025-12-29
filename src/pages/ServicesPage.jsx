@@ -273,8 +273,7 @@ export default function ServicesPage() {
     <PageTransition label='Project'>
       <div
         className='pageWrapper'
-        ref={pageWrapperRef}
-        style={{ position: 'relative' }}>
+        ref={pageWrapperRef}>
         {/* --- KOMPONEN BUBBLE (SELALU MUNCUL) --- */}
         <DateBubble
           mode='custom'

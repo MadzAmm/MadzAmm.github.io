@@ -268,7 +268,6 @@ const CoachingApproach = () => {
 // Styling akhir
 const styles = {
   mainContainer: {
-    backgroundColor: 'rgba(255, 247, 237, 0)',
     padding: '80px clamp(20px, 5vw, 60px)',
     fontFamily: "'Helvetica Neue', Arial, sans-serif",
     color: '#002f45',

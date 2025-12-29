@@ -1,8 +1,755 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Syne:wght@500;700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Syne:wght@500;700&display=swap');
+
+// // Variabel
+// :root {
+//   --bg-dark: #111111;
+//   --text-light: #eaeaea;
+//   --text-dark: #1c1c1c;
+//   --text-muted: #888888;
+//   --font-body: 'Inter', sans-serif;
+//   --font-heading: 'Syne', sans-serif;
+//   --depth-opacity: 0.1;
+//   --depth-size: 80px;
+// }
+
+// // Gaya Dasar
+// .page-container {
+//   color: var(--text-dark);
+//   font-family: var(--font-body);
+//   cursor: none;
+//   margin-top: -4%;
+//   margin-bottom: -32px;
+//   // overflow-x: hidden; // HANYA X
+//   // Pastikan tidak ada overflow-y: hidden/scroll/auto di parent manapun
+//   @media (max-width: 768px) {
+//     margin-top: -12%;
+//   }
+// }
+
+// // ==========================================
+// // PREMIUM SKELETON STYLES
+// // ==========================================
+
+// // 1. Animasi Shimmer yang lebih halus & warm
+// @keyframes premium-shimmer {
+//   0% {
+//     background-position: -200% 0;
+//   }
+//   100% {
+//     background-position: 200% 0;
+//   }
+// }
+
+// .skeleton-loading-container {
+//   width: 100%;
+//   min-height: 100vh;
+//   padding: 0;
+//   margin: 0;
+//   overflow: hidden;
+//   cursor: wait;
+// }
+
+// // 2. Base Class untuk semua elemen skeleton
+// .sk-item {
+//   // Gradient Cream ke Putih (Bukan Abu-abu)
+//   background: linear-gradient(
+//     90deg,
+//     #efe5d8 0%,
+//     // Sedikit lebih gelap dari bg-light
+//     #fbf4ea 50%,
+//     // Highlight
+//     #efe5d8 100%
+//   );
+//   background-size: 200% 100%;
+//   animation: premium-shimmer 2s infinite linear; // Animasi lebih pelan & elegan
+//   border-radius: 4px;
+// }
+
+// // 3. Spesifik Bagian Title (Meniru Font Syne Besar)
+// .sk-title {
+//   width: 60%; // Tidak full width biar terlihat seperti teks
+//   height: clamp(2.5rem, 10vw, 7.5rem); // Sama persis dengan font asli
+//   margin-bottom: 60px;
+//   border-radius: 8px;
+
+//   @media (max-width: 768px) {
+//     width: 80%;
+//   }
+// }
+
+// // 4. Spesifik Meta Data
+// .sk-meta-grid {
+//   display: grid;
+//   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+//   gap: 2rem;
+//   width: 100%;
+//   padding-top: 2rem;
+//   border-top: 1px solid rgba(0, 0, 0, 0.05); // Garis tipis halus
+// }
+
+// .sk-meta-col {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+// }
+
+// .sk-label {
+//   width: 80px;
+//   height: 12px;
+//   opacity: 0.6;
+// }
+
+// .sk-value {
+//   width: 140px;
+//   height: 20px;
+// }
+
+// // 5. Spesifik Hero Image (Penting!)
+// .sk-hero-image {
+//   width: 100%;
+//   height: 100vh; // Full screen height
+//   margin-top: 5vh;
+//   clip-path: polygon(
+//     0 0,
+//     100% 0,
+//     100% 90%,
+//     0% 100%
+//   ); // Opsional: Sedikit styling artistik
+// }
+
+// // ==========================================
+// // PROJECT SPECIFICS (REMASTERED)
+// // ==========================================
+
+// .project-specifics-container {
+//   width: 100%;
+//   margin-top: -2rem;
+//   @media (max-width: 768px) {
+//     margin-top: 1rem;
+//   }
+// }
+
+// .specs-grid {
+//   display: grid;
+//   width: 100%;
+//   margin-top: 5rem;
+
+//   // DESKTOP: Grid otomatis menyesuaikan.
+//   // Minimal lebar kolom 220px. Jika layar luas, akan jadi 2 atau 3 kolom.
+//   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+
+//   // Jarak antar elemen
+//   column-gap: 4rem; // Jarak horizontal yang lega
+//   row-gap: 0.8rem; // Jarak vertikal yang cukup
+
+//   // --- MOBILE RESPONSIVE (Max 768px) ---
+//   @media (max-width: 768px) {
+//     grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+//     gap: 1.4rem; // Jarak antar item lebih rapat di HP
+//     margin-top: 2rem;
+//     margin-bottom: -1rem;
+//     padding-inline: 10px;
+//   }
+// }
+
+// .spec-item {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: flex-start;
+//   gap: 0.5rem; // Jarak antara Label dan Value
+
+//   // Garis pemisah di atas setiap item (Style Premium Minimalis)
+//   border-top: 1px solid rgba(0, 0, 0, 0.1);
+//   padding-top: 0.5rem;
+//   position: relative;
+//   transition: all 0.3s ease;
+//   @media (max-width: 768px) {
+//     margin-top: -1rem;
+//   }
+
+//   // 1. LABEL (Judul Kecil: TOOLS, FRONTEND, dll)
+//   .spec-label {
+//     font-family: 'Inter', sans-serif; // Atau font body Anda
+//     font-size: 0.6rem;
+//     font-weight: 600;
+//     text-transform: uppercase;
+//     letter-spacing: 0.1em; // Tracking luas agar elegan
+//     color: #888; // Warna abu-abu (muted)
+//     margin-bottom: 0.2rem;
+//     @media (max-width: 768px) {
+//       margin-top: 0.1rem;
+//       font-size: 0.5rem;
+//       margin-left: 10px;
+//     }
+//   }
+
+//   // 2. VALUE (Isi: React, Python, Link...)
+//   .spec-value {
+//     font-family: 'Inter', sans-serif;
+//     font-size: 0.8rem; // Ukuran standar agar terbaca jelas
+//     font-weight: normal;
+//     color: #2b2a2a; // Warna gelap kontras
+//     line-height: 1.5;
+
+//     // Mencegah teks panjang (seperti URL) merusak layout mobile
+//     word-wrap: break-word;
+//     word-break: break-word;
+//     overflow-wrap: break-word;
+//     max-width: 100%;
+//     @media (max-width: 768px) {
+//       text-align: left;
+//       margin-top: -0.5rem;
+//       font-size: 0.6rem;
+//       margin-left: 10px;
+//     }
+//   }
+
+//   // 3. LINKS (Styling khusus untuk <a>)
+//   a {
+//     display: inline-flex;
+//     align-items: center;
+//     gap: 6px;
+//     font-size: 0.7rem;
+//     color: #111;
+//     text-decoration: none;
+//     border-bottom: 1px solid transparent;
+//     transition: all 0.2s ease;
+//     width: fit-content;
+//     @media (max-width: 768px) {
+//       text-align: left;
+//       margin-top: -0.5rem;
+//       font-size: 0.6rem;
+//       margin-left: 10px;
+//     }
+
+//     // Efek Hover: Garis bawah muncul & warna berubah
+//     &:hover {
+//       color: #004564; // Warna aksen Anda
+//       border-bottom: 1px solid #004564;
+//       opacity: 1;
+//     }
+
+//     // Panah kecil (↗)
+//     &::after {
+//       content: '↗';
+//       font-size: 1em;
+//       transition: transform 0.2s ease;
+//     }
+
+//     &:hover::after {
+//       transform: translate(2px, -5px); // Panah bergerak sedikit saat hover
+//     }
+//   }
+
+//   // 4. COLOR PALETTE (Khusus Design)
+//   .palette-wrapper {
+//     display: flex;
+//     flex-wrap: wrap;
+//     gap: 8px;
+//     margin-top: 4px;
+
+//     .color-circle {
+//       width: 24px;
+//       height: 24px;
+//       border-radius: 50%;
+//       border: 1px solid rgba(0, 0, 0, 0.1);
+//       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+//       transition: transform 0.2s;
+//       @media (max-width: 768px) {
+//         width: 15px;
+//         height: 15px;
+//       }
+
+//       &:hover {
+//         transform: scale(1.1);
+//       }
+//     }
+//   }
+// }
+
+// // Kursor Kustom
+// .snakeCursor {
+//   @media (max-width: 900px) {
+//     display: none; // Tetap nonaktif di tablet/mobile
+//   }
+//   @media (max-width: 760px) {
+//     display: none; // Tetap nonaktif di tablet/mobile
+//   }
+// }
+
+// // Section Intro
+// .project-intro {
+//   min-height: 60vh;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   padding: 15vh 6vw 10vh 6vw;
+//   box-sizing: border-box;
+//   @media (max-width: 768px) {
+//     margin-top: -4%;
+//   }
+// }
+// .project-title {
+//   font-family: var(--font-heading);
+//   font-size: clamp(1rem, 12vw, 5rem);
+//   font-weight: 700;
+//   line-height: 0.95;
+//   letter-spacing: -0.05em;
+//   margin: 0 0 8vh 0;
+// }
+// .project-meta {
+//   display: grid;
+//   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+//   gap: 2rem;
+//   width: 100%;
+//   div {
+//     border-top: 1px solid #ddd;
+//     padding: 0.8rem 2rem;
+//   }
+//   span {
+//     font-size: 11px;
+//     color: var(--text-muted);
+//     text-transform: uppercase;
+//     letter-spacing: 0.05em;
+//   }
+//   p {
+//     margin: 0.4rem 0 0 0;
+//     font-size: 15px;
+//   }
+//   @media (max-width: 600px) {
+//     gap: 1rem;
+//     div {
+//       padding: 0.5rem 1rem;
+//     }
+//   }
+// }
+
+// // Mixin Efek Kedalaman
+// @mixin inner-depth-effect {
+//   content: '';
+//   position: absolute;
+//   inset: 0;
+//   z-index: 1;
+//   pointer-events: none;
+//   background: radial-gradient(
+//       circle at center,
+//       transparent 60%,
+//       rgba(0, 0, 0, var(--depth-opacity)) 100%
+//     ),
+//     linear-gradient(
+//       to top,
+//       rgba(0, 0, 0, var(--depth-opacity)) 0%,
+//       transparent var(--depth-size)
+//     ),
+//     linear-gradient(
+//       to bottom,
+//       rgba(0, 0, 0, var(--depth-opacity)) 0%,
+//       transparent var(--depth-size)
+//     ),
+//     linear-gradient(
+//       to left,
+//       rgba(0, 0, 0, var(--depth-opacity)) 0%,
+//       transparent var(--depth-size)
+//     ),
+//     linear-gradient(
+//       to right,
+//       rgba(0, 0, 0, var(--depth-opacity)) 0%,
+//       transparent var(--depth-size)
+//     );
+// }
+
+// // Section Parallax Penuh
+// .parallax-section {
+//   height: 100vh;
+//   position: relative;
+//   overflow: hidden;
+//   .parallax-image-wrapper {
+//     position: sticky; // Sticky untuk gambar ini saja
+//     top: 0;
+//     height: 90vh;
+//     width: 100%;
+//     overflow: hidden;
+//     isolation: isolate;
+
+//     &::after {
+//       @include inner-depth-effect;
+//     }
+
+//     img {
+//       display: block;
+//       width: 100%;
+//       height: 100%;
+//       object-fit: cover;
+//       position: relative;
+//       z-index: 0;
+//     }
+//   }
+// }
+
+// // Section Showcase
+// .content-showcase-section {
+//   padding: 10vh 5vw;
+//   position: relative;
+//   z-index: 3;
+//   background-color: #333;
+// }
+// .showcase-frame {
+//   background-color: #ffffff;
+//   padding: 20px;
+//   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+//   border: 1px solid #dcdcdc;
+//   display: flex;
+//   flex-direction: column;
+//   height: auto;
+//   min-height: 70vh;
+// }
+// .frame-header {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   flex-shrink: 0;
+//   padding-bottom: 15px;
+//   color: #333;
+//   .frame-logo {
+//     font-weight: 700;
+//     font-size: 20px;
+//   }
+//   .frame-nav {
+//     display: flex;
+//     align-items: center;
+//     gap: 15px;
+//     font-size: 11px;
+//     font-weight: 500;
+//     letter-spacing: 0.5px;
+//   }
+//   .frame-menu-icon {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 5px;
+//     span {
+//       display: block;
+//       width: 20px;
+//       height: 2px;
+//       background-color: #333;
+//     }
+//   }
+// }
+// .frame-content {
+//   flex-grow: 1;
+//   position: relative;
+//   overflow: hidden;
+//   min-height: 80vh;
+//   isolation: isolate;
+//   @media (max-width: 992px) {
+//     min-height: 40vh;
+//   }
+
+//   &::after {
+//     @include inner-depth-effect;
+//   }
+
+//   .content-parallax-wrapper {
+//     position: absolute;
+//     inset: 0;
+//     z-index: 0;
+
+//     .content-parallax-image {
+//       display: block;
+//       width: 100%;
+//       height: 110%;
+//       top: -5%;
+//       object-fit: contain;
+//       position: absolute;
+//     }
+//   }
+// }
+// .frame-footer {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: flex-end;
+//   flex-shrink: 0;
+//   padding-top: 15px;
+//   color: #333;
+//   @media (max-width: 600px) {
+//     flex-direction: column;
+//     align-items: flex-start;
+//     gap: 10px;
+//   }
+//   .footer-title {
+//     font-family: var(--font-heading);
+//     font-size: clamp(1.5rem, 4vw, 2.5rem);
+//     line-height: 1;
+//     font-weight: 500;
+//     margin: 0;
+//     letter-spacing: 1px;
+//   }
+//   .footer-partner {
+//     font-size: 11px;
+//     text-align: right;
+//     @media (max-width: 600px) {
+//       text-align: right;
+//     }
+//   }
+// }
+
+// // Container Tumpukan Section
+// .stacked-sections-container {
+//   position: relative; // WAJIB
+//   // Tinggi harus selalu cukup untuk scroll sticky + elemen di atasnya
+//   height: 200vh; // Tetapkan tinggi ini di SEMUA ukuran layar
+
+//   // JANGAN atur height: auto di sini lagi
+//   // @media (max-width: 992px) {
+//   //   height: auto; // INI DIHAPUS
+//   // }
+// }
+
+// // Section Tipografi (Sticky SELALU AKTIF)
+// .typography-section-reworked {
+//   // --- Konfigurasi Sticky Utama (Berlaku di SEMUA UKURAN) ---
+//   height: 50%; // Tinggi tetap > viewport
+//   position: sticky; // SELALU STICKY
+
+//   z-index: 1; // Di bawah .next-project-section
+
+//   // --------------------------------------------------------
+
+//   // Gaya visual lainnya
+//   background-color: #fff7ed;
+//   display: flex;
+//   align-items: center;
+//   // padding: 10vh 5vw;
+//   box-sizing: border-box;
+
+//   // --- Penyesuaian Layout Responsif (TANPA mengubah sticky) ---
+//   @media (max-width: 992px) {
+//     // HANYA ubah layout internal, BUKAN position/height/top
+//     flex-direction: column;
+//     text-align: center;
+//     padding: 15vh 5vw; // Padding berbeda
+//     // JANGAN override position, height, top di sini lagi
+//     // position: relative; <-- DIHAPUS
+//     // height: auto; <-- DIHAPUS
+//     // min-height: 100vh; <-- DIHAPUS (tinggi 120vh tetap berlaku)
+//     // top: auto; <-- DIHAPUS
+//   }
+//   // ------------------------------------------------------------
+//   @media (max-width: 768px) {
+//     height: 50%;
+//   }
+// }
+
+// // Section Proyek Berikutnya (Scrolling Over)
+// .next-project-section {
+//   position: relative; // Tetap relative
+//   z-index: 2; // Tetap di atas typography
+//   height: 50%; // Tetap 100vh agar mengisi sisa
+//   background-color: var(--bg-dark);
+//   color: var(--text-light);
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   text-align: center;
+//   padding: 5vw;
+//   box-sizing: border-box;
+
+//   // Penyesuaian tinggi di mobile (opsional, karena induknya sudah tinggi)
+//   @media (max-width: 992px) {
+//     // z-index tetap 2 agar jelas di atas sticky
+//     // height bisa tetap 100vh atau disesuaikan jika perlu
+//     // height: 80vh; // Bisa dikembalikan jika diinginkan lebih pendek
+//   }
+//   @media (max-width: 768px) {
+//     height: 50%;
+//   }
+// }
+
+// // Konten Tipografi
+// .typography-text-content {
+//   flex: 1;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   padding-right: 1vw;
+//   z-index: 5;
+//   height: 100%;
+//   @media (max-width: 992px) {
+//     padding-right: 0;
+//     align-items: center;
+//     flex: none;
+//     width: 100%;
+//     order: 1;
+//   }
+
+//   @media (max-width: 768px) {
+//     height: 85%;
+//   }
+// }
+// .typography-image-container {
+//   flex: 1;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   position: relative;
+//   height: auto;
+//   max-width: 40%;
+//   @media (max-width: 992px) {
+//     flex: none;
+//     max-width: 70%;
+//     margin-bottom: 5vh;
+//     width: 100%;
+//     order: 0;
+//   }
+//   @media (max-width: 600px) {
+//     max-width: 90%;
+//   }
+// }
+// .typography-parallax-image {
+//   width: 100%;
+//   aspect-ratio: 4 / 5;
+//   position: relative;
+//   overflow: hidden;
+//   border-radius: 8px;
+//   isolation: isolate;
+//   @media (max-width: 768px) {
+//     margin-bottom: -3vh;
+//   }
+
+//   &::after {
+//     @include inner-depth-effect;
+//   }
+
+//   img {
+//     display: block;
+//     position: absolute;
+//     inset: 0;
+//     width: 100%;
+//     height: 115%;
+//     margin-top: -5vh;
+//     object-fit: cover;
+//     z-index: 0;
+//     @media (max-width: 768px) {
+//       margin-top: -4vh;
+//     }
+//   }
+// }
+// .typography-heading {
+//   position: relative;
+//   width: 100%;
+//   padding-bottom: 3vh;
+//   font-family: var(--font-heading);
+//   font-size: clamp(1.8rem, 4vw, 3rem);
+//   font-weight: 700;
+//   line-height: 1.2;
+//   @media (max-width: 768px) {
+//     padding-bottom: 1vh;
+//   }
+// }
+// .typography-paragraph {
+//   position: relative;
+//   font-size: clamp(0.9rem, 1.5vw, 1rem);
+//   line-height: 1.6;
+//   margin: 8vh 0 -10vh 0;
+//   color: #444;
+//   @media (max-width: 992px) {
+//     max-width: 90%;
+//     margin: 4vh 0 -5vh 0;
+//   }
+//   @media (max-width: 768px) {
+//     margin: 4vh 0 -10vh 0;
+//     padding-bottom: 8px;
+//   }
+// }
+
+// // Konten Proyek Berikutnya
+// .next-project-link {
+//   text-decoration: none;
+//   color: inherit;
+//   display: block;
+// }
+// .next-project-content {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   position: relative;
+//   margin-top: -5rem;
+//   span {
+//     font-size: 13px;
+//     color: var(--text-muted);
+//     margin-bottom: 2rem;
+//     @media (max-width: 768px) {
+//       margin: -10vh 0 10vh 0;
+//     }
+//   }
+//   h2 {
+//     font-family: var(--font-heading);
+//     font-size: clamp(2rem, 12vw, 6rem);
+//     font-weight: 700;
+//     line-height: 1;
+//     letter-spacing: -0.03em;
+//     margin: 0;
+//     padding: 0;
+//     position: relative;
+//     z-index: 1;
+//     margin-top: -30px;
+//     margin-bottom: -70px;
+//     pointer-events: none;
+//   }
+
+//   @media (max-width: 768px) {
+//     margin-top: 5rem;
+//   }
+// }
+// .card-animation-wrapper {
+//   width: 85vw;
+//   max-width: 500px;
+//   height: 160px;
+//   border-radius: 15px;
+//   position: relative;
+//   overflow: hidden;
+//   z-index: 2;
+//   pointer-events: none;
+//   &::before {
+//     content: '';
+//     position: absolute;
+//     bottom: 0;
+//     left: 10%;
+//     right: 10%;
+//     height: 1px;
+//     background-color: rgba(255, 255, 255, 0.2);
+//   }
+// }
+// .next-project-card-frame {
+//   backdrop-filter: blur(12px);
+//   -webkit-backdrop-filter: blur(12px);
+//   padding: 30px 10px;
+//   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+//   border: 1px solid #76747472;
+//   width: 100%;
+//   height: 300px;
+//   position: absolute;
+//   top: -30px;
+//   left: 0;
+//   .card-frame-content {
+//     background-color: #111;
+//     overflow: hidden;
+//     width: 100%;
+//     height: 100%;
+//     img {
+//       width: 100%;
+//       height: 100%;
+//       object-fit: cover;
+//       display: block;
+//     }
+//   }
+// }
+//
+//
+//
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@500;700&display=swap');
 
 // Variabel
 :root {
-  --bg-light: #fff7ed;
   --bg-dark: #111111;
   --text-light: #eaeaea;
   --text-dark: #1c1c1c;
@@ -15,14 +762,11 @@
 
 // Gaya Dasar
 .page-container {
-  background-color: var(--bg-light);
   color: var(--text-dark);
   font-family: var(--font-body);
   cursor: none;
   margin-top: -4%;
   margin-bottom: -32px;
-  // overflow-x: hidden; // HANYA X
-  // Pastikan tidak ada overflow-y: hidden/scroll/auto di parent manapun
   @media (max-width: 768px) {
     margin-top: -12%;
   }
@@ -32,7 +776,6 @@
 // PREMIUM SKELETON STYLES
 // ==========================================
 
-// 1. Animasi Shimmer yang lebih halus & warm
 @keyframes premium-shimmer {
   0% {
     background-position: -200% 0;
@@ -45,49 +788,36 @@
 .skeleton-loading-container {
   width: 100%;
   min-height: 100vh;
-  background-color: var(--bg-light); // Warna dasar page
   padding: 0;
   margin: 0;
   overflow: hidden;
   cursor: wait;
 }
 
-// 2. Base Class untuk semua elemen skeleton
 .sk-item {
-  // Gradient Cream ke Putih (Bukan Abu-abu)
-  background: linear-gradient(
-    90deg,
-    #efe5d8 0%,
-    // Sedikit lebih gelap dari bg-light
-    #fbf4ea 50%,
-    // Highlight
-    #efe5d8 100%
-  );
+  background: linear-gradient(90deg, #efe5d8 0%, #fbf4ea 50%, #efe5d8 100%);
   background-size: 200% 100%;
-  animation: premium-shimmer 2s infinite linear; // Animasi lebih pelan & elegan
+  animation: premium-shimmer 2s infinite linear;
   border-radius: 4px;
 }
 
-// 3. Spesifik Bagian Title (Meniru Font Syne Besar)
 .sk-title {
-  width: 60%; // Tidak full width biar terlihat seperti teks
-  height: clamp(2.5rem, 10vw, 7.5rem); // Sama persis dengan font asli
+  width: 60%;
+  height: clamp(2.5rem, 10vw, 7.5rem);
   margin-bottom: 60px;
   border-radius: 8px;
-
   @media (max-width: 768px) {
     width: 80%;
   }
 }
 
-// 4. Spesifik Meta Data
 .sk-meta-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 2rem;
   width: 100%;
   padding-top: 2rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.05); // Garis tipis halus
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .sk-meta-col {
@@ -101,34 +831,28 @@
   height: 12px;
   opacity: 0.6;
 }
-
 .sk-value {
   width: 140px;
   height: 20px;
 }
 
-// 5. Spesifik Hero Image (Penting!)
 .sk-hero-image {
   width: 100%;
-  height: 100vh; // Full screen height
+  height: 100vh;
   margin-top: 5vh;
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    100% 90%,
-    0% 100%
-  ); // Opsional: Sedikit styling artistik
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
 }
 
 // ==========================================
-// PROJECT SPECIFICS (REMASTERED)
+// PROJECT SPECIFICS
 // ==========================================
 
 .project-specifics-container {
   width: 100%;
   margin-top: -2rem;
+  // DIHAPUS DI MOBILE SESUAI INSTRUKSI
   @media (max-width: 768px) {
-    margin-top: 1rem;
+    display: none !important;
   }
 }
 
@@ -136,78 +860,43 @@
   display: grid;
   width: 100%;
   margin-top: 5rem;
-
-  // DESKTOP: Grid otomatis menyesuaikan.
-  // Minimal lebar kolom 220px. Jika layar luas, akan jadi 2 atau 3 kolom.
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-
-  // Jarak antar elemen
-  column-gap: 4rem; // Jarak horizontal yang lega
-  row-gap: 0.8rem; // Jarak vertikal yang cukup
-
-  // --- MOBILE RESPONSIVE (Max 768px) ---
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
-    gap: 1.4rem; // Jarak antar item lebih rapat di HP
-    margin-top: 2rem;
-    margin-bottom: -1rem;
-    padding-inline: 10px;
-  }
+  column-gap: 4rem;
+  row-gap: 0.8rem;
 }
 
 .spec-item {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.5rem; // Jarak antara Label dan Value
-
-  // Garis pemisah di atas setiap item (Style Premium Minimalis)
+  gap: 0.5rem;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding-top: 0.5rem;
   position: relative;
   transition: all 0.3s ease;
-  @media (max-width: 768px) {
-    margin-top: -1rem;
-  }
 
-  // 1. LABEL (Judul Kecil: TOOLS, FRONTEND, dll)
   .spec-label {
-    font-family: 'Inter', sans-serif; // Atau font body Anda
+    font-family: 'Inter', sans-serif;
     font-size: 0.6rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em; // Tracking luas agar elegan
-    color: #888; // Warna abu-abu (muted)
+    letter-spacing: 0.1em;
+    color: #888;
     margin-bottom: 0.2rem;
-    @media (max-width: 768px) {
-      margin-top: 0.1rem;
-      font-size: 0.5rem;
-      margin-left: 10px;
-    }
   }
 
-  // 2. VALUE (Isi: React, Python, Link...)
   .spec-value {
     font-family: 'Inter', sans-serif;
-    font-size: 0.8rem; // Ukuran standar agar terbaca jelas
+    font-size: 0.8rem;
     font-weight: normal;
-    color: #2b2a2a; // Warna gelap kontras
+    color: #2b2a2a;
     line-height: 1.5;
-
-    // Mencegah teks panjang (seperti URL) merusak layout mobile
     word-wrap: break-word;
     word-break: break-word;
     overflow-wrap: break-word;
     max-width: 100%;
-    @media (max-width: 768px) {
-      text-align: left;
-      margin-top: -0.5rem;
-      font-size: 0.6rem;
-      margin-left: 10px;
-    }
   }
 
-  // 3. LINKS (Styling khusus untuk <a>)
   a {
     display: inline-flex;
     align-items: center;
@@ -218,33 +907,22 @@
     border-bottom: 1px solid transparent;
     transition: all 0.2s ease;
     width: fit-content;
-    @media (max-width: 768px) {
-      text-align: left;
-      margin-top: -0.5rem;
-      font-size: 0.6rem;
-      margin-left: 10px;
-    }
 
-    // Efek Hover: Garis bawah muncul & warna berubah
     &:hover {
-      color: #004564; // Warna aksen Anda
+      color: #004564;
       border-bottom: 1px solid #004564;
       opacity: 1;
     }
-
-    // Panah kecil (↗)
     &::after {
       content: '↗';
       font-size: 1em;
       transition: transform 0.2s ease;
     }
-
     &:hover::after {
-      transform: translate(2px, -5px); // Panah bergerak sedikit saat hover
+      transform: translate(2px, -5px);
     }
   }
 
-  // 4. COLOR PALETTE (Khusus Design)
   .palette-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -258,11 +936,6 @@
       border: 1px solid rgba(0, 0, 0, 0.1);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       transition: transform 0.2s;
-      @media (max-width: 768px) {
-        width: 15px;
-        height: 15px;
-      }
-
       &:hover {
         transform: scale(1.1);
       }
@@ -273,10 +946,10 @@
 // Kursor Kustom
 .snakeCursor {
   @media (max-width: 900px) {
-    display: none; // Tetap nonaktif di tablet/mobile
+    display: none;
   }
   @media (max-width: 760px) {
-    display: none; // Tetap nonaktif di tablet/mobile
+    display: none;
   }
 }
 
@@ -362,22 +1035,20 @@
 }
 
 // Section Parallax Penuh
-.parallax-section {
+.parallax-section2 {
   height: 100vh;
   position: relative;
   overflow: hidden;
-  .parallax-image-wrapper {
-    position: sticky; // Sticky untuk gambar ini saja
+  .parallax-image-wrapper2 {
+    position: sticky;
     top: 0;
     height: 90vh;
     width: 100%;
     overflow: hidden;
     isolation: isolate;
-
     &::after {
       @include inner-depth-effect;
     }
-
     img {
       display: block;
       width: 100%;
@@ -446,16 +1117,13 @@
   @media (max-width: 992px) {
     min-height: 40vh;
   }
-
   &::after {
     @include inner-depth-effect;
   }
-
   .content-parallax-wrapper {
     position: absolute;
     inset: 0;
     z-index: 0;
-
     .content-parallax-image {
       display: block;
       width: 100%;
@@ -489,86 +1157,42 @@
   .footer-partner {
     font-size: 11px;
     text-align: right;
-    @media (max-width: 600px) {
-      text-align: right;
-    }
   }
 }
 
 // Container Tumpukan Section
 .stacked-sections-container {
-  position: relative; // WAJIB
-  // Tinggi harus selalu cukup untuk scroll sticky + elemen di atasnya
-  height: 200vh; // Tetapkan tinggi ini di SEMUA ukuran layar
-
-  // JANGAN atur height: auto di sini lagi
-  // @media (max-width: 992px) {
-  //   height: auto; // INI DIHAPUS
-  // }
+  position: relative;
+  height: 200vh;
 }
 
-// Section Tipografi (Sticky SELALU AKTIF)
-.typography-section-reworked {
-  // --- Konfigurasi Sticky Utama (Berlaku di SEMUA UKURAN) ---
-  height: 50%; // Tinggi tetap > viewport
-  position: sticky; // SELALU STICKY
-
-  z-index: 1; // Di bawah .next-project-section
-
-  // --------------------------------------------------------
-
-  // Gaya visual lainnya
-  background-color: #fff7ed;
+// Section Tipografi
+.typography-section-rework {
+  height: 50%;
+  position: sticky;
+  top: -15vh;
+  z-index: 1;
   display: flex;
+  padding: 10vh 5vw;
   align-items: center;
-  // padding: 10vh 5vw;
   box-sizing: border-box;
 
-  // --- Penyesuaian Layout Responsif (TANPA mengubah sticky) ---
-  @media (max-width: 992px) {
-    // HANYA ubah layout internal, BUKAN position/height/top
+  // --- MOBILE LAYOUT MODIFICATION (INSTAGRAM STYLE) ---
+  @media (max-width: 768px) {
+    top: 0vh;
     flex-direction: column;
-    text-align: center;
-    padding: 15vh 5vw; // Padding berbeda
-    // JANGAN override position, height, top di sini lagi
-    // position: relative; <-- DIHAPUS
-    // height: auto; <-- DIHAPUS
-    // min-height: 100vh; <-- DIHAPUS (tinggi 120vh tetap berlaku)
-    // top: auto; <-- DIHAPUS
+    text-align: start;
+    // Instagram full width biasanya
+    height: 100vh; // Biarkan konten mengalir
+    position: relative; // Hilangkan sticky agar flow natural di mobile
+    // Putih bersih ala Instagram (opsional)
+    padding-bottom: 2rem;
   }
-  // ------------------------------------------------------------
-  @media (max-width: 768px) {
-    height: 50%;
-  }
+  // ----------------------------------------------------
 }
 
-// Section Proyek Berikutnya (Scrolling Over)
-.next-project-section {
-  position: relative; // Tetap relative
-  z-index: 2; // Tetap di atas typography
-  height: 50%; // Tetap 100vh agar mengisi sisa
-  background-color: var(--bg-dark);
-  color: var(--text-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 5vw;
-  box-sizing: border-box;
-
-  // Penyesuaian tinggi di mobile (opsional, karena induknya sudah tinggi)
-  @media (max-width: 992px) {
-    // z-index tetap 2 agar jelas di atas sticky
-    // height bisa tetap 100vh atau disesuaikan jika perlu
-    // height: 80vh; // Bisa dikembalikan jika diinginkan lebih pendek
-  }
-  @media (max-width: 768px) {
-    height: 50%;
-  }
-}
-
-// Konten Tipografi
-.typography-text-content {
+// Konten Tipografi (Kiri Desktop / Bawah Mobile)
+.typography-text-content2 {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -576,19 +1200,23 @@
   padding-right: 1vw;
   z-index: 5;
   height: 100%;
+
   @media (max-width: 992px) {
     padding-right: 0;
-    align-items: center;
-    flex: none;
-    width: 100%;
-    order: 1;
   }
 
+  // --- MOBILE ORDERING ---
   @media (max-width: 768px) {
-    height: 85%;
+    order: 2; // Taruh di BAWAH gambar
+    width: 100%;
+    height: auto;
+    padding: 0 1rem; // Padding kiri kanan untuk text caption
+    align-items: flex-start; // Rata kiri
   }
 }
-.typography-image-container {
+
+// Konten Gambar (Kanan Desktop / Atas Mobile)
+.typography-image-container2 {
   flex: 1;
   display: flex;
   justify-content: center;
@@ -596,28 +1224,30 @@
   position: relative;
   height: auto;
   max-width: 40%;
+
   @media (max-width: 992px) {
     flex: none;
     max-width: 70%;
     margin-bottom: 5vh;
     width: 100%;
-    order: 0;
   }
-  @media (max-width: 600px) {
-    max-width: 90%;
+
+  // --- MOBILE ORDERING ---
+  @media (max-width: 768px) {
+    // order: 1; // Taruh di ATAS text
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 0; // Reset margin
   }
 }
-.typography-parallax-image {
+
+.typography-parallax-image2 {
   width: 100%;
   aspect-ratio: 4 / 5;
   position: relative;
   overflow: hidden;
   border-radius: 8px;
   isolation: isolate;
-  @media (max-width: 768px) {
-    margin-bottom: -3vh;
-  }
-
   &::after {
     @include inner-depth-effect;
   }
@@ -631,11 +1261,23 @@
     margin-top: -5vh;
     object-fit: cover;
     z-index: 0;
-    @media (max-width: 768px) {
-      margin-top: -4vh;
-    }
+  }
+
+  // --- MOBILE IMAGE FULL WIDTH ---
+  @media (max-width: 768px) {
+    border-radius: 0; // Kotak ala Instagram post
+    aspect-ratio: 4/5; //1 / 1; // Square atau 4/5
   }
 }
+
+// --- DESKTOP ONLY ELEMENTS (HIDDEN ON MOBILE) ---
+.desktop-only {
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+// Styles Asli Desktop (akan di-hide di mobile via class desktop-only)
 .typography-heading {
   position: relative;
   width: 100%;
@@ -644,32 +1286,82 @@
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 700;
   line-height: 1.2;
-  @media (max-width: 768px) {
-    padding-bottom: 1vh;
-  }
 }
+
 .typography-paragraph {
   position: relative;
   font-size: clamp(0.9rem, 1.5vw, 1rem);
   line-height: 1.6;
   margin: 8vh 0 -10vh 0;
   color: #444;
-  @media (max-width: 992px) {
-    max-width: 90%;
-    margin: 4vh 0 -5vh 0;
-  }
+}
+
+// --- LIKE BUTTON WRAPPER ---
+.like-button-wrapper {
+  // Mobile Adjustment
   @media (max-width: 768px) {
-    margin: 4vh 0 -10vh 0;
-    padding-bottom: 5px;
+    margin-top: 0.5rem !important; // Dekatkan ke gambar
+    margin-bottom: 0.5rem;
+    width: 100%;
+    // LikeButton Anda mungkin punya margin bawaan, wrapper ini menetralkan
   }
 }
 
-// Konten Proyek Berikutnya
+// --- MOBILE INSTAGRAM CAPTION ---
+.mobile-ig-caption {
+  display: none; // Default hidden di desktop
+
+  @media (max-width: 768px) {
+    display: block; // Show di mobile
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #262626;
+    margin-top: 0.5rem;
+
+    .ig-username {
+      font-weight: 600; // Bold username/title
+      margin-right: 4px;
+    }
+
+    .ig-text {
+      // Description text
+    }
+
+    .ig-more {
+      color: #8e8e8e; // Abu-abu redup
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+}
+
+// Section Proyek Berikutnya
+.next-project-section {
+  position: relative;
+  z-index: 2;
+  height: 50%;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5vw;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    height: 50%;
+  }
+}
+
 .next-project-link {
   text-decoration: none;
   color: inherit;
   display: block;
 }
+
 .next-project-content {
   display: flex;
   flex-direction: column;
@@ -698,11 +1390,11 @@
     margin-bottom: -70px;
     pointer-events: none;
   }
-
   @media (max-width: 768px) {
     margin-top: 5rem;
   }
 }
+
 .card-animation-wrapper {
   width: 85vw;
   max-width: 500px;
@@ -722,6 +1414,7 @@
     background-color: rgba(255, 255, 255, 0.2);
   }
 }
+
 .next-project-card-frame {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
