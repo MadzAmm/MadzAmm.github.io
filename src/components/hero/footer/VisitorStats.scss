@@ -67,8 +67,9 @@
       font-weight: 700;
       color: #fff; // Angka selalu putih terang
       text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-      @media (max-width: 480px) {
+      @media (max-width: 768px) {
         font-size: 0.75rem;
+        margin-bottom: 0vh;
       }
     }
   }

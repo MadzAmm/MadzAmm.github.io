@@ -94,28 +94,28 @@ const VisitorStats = () => {
           className='stat-item'
           title='Visitors Today'>
           <span className='label'>Today:</span>
-          <span className='value'>{stats.daily}</span>
+          <span className='value'>{stats.daily || 0}</span>
         </div>
 
         <div
           className='stat-item'
           title='Visitors This Month'>
           <span className='label'>Month:</span>
-          <span className='value'>{stats.monthly}</span>
+          <span className='value'>{stats.monthly || 0}</span>
         </div>
 
         <div
           className='stat-item'
           title='Visitors This Year'>
           <span className='label'>Year:</span>
-          <span className='value'>{stats.yearly}</span>
+          <span className='value'>{stats.yearly || 0}</span>
         </div>
 
         <div
           className='stat-item'
           title='Total Visitors Since Launch'>
           <span className='label'>Total:</span>
-          <span className='value'>{stats.total}</span>
+          <span className='value'>{stats.total || 0}</span>
         </div>
       </div>
     </div>

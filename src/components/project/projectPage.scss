@@ -23,6 +23,9 @@
   margin-bottom: -32px;
   // overflow-x: hidden; // HANYA X
   // Pastikan tidak ada overflow-y: hidden/scroll/auto di parent manapun
+  @media (max-width: 768px) {
+    margin-top: -12%;
+  }
 }
 
 // ==========================================
@@ -285,6 +288,9 @@
   justify-content: center;
   padding: 15vh 6vw 10vh 6vw;
   box-sizing: border-box;
+  @media (max-width: 768px) {
+    margin-top: -4%;
+  }
 }
 .project-title {
   font-family: var(--font-heading);
