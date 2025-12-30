@@ -323,10 +323,10 @@ $white: #ffffff;
       background-color: $white; /* Background Putih */
       border: 1px solid $border; /* Border abu tipis */
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow halus standar */
-      border-radius: 4px;
+      border-radius: 10px;
 
       flex-direction: column;
-      padding: 0.5rem 0; /* Padding vertikal seperti <select> */
+      padding: 0; /* Padding vertikal seperti <select> */
 
       opacity: 0;
       transform: translateY(-10px);

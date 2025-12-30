@@ -144,13 +144,13 @@ export default function useResponsiveBubble(pageKey = 'default') {
           : [50, -900, 1000, -900, -135],
         yInput: [0, 0.1, 0.3, 1], //persantase scroll
         yOutput: isMobile
-          ? [-300, -250, 400, 30]
+          ? [-300, -250, -400, 30]
           : isTablet
           ? [250, 250, 220, 260]
           : [100, 150, 100, 300],
         scaleInput: [0, 0.1, 0.3, 0.7, 1], //persantase scroll
         scaleOutput: isMobile
-          ? [0.5, 0.8, 0.8, 0.8, 0.7]
+          ? [0.5, 0.6, 0.8, 0.5, 0.5]
           : isTablet
           ? [1, 0.9, 1.5, 0.9, 1]
           : [1, 1, 1, 1, 1.3],

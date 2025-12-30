@@ -1,0 +1,79 @@
+$text-color: #fff7ed; // Ganti warna teks di sini
+
+.text-merge-section {
+  // Landasan pacu 5x tinggi layar untuk animasi yang lebih smooth
+  height: 500vh;
+  position: relative;
+  background-color: #0c0c0c;
+}
+
+.sticky-wrapper {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.text-line {
+  position: absolute;
+  font-family: 'Helvetica Neue', 'Arial Black', sans-serif;
+  font-weight: 900;
+  // font-size: 20vw;
+  font-size: clamp(3rem, 15vw, 20vw);
+  letter-spacing: clamp(-15px, -1vw, -5px);
+  // letter-spacing: -15px;
+  line-height: 1;
+  color: $text-color;
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+
+// Posisi vertikal untuk setiap baris setelah Fase 1 selesai
+.top {
+  top: 5%;
+  transform: translateY(-50%);
+  @media (max-width: 900px) {
+    margin-top: 42vw;
+  }
+  @media (max-width: 768px) {
+    top: 20%;
+  }
+}
+// .middle {
+//   top: 32%;
+//   transform: translateY(-50%);
+//   position: absolute;
+// }
+
+.middle {
+  z-index: 10;
+  margin-top: -10vw;
+  margin-bottom: -10vw;
+
+  @media (max-width: 767px) {
+    margin-top: -12vw;
+    margin-bottom: -12vw;
+  }
+}
+
+.bottom {
+  top: 65%;
+  transform: translateY(-50%);
+  @media (max-width: 900px) {
+    top: 55.5%;
+  }
+  @media (max-width: 768px) {
+    top: 54.5%;
+  }
+}
+
+.madzam {
+  position: absolute;
+  z-index: 20;
+}
