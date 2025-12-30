@@ -1,134 +1,14 @@
-// import React, { useRef } from 'react';
-// import { motion, useScroll, useTransform } from 'framer-motion';
-// import './StickyTextMerge.scss';
-
-// // --- Variabel Konfigurasi ---
-// const initialBackgroundColor = '#0a0a0a';
-// const finalBackgroundColor = '#FFF7ED';
-// const madzamTextColor = '#002f45';
-
-// const StickyTextMerge = () => {
-//   const targetRef = useRef(null);
-//   const { scrollYProgress } = useScroll({
-//     target: targetRef,
-//     offset: ['start start', 'end end'],
-//   });
-
-//   // --- Animasi Teks "HERE I AM" (Tidak berubah) ---
-//   const xTop = useTransform(scrollYProgress, [0, 0.4], ['-100%', '0%']);
-//   const xBottom = useTransform(scrollYProgress, [0, 0.4], ['100%', '0%']);
-//   const yTop = useTransform(scrollYProgress, [0.4, 0.6], ['0%', '80%']);
-//   const yBottom = useTransform(scrollYProgress, [0.4, 0.6], ['0%', '-80%']);
-//   const sideLinesOpacity = useTransform(scrollYProgress, [0.55, 0.6], [1, 0]);
-//   const middleScale = useTransform(scrollYProgress, [0.6, 0.8], [1, 25]);
-
-//   // ✅ --- HAPUS LOGIKA INI --- ✅
-//   // const middleOpacity = useTransform(
-//   //   scrollYProgress,
-//   //   [0.75, 0.8],
-//   //   [1, 0]
-//   // );
-
-//   // --- Animasi Latar Belakang & Teks "Madzam" (Tidak berubah) ---
-//   const backgroundColor = useTransform(
-//     scrollYProgress,
-//     [0.7, 0.8],
-//     [initialBackgroundColor, finalBackgroundColor]
-//   );
-//   const madzamOpacity = useTransform(scrollYProgress, [0.8, 0.9], [0, 1]);
-//   const madzamScale = useTransform(scrollYProgress, [0.8, 0.9], [0.8, 1]);
-
-//   return (
-//     <section
-//       ref={targetRef}
-//       className='text-merge-section'>
-//       <div className='sticky-wrapper'>
-//         <motion.div
-//           className='animated-background'
-//           style={{ backgroundColor }}
-//         />
-//         <motion.h1
-//           className='text-line top'
-//           style={{ x: xTop, y: yTop, opacity: sideLinesOpacity }}>
-//           HERE I AM
-//         </motion.h1>
-
-//         {/* ✅ HAPUS `opacity` DARI STYLE DI BAWAH INI */}
-//         <motion.h1
-//           className='text-line middle'
-//           style={{
-//             scale: middleScale,
-//             // opacity: middleOpacity, // <-- Hapus baris ini
-//           }}>
-//           HERE I AM
-//         </motion.h1>
-
-//         <motion.h1
-//           className='text-line bottom'
-//           style={{ x: xBottom, y: yBottom, opacity: sideLinesOpacity }}>
-//           HERE I AM
-//         </motion.h1>
-
-//         <motion.h1
-//           className='text-line madzam'
-//           style={{
-//             opacity: madzamOpacity,
-//             scale: madzamScale,
-//             color: madzamTextColor,
-//           }}>
-//           마드잠
-//         </motion.h1>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default StickyTextMerge;
-
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import './StickyTextMerge.scss';
 
-// --- Variabel Konfigurasi Warna ---
-const initialBackgroundColor = '#0a0a0a';
-const finalBackgroundColor = '#FFF7ED';
-const madzamTextColor = '#002f45';
-
-// --- PANEL KONTROL ANIMASI RESPONSIVE ---
+// --- CONFIGURATION ---
 const animationConfig = {
-  mobile: {
-    textTop: 'HERE I AM',
-    textMiddle: 'HERE I AM',
-    textBottom: 'HERE I AM',
-    textNew: '무함마드',
-    middleScale: [1, 120],
-    yTravel: '120%',
-    xTopStart: '-120%',
-    xBottomStart: '120%',
-  },
-  tablet: {
-    textTop: 'HERE I AM',
-    textMiddle: 'HERE I AM',
-    textBottom: 'HERE I AM',
-    textNew: '무함마드',
-    middleScale: [1, 81],
-    yTravel: '100%',
-    xTopStart: '-120%',
-    xBottomStart: '120%',
-  },
-  desktop: {
-    textTop: 'HERE I AM',
-    textMiddle: 'HERE I AM',
-    textBottom: 'HERE I AM',
-    textNew: '무함마드',
-    middleScale: [1, 29],
-    yTravel: '100%',
-    xTopStart: '-115%',
-    xBottomStart: '115%',
-  },
+  mobile: { scaleTarget: 150, textY: '20vh', fontSize: '7.8' },
+  tablet: { scaleTarget: 100, textY: '25vh', fontSize: '45' },
+  desktop: { scaleTarget: 80, textY: '30vh', fontSize: '20' }, // Scale lebih kecil di desktop krn layar lebar
 };
 
-// --- Fungsi Helper untuk Breakpoint ---
 const getBreakpoint = (width) => {
   if (width < 768) return 'mobile';
   if (width < 1024) return 'tablet';
@@ -136,100 +16,129 @@ const getBreakpoint = (width) => {
 };
 
 const StickyTextMerge = () => {
-  // ✅ --- LOGIKA BREAKPOINT SEKARANG ADA DI SINI --- ✅
+  const targetRef = useRef(null);
   const [breakpoint, setBreakpoint] = useState(() =>
     getBreakpoint(window.innerWidth)
   );
 
   useEffect(() => {
-    const handleResize = () => {
-      setBreakpoint(getBreakpoint(window.innerWidth));
-    };
+    const handleResize = () => setBreakpoint(getBreakpoint(window.innerWidth));
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []); // Dependensi kosong agar hanya berjalan sekali saat komponen dimuat
+  }, []);
 
-  // --- Sisa Komponen (Tidak ada yang berubah) ---
-  const targetRef = useRef(null);
   const config = animationConfig[breakpoint];
 
+  // Scroll Progress
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ['start start', 'end end'],
   });
 
-  const xTop = useTransform(
+  // --- ANIMASI HELPER TEXT (TOP & BOTTOM) ---
+  // Mereka bergerak menjauh (ke atas dan ke bawah) sebelum zoom terjadi
+  const yTop = useTransform(scrollYProgress, [0.1, 0.4], ['-200%', '0%']);
+  const yBottom = useTransform(scrollYProgress, [0.1, 0.4], ['200%', '0%']);
+  const opacitySide = useTransform(scrollYProgress, [0.3, 0.38], [1, 0]);
+
+  // --- ANIMASI UTAMA (SVG MASK SCALE) ---
+  // Kita mulai zoom dari scroll 40% sampai 85%
+  // Scale mulai dari 1 (normal) ke target (sangat besar)
+  const maskScale = useTransform(
     scrollYProgress,
-    [0, 0.4],
-    [config.xTopStart, '0%']
+    [0.4, 0.9],
+    [1, config.scaleTarget]
   );
-  const xBottom = useTransform(
-    scrollYProgress,
-    [0, 0.4],
-    [config.xBottomStart, '0%']
-  );
-  const yTop = useTransform(
-    scrollYProgress,
-    [0.4, 0.6],
-    ['0%', config.yTravel]
-  );
-  const yBottom = useTransform(
-    scrollYProgress,
-    [0.4, 0.6],
-    ['0%', `-${config.yTravel}`]
-  );
-  const sideLinesOpacity = useTransform(scrollYProgress, [0.6, 0.62], [1, 0]);
-  const middleScale = useTransform(
-    scrollYProgress,
-    [0.63, 0.8],
-    config.middleScale
-  );
-  const backgroundColor = useTransform(
-    scrollYProgress,
-    [0.7, 0.8],
-    [initialBackgroundColor, finalBackgroundColor]
-  );
-  const madzamOpacity = useTransform(scrollYProgress, [0.8, 0.9], [0, 1]);
-  const madzamScale = useTransform(scrollYProgress, [0.8, 0.9], [0.8, 1]);
+
+  // Opacity masker: Hilang di akhir agar background belakang benar-benar bersih
+  const maskOpacity = useTransform(scrollYProgress, [0.85, 0.95], [1, 0]);
+
+  // --- ANIMASI KONTEN BARU (KOREA) ---
+  // Muncul pelan-pelan saat kita masuk ke dalam lubang teks
+  const newTextOpacity = useTransform(scrollYProgress, [0.6, 0.9], [0, 1]);
+  const newTextScale = useTransform(scrollYProgress, [0.6, 1], [0.5, 1]);
 
   return (
     <section
       ref={targetRef}
       className='text-merge-section'>
       <div className='sticky-wrapper'>
-        <motion.div
-          className='animated-background'
-          style={{ backgroundColor }}
-        />
+        {/* --- LAYER 1: REVEAL CONTENT (BELAKANG) --- */}
+        <div className='reveal-layer'>
+          <motion.h1
+            className='madzam-text'
+            style={{ opacity: newTextOpacity, scale: newTextScale }}>
+            무함마드
+          </motion.h1>
+        </div>
 
-        {config.textTop && (
-          <motion.h1
-            className='text-line top'
-            style={{ x: xTop, y: yTop, opacity: sideLinesOpacity }}>
-            {config.textTop}
-          </motion.h1>
-        )}
-        <motion.h1
-          className='text-line middle'
-          style={{ scale: middleScale }}>
-          {config.textMiddle}
-        </motion.h1>
-        {config.textBottom && (
-          <motion.h1
-            className='text-line bottom'
-            style={{ x: xBottom, y: yBottom, opacity: sideLinesOpacity }}>
-            {config.textBottom}
-          </motion.h1>
-        )}
-        <motion.h1
-          className='text-line madzam'
+        {/* --- LAYER 2: SVG MASK (DEPAN) --- */}
+        {/* Ini adalah layer hitam penuh dengan "Lubang" berbentuk teks */}
+        <motion.div
+          className='mask-layer-container'
           style={{
-            opacity: madzamOpacity,
-            scale: madzamScale,
-            color: madzamTextColor,
+            scale: maskScale,
+            opacity: maskOpacity,
+            transformOrigin: 'center center', // Zoom tepat ke tengah
           }}>
-          {config.textNew}
-        </motion.h1>
+          {/* viewBox kecil agar teks presisi, width/height 100% mengikuti container */}
+          <svg
+            viewBox='0 0 400 100'
+            preserveAspectRatio='xMidYMid slice'>
+            <defs>
+              {/* Definisi Masker: Putih = Visible, Hitam = Bolong/Invisible */}
+              <mask id='text-mask'>
+                {/* 1. Kotak Putih Penuh (Layar Solid) */}
+                <rect
+                  x='-50%'
+                  y='-50%'
+                  width='200%'
+                  height='200%'
+                  fill='white'
+                />
+
+                {/* 2. Teks Hitam (Akan menjadi lubang transparan) */}
+                <text
+                  x='50%'
+                  y='50%'
+                  textAnchor='middle'
+                  dominantBaseline='middle'
+                  fontSize={config.fontSize}
+                  fontWeight='900'
+                  fill='black'
+                  fontFamily='system-ui, sans-serif' // Ganti dengan font Anda
+                >
+                  BE OPEN
+                </text>
+              </mask>
+            </defs>
+
+            {/* Rect Utama: Warnanya Hitam (#0a0a0a) mengikuti tema awal */}
+            {/* Rect ini diaplikasikan mask di atas, sehingga bolong di tengah */}
+            <rect
+              x='-50%'
+              y='-50%'
+              width='200%'
+              height='200%'
+              fill='#0a0a0a'
+              mask='url(#text-mask)'
+            />
+          </svg>
+        </motion.div>
+
+        {/* --- LAYER 3: HELPER TEXT (TOP & BOTTOM) --- */}
+        {/* Elemen HTML biasa di atas SVG, bergerak pergi saat scroll */}
+        <motion.div
+          className='helper-text'
+          style={{ y: yTop, opacity: opacitySide }}>
+          BE OPEN
+        </motion.div>
+
+        <motion.div
+          className='helper-text'
+          style={{ y: yBottom, opacity: opacitySide }}>
+          BE OPEN
+        </motion.div>
       </div>
     </section>
   );
