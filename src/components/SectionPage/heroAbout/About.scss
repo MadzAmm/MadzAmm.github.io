@@ -235,6 +235,9 @@
     order: 1; // Pindah teks ke bawah gambar di mobile
     text-align: center; // Kembali ke tengah di mobile
   }
+  @media (max-width: 768px) {
+    margin: 0 0 -3vh 0;
+  }
 
   .typography-heading {
     font-family: var(--font-heading);
@@ -255,7 +258,7 @@
       max-width: 90%;
     }
     @media (max-width: 768px) {
-      margin: -2vh 0 0 0;
+      margin: -3vh 0 0 0;
     }
   }
 }
