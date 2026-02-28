@@ -1,0 +1,47 @@
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    # Runs every day at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  prevent-pause:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Ping Supabase API
+        run: |
+          echo "Pinging Supabase to prevent auto-pause..."
+
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X GET '${{ secrets.SUPABASE_URL }}/rest/v1/projects?select=id&limit=1' \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
+
+          echo "Ping completed with HTTP status: $HTTP_STATUS"
+
+      - name: Weekly Auto-Commit
+        run: |
+          DAY_OF_WEEK=$(date +%w)
+
+          if [ "$DAY_OF_WEEK" -eq 0 ]; then
+            echo "Today is Sunday. Running weekly auto-commit to keep GitHub Actions active..."
+            echo "Last pinged on: $(date)" > keep-alive.txt
+            
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            
+            git add keep-alive.txt
+            git commit -m "chore: prevent workflow suspension (weekly keep-alive)" || echo "No changes to commit"
+            git push
+            
+            echo "Weekly commit successful!"
+          else
+            echo "Today is not Sunday (Day: $DAY_OF_WEEK). Skipping auto-commit."
+          fi
