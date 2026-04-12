@@ -414,7 +414,9 @@ const ProjectPage = () => {
         <motion.div className='project-meta'>
           <div>
             <span>SERVICES</span>
-            <p>{project.category?.join(', ')}</p>
+            <p style={{ textTransform: 'capitalize' }}>
+              {project.category?.join(', ')}
+            </p>
           </div>
           <div>
             <span>CREDITS</span>
