@@ -200,7 +200,7 @@ const MarqueeText = ({ text, direction }) => {
   const marqueeX = useMotionValue(0);
   const velocity = useSpring(
     direction === 'down' ? -BASE_VELOCITY : BASE_VELOCITY,
-    { stiffness: 80, damping: 40, mass: 2 }
+    { stiffness: 80, damping: 40, mass: 2 },
   );
   useEffect(() => {
     velocity.set(direction === 'down' ? -BASE_VELOCITY : BASE_VELOCITY);
@@ -267,7 +267,7 @@ const ListItem = ({
           animate={{ opacity: isHovered ? 0 : 1, scale: isHovered ? 0.8 : 1 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}>
           <h3 className='list-item-title'>{project.title}</h3>
-          <p className='list-item-category'>{project.category.join(' & ')}</p>
+          <p className='list-item-category'>{project.category.join(', ')}</p>
         </motion.div>
       </div>
       <motion.span
@@ -525,7 +525,8 @@ const GridItem = ({
             {' '}
             <div className='grid-overlay-left'>
               {' '}
-              <h3>{project.title}</h3> <p>{project.category.join(' & ')}</p>{' '}
+              <h3>{project.title}</h3>{' '}
+              <p>{project.category.join(' & ')}</p>{' '}
             </div>{' '}
             <div className='grid-overlay-right'>
               {' '}
@@ -773,7 +774,7 @@ const Portfolio = () => {
   const [slideIndex1, setSlideIndex1] = useState(0);
   const [slideIndex2, setSlideIndex2] = useState(0);
   const [windowWidth, setWindowWidth] = useState(
-    typeof window !== 'undefined' ? window.innerWidth : 0
+    typeof window !== 'undefined' ? window.innerWidth : 0,
   );
 
   // PERBAIKAN: Menambahkan deklarasi yang hilang
@@ -859,34 +860,34 @@ const Portfolio = () => {
   const stickyControlsOpacity = useTransform(
     scrollY,
     [transitionPoint - 50, transitionPoint],
-    [0, 1]
+    [0, 1],
   );
   const stickyControlsY = useTransform(
     scrollY,
     [transitionPoint - 50, transitionPoint],
-    ['100%', '0%']
+    ['100%', '0%'],
   );
   const stickyControlsPointerEvents = useTransform(
     scrollY,
     [transitionPoint - 25, transitionPoint],
-    ['none', 'auto']
+    ['none', 'auto'],
   );
   const topToggleOpacity = useTransform(
     scrollY,
     [transitionPoint - 100, transitionPoint - 50],
-    [1, 0]
+    [1, 0],
   );
   const topTogglePointerEvents = useTransform(
     scrollY,
     [transitionPoint - 75, transitionPoint - 25],
-    ['auto', 'auto']
+    ['auto', 'auto'],
   );
 
   useOnClickOutside(dropdownRef, () => setIsDropdownOpen(false));
   useOnClickOutside(stickyFilterRef, () => setIsStickyFilterOpen(false));
   useOnClickOutside(stickyViewRef, () => setIsStickyViewOpen(false));
   useOnClickOutside(headerViewDropdownRef, () =>
-    setIsHeaderViewDropdownOpen(false)
+    setIsHeaderViewDropdownOpen(false),
   );
 
   const allFilterableCategories = [
@@ -896,13 +897,14 @@ const Portfolio = () => {
     'experience',
     'achievements',
     'credentials',
+    'data science',
   ];
   const allCategoriesForCount = ['all', ...allFilterableCategories];
   const categoryCounts = React.useMemo(() => {
     const counts = {};
     allCategoriesForCount.forEach((cat) => {
       counts[cat] = projectData.filter((p) =>
-        cat === 'all' ? true : p.category.includes(cat)
+        cat === 'all' ? true : p.category.includes(cat),
       ).length;
     });
     return counts;
@@ -1127,10 +1129,10 @@ const Portfolio = () => {
     ? moreCategory.charAt(0).toUpperCase() + moreCategory.slice(1)
     : 'More';
   const dropdownCategories = allFilterableCategories.filter(
-    (cat) => cat !== recentCategory && cat !== moreCategory
+    (cat) => cat !== recentCategory && cat !== moreCategory,
   );
   const stickyDropdownCategories = allCategoriesForCount.filter(
-    (cat) => cat !== filter
+    (cat) => cat !== filter,
   );
 
   return (
@@ -1586,7 +1588,7 @@ const Portfolio = () => {
                               info,
                               projects1,
                               slideIndex1,
-                              setSlideIndex1
+                              setSlideIndex1,
                             )
                           }>
                           {' '}
@@ -1651,7 +1653,7 @@ const Portfolio = () => {
                               info,
                               projects2,
                               slideIndex2,
-                              setSlideIndex2
+                              setSlideIndex2,
                             )
                           }>
                           {' '}

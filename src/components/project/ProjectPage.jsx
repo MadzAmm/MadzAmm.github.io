@@ -218,7 +218,7 @@ const ContentParallaxImage = ({ src, alt, speed = 0.1 }) => {
   const y = useTransform(
     scrollYProgress,
     [0, 1],
-    [`-${speed * 100}%`, `${speed * 100}%`]
+    [`-${speed * 100}%`, `${speed * 100}%`],
   );
   return (
     <div
@@ -356,7 +356,7 @@ const ProjectPage = () => {
   const typographyImageY = useTransform(
     typographyScroll,
     [0, 1],
-    ['-20%', '20%']
+    ['-20%', '20%'],
   );
   const { scrollYProgress: fullScroll } = useScroll({
     target: fullParallaxRef,
@@ -414,7 +414,7 @@ const ProjectPage = () => {
         <motion.div className='project-meta'>
           <div>
             <span>SERVICES</span>
-            <p>{project.category?.join(' & ')}</p>
+            <p>{project.category?.join(', ')}</p>
           </div>
           <div>
             <span>CREDITS</span>

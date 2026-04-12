@@ -5,6 +5,7 @@ import { motion, useAnimationControls } from 'framer-motion';
 const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState({
     width: null,
+    width: typeof window !== 'undefined' ? window.innerWidth : null,
   });
 
   useEffect(() => {

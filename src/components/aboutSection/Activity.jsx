@@ -82,7 +82,7 @@ const MarqueeText = ({ text, direction }) => {
       stiffness: 80,
       damping: 40,
       mass: 2,
-    }
+    },
   );
   useEffect(() => {
     velocity.set(direction === 'down' ? -BASE_VELOCITY : BASE_VELOCITY);
@@ -126,7 +126,7 @@ const ListItemContent = ({ project, index, isHovered, scrollDirection }) => {
           animate={{ opacity: isHovered ? 0 : 1, scale: isHovered ? 0.8 : 1 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}>
           <h3 className='list-item-title'>{project.title}</h3>
-          <p className='list-item-category'>{project.category.join(' & ')}</p>
+          <p className='list-item-category'>{project.category.join(', ')}</p>
         </motion.div>
       </div>
       <motion.span
@@ -238,7 +238,7 @@ const ActivityBlock = ({
   const xScroll = useTransform(
     scrollProgress,
     [0, 1],
-    [`${startX}%`, `${endX}%`]
+    [`${startX}%`, `${endX}%`],
   );
 
   return (
@@ -311,7 +311,7 @@ const Activity = () => {
               (p) =>
                 p.isActivity === true ||
                 p.category.includes('activity') ||
-                p.category.includes('learning')
+                p.category.includes('learning'),
             )
             .slice(0, 5);
 
@@ -434,7 +434,7 @@ const Activity = () => {
           startX: -20,
           endX: 5,
           color: '#fff7ed',
-        } //10
+        }, //10
       );
     } else {
       activityItems.forEach((project, index) => {
