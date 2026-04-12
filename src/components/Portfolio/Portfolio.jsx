@@ -525,8 +525,7 @@ const GridItem = ({
             {' '}
             <div className='grid-overlay-left'>
               {' '}
-              <h3>{project.title}</h3>{' '}
-              <p>{project.category.join(' & ')}</p>{' '}
+              <h3>{project.title}</h3> <p>{project.category.join(', ')}</p>{' '}
             </div>{' '}
             <div className='grid-overlay-right'>
               {' '}
@@ -1610,7 +1609,7 @@ const Portfolio = () => {
                                 <h3>{project.title}</h3>{' '}
                                 <p className='list-item-category'>
                                   {' '}
-                                  {project.category.join(' & ')}{' '}
+                                  {project.category.join(', ')}{' '}
                                 </p>{' '}
                               </div>{' '}
                               <span className='slide-item-year'>
